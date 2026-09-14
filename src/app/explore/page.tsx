@@ -4,6 +4,7 @@ import "../landing.css";
 import "./explore.css";
 import { SiteHeader } from "@/components/landing/SiteHeader";
 import { SiteFooter } from "@/components/landing/SiteFooter";
+import { ThesisArtwork } from "@/components/landing/ThesisArtwork";
 import { listPublishedTheses } from "@/server/content/queries";
 import { bpsToPercentLabel } from "@/lib/money/allocate";
 
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   description: "Three claims about the world, and the tokenized stocks that express each one.",
 };
 
-// The catalogue is small and changes when an editor publishes, not per request.
+// The catalogue changes when an editor publishes, not per request.
 export const revalidate = 60;
 
 export default async function ExplorePage() {
@@ -27,10 +28,11 @@ export default async function ExplorePage() {
 
       <main id="main">
         <section className="ln-container ex-head">
-          <h1 className="ex-question">What do you believe happens next?</h1>
+          <p className="ln-eyebrow">The catalogue</p>
+          <h1 className="ln-h2 ex-question">What do you believe happens next?</h1>
           <p className="ex-sub">
-            Each of these is a claim about the world, written out in full, with the three tokenized stocks that
-            express it and the strongest argument that it is wrong. Read one before you decide whether you agree.
+            Each of these is a claim about the world, written out in full, with the businesses that express it and the
+            strongest argument that it is wrong. Read one before you decide whether you agree.
           </p>
         </section>
 
@@ -43,37 +45,53 @@ export default async function ExplorePage() {
         ) : (
           <div className="ln-container ex-list">
             {theses.map((t) => (
-              <article className="ex-card" key={t.slug}>
-                <div className="ex-card-meta">
-                  <span>{t.category}</span>
-                  <span aria-hidden="true">·</span>
-                  <span>{t.horizonLabel}</span>
-                </div>
+              <article className="ex-item" key={t.slug}>
+                <ThesisArtwork category={t.category} className="ex-art" />
 
-                <div className="ex-card-body">
+                <div className="ex-main">
+                  <p className="ex-meta">
+                    <span>{t.category}</span>
+                    <span className="ex-dot" aria-hidden="true">
+                      ·
+                    </span>
+                    <span>{t.horizonLabel}</span>
+                    <span className="ex-dot" aria-hidden="true">
+                      ·
+                    </span>
+                    <span>{t.authorName}</span>
+                  </p>
+
                   <h2 className="ex-claim">
                     <Link href={`/t/${t.slug}`}>{t.claim}</Link>
                   </h2>
                   <p className="ex-summary">{t.summary}</p>
 
-                  <ul className="ex-holdings">
-                    {t.holdings.map((h) => (
-                      <li className="ex-holding" key={h.symbol}>
-                        <span className="ex-ticker">{h.symbol}</span>
-                        <span className="ex-company">{h.company}</span>
-                        <span className="ex-role">{h.role}</span>
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="ex-sources">
+                    <span className="ex-chip">
+                      <strong>{t.supportingCount}</strong> sources for
+                    </span>
+                    <span className="ex-chip ex-chip--against">
+                      <strong>{t.againstCount}</strong> against
+                    </span>
+                  </p>
+                </div>
 
-                  <div className="ex-foot">
-                    <span className="ex-open" aria-hidden="true">
-                      Explore thesis →
-                    </span>
-                    <span className="ex-weights">
-                      {t.holdings.map((h) => bpsToPercentLabel(h.weightBps)).join(" / ")}
-                    </span>
-                  </div>
+                <div className="ex-holdings">
+                  {t.holdings.map((h, i) => (
+                    <div className={`ex-holding ln-asset-tone-${i}`} key={h.symbol}>
+                      <span className="ln-stock-initial" aria-hidden="true">
+                        {h.company.charAt(0)}
+                      </span>
+                      <span className="ex-hold-text">
+                        <span className="ln-ticker">{h.symbol}</span>
+                        <span className="ex-hold-role">{h.role}</span>
+                      </span>
+                      <span className="ex-weight">{bpsToPercentLabel(h.weightBps)}</span>
+                    </div>
+                  ))}
+                  <span className="ex-open" aria-hidden="true">
+                    Explore thesis →
+                  </span>
                 </div>
               </article>
             ))}
@@ -81,9 +99,9 @@ export default async function ExplorePage() {
         )}
 
         <p className="ln-container ex-note">
-          By {theses[0]?.authorName ?? "Thesis editorial"}. No wallet is needed to read any of this. There are no
-          returns shown anywhere on this page, because none of these have a track record yet — tracking begins at
-          publication.
+          No wallet is needed to read any of this. There are no returns anywhere on this page, because none of these
+          have a track record yet — tracking begins at publication. Every source is linked in full on the thesis
+          itself, including the ones that argue against it.
         </p>
       </main>
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useState } from "react";
+import { RotateCcw } from "lucide-react";
 import { MAX_WEIGHT_BPS, MIN_WEIGHT_BPS } from "@/lib/money/allocate";
 import { DEFAULT_BASKET_RAW, estimateLegCost, formatUsdc } from "@/lib/money/cost";
 import type { Holding } from "./content";
@@ -22,7 +23,8 @@ function legAmountRaw(weight: number): bigint {
   return (DEFAULT_BASKET_RAW * BigInt(weight)) / 100n;
 }
 
-export function AllocationPreview({ holdings }: { holdings: Holding[] }) {
+export function AllocationPreview({ holdings, compact = false, version = 1 }: { holdings: Holding[]; compact?: boolean; version?: number }) {
+  const id = useId();
   const authorWeights = holdings.map((h) => h.weight);
   const [weights, setWeights] = useState(authorWeights);
 
@@ -39,12 +41,15 @@ export function AllocationPreview({ holdings }: { holdings: Holding[] }) {
   }
 
   return (
-    <div className="ln-alloc">
+    <div className={`ln-alloc${compact ? " ln-alloc--compact" : ""}`}>
       <div className="ln-alloc-head">
-        <h4 className="ln-h3">Your allocation</h4>
+        <p className="ln-alloc-label">Your allocation</p>
         <p className="ln-alloc-budget">
-          Basket <span className="ln-num">{formatUsdc(DEFAULT_BASKET_RAW)}</span> · default size
+          <span className="ln-num">{formatUsdc(DEFAULT_BASKET_RAW)}</span> USDC
         </p>
+      </div>
+      <div className="ln-allocation-bar" aria-hidden="true">
+        {weights.map((weight, index) => <span key={holdings[index].symbol} className={`ln-allocation-segment ln-asset-tone-${index % 3}`} style={{ flexGrow: weight }} />)}
       </div>
 
       {holdings.map((holding, index) => {
@@ -54,8 +59,8 @@ export function AllocationPreview({ holdings }: { holdings: Holding[] }) {
           <div className="ln-row" key={holding.symbol}>
             <div className="ln-row-top">
               <span className="ln-row-name">
-                <span className="ln-ticker">{holding.symbol}</span>
-                <span className="ln-company">{holding.company}</span>
+                <span className={`ln-stock-initial ln-asset-tone-${index % 3}`} aria-hidden="true">{holding.company[0]}</span>
+                <label htmlFor={`${id}-${index}`}><span className="ln-ticker">{holding.symbol}</span><span className="ln-company">{holding.company}</span></label>
               </span>
               <span className="ln-row-values">
                 <span className="ln-weight">{weight}%</span>
@@ -64,6 +69,8 @@ export function AllocationPreview({ holdings }: { holdings: Holding[] }) {
             </div>
             <input
               className="ln-slider"
+              id={`${id}-${index}`}
+              aria-describedby={`${id}-status`}
               type="range"
               min={MIN_WEIGHT}
               max={MAX_WEIGHT}
@@ -81,13 +88,14 @@ export function AllocationPreview({ holdings }: { holdings: Holding[] }) {
         <p
           className={`ln-status ${remainder === 0 ? "ln-status--ok" : "ln-status--warn"}`}
           aria-live="polite"
+          id={`${id}-status`}
         >
           <span className="ln-status-dot" aria-hidden="true" />
           <span>
             {remainder === 0
               ? edited
-                ? "Totals 100%. Your allocation differs from Version 1."
-                : "Totals 100%. This is the author's allocation."
+                ? `100% allocated · Your version of v${version}`
+                : "100% allocated · Author's weights"
               : remainder > 0
                 ? `${remainder}% still to allocate. The total must reach 100%.`
                 : `${-remainder}% over. The total must come back to 100%.`}
@@ -98,18 +106,14 @@ export function AllocationPreview({ holdings }: { holdings: Holding[] }) {
           className="ln-reset"
           onClick={() => setWeights(authorWeights)}
           disabled={!edited}
+          aria-label="Reset to author's weights"
         >
-          Reset to author&rsquo;s weights
+          <RotateCcw size={14} aria-hidden="true" /> Reset
         </button>
       </div>
 
-      <p className="ln-cost">
-        Estimated cost <span className="ln-num">{formatUsdc(costRaw)}</span> on{" "}
-        <span className="ln-num">{formatUsdc(investedRaw)}</span>, about{" "}
-        <span className="ln-num">{(costBps / 100).toFixed(2)}%</span> — roughly $0.16 per purchase plus
-        10 basis points. Jupiter charges it. Thesis adds nothing. A real purchase re-checks every
-        figure against a fresh order before you sign.
-      </p>
+      <p className="ln-preview-disclaimer">Interactive preview. No funds move.</p>
+      {!compact && <details className="ln-cost"><summary>Estimated fees <span className="ln-num">{formatUsdc(costRaw)}</span> <span className="ln-meta">({(costBps / 100).toFixed(2)}%)</span></summary><p>Estimate on {formatUsdc(investedRaw)}: about $0.16 per purchase plus 0.1%, charged by Jupiter. Thesis adds no fee. A purchase requires fresh quotes and your approval for each holding.</p></details>}
     </div>
   );
 }

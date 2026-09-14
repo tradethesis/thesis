@@ -1,101 +1,43 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { AllocationPreview } from "./AllocationPreview";
 import { EXAMPLE_THESIS } from "./content";
 
 const t = EXAMPLE_THESIS;
 
 export function WorkedExample() {
   return (
-    <section className="ln-section" id="example">
-      <div className="ln-container">
-        <div className="ln-example-head">
-          <p className="ln-eyebrow">A thesis in full</p>
-          <h2 className="ln-h2">One claim, three holdings, and the case against it.</h2>
-          <p className="ln-section-lead">
-            Every thesis has the same shape. A claim about the world. Three tokenized stocks that
-            express it, each with a job and a weakness. Weights you can change. And the strongest
-            argument that the whole idea is wrong, written by the author, kept next to the position.
-          </p>
+    <section className="ln-section" id="example" aria-labelledby="example-heading">
+      <div className="ln-container ln-example-grid">
+        <div className="ln-example-intro">
+          <p className="ln-eyebrow">An idea, made investable</p>
+          <h2 className="ln-h2" id="example-heading">Don’t just follow<br />a ticker.<br /><span>Follow a thesis.</span></h2>
+          <p className="ln-section-lead">An exchange. A digital dollar. A brokerage. Different businesses, connected by one belief about the future of finance.</p>
+          <Link href="/t/financial-activity-moves-onchain" className="ln-text-link">Explore this thesis <ArrowRight size={17} aria-hidden="true" /></Link>
         </div>
-
-        <article className="ln-thesis">
-          <div className="ln-thesis-band">
-            <span>{t.version}</span>
-            <span aria-hidden="true">·</span>
-            <span>{t.category}</span>
-            <span aria-hidden="true">·</span>
-            <span>{t.horizon}</span>
-            <span aria-hidden="true">·</span>
-            <span>By {t.author}</span>
-          </div>
-
-          <div className="ln-thesis-body">
-            <h3 className="ln-claim">{t.title}</h3>
-            <p className="ln-claim-summary">{t.summary}</p>
-
-            <div className="ln-block">
-              <p className="ln-block-label">Three holdings</p>
-              <ul className="ln-holdings">
-                {t.holdings.map((holding) => (
-                  <li className="ln-holding" key={holding.symbol}>
-                    <div className="ln-holding-head">
-                      <span className="ln-ticker">{holding.symbol}</span>
-                      <span className="ln-company">
-                        {holding.company} · {holding.underlying}
-                      </span>
-                      <span className="ln-role">{holding.role}</span>
-                    </div>
-                    <p className="ln-holding-why">{holding.why}</p>
-                    <p className="ln-limit">
-                      <strong>Limitation.</strong> {holding.limitation}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="ln-block">
-              <p className="ln-block-label">Your weights</p>
-              <p className="ln-holding-why">{t.weightRationale}</p>
-              <AllocationPreview holdings={t.holdings} />
-            </div>
-
-            <div className="ln-block">
-              <p className="ln-block-label">The argument</p>
-              <div className="ln-argument">
-                <div>
-                  <h4>{t.counterargument.heading}</h4>
-                  <p>{t.counterargument.body}</p>
+        <div className="ln-example-research">
+          <div className="ln-research-heading"><span className="ln-meta">The belief</span><span className="ln-meta">{t.version}</span></div>
+          <h3 className="ln-claim">{t.title}.</h3>
+          <ul className="ln-holdings">
+            {t.holdings.map((holding, i) => (
+              <li className="ln-holding" key={holding.symbol}>
+                <span className={"ln-stock-initial ln-asset-tone-" + i} aria-hidden="true">{holding.company[0]}</span>
+                <div className="ln-holding-content">
+                  <div className="ln-holding-head"><h4>{holding.company}</h4><span className="ln-ticker">{holding.symbol}</span></div>
+                  <p className="ln-role">{holding.role}</p>
+                  <details className="ln-holding-details">
+                    <summary>Why it belongs <span aria-hidden="true">+</span></summary>
+                    <p>{holding.why}</p>
+                    <p className="ln-limit"><strong>The tradeoff.</strong> {holding.limitation}</p>
+                  </details>
                 </div>
-                <div>
-                  <h4>{t.changeMyMind.heading}</h4>
-                  <p>{t.changeMyMind.body}</p>
-                </div>
-              </div>
-              <div className="ln-track">
-                <p>
-                  <strong>Tracking begins at publication.</strong> {t.trackingNote}
-                </p>
-              </div>
-              <div className="ln-track">
-                <p>
-                  <strong>Evidence.</strong> {t.evidenceNote}
-                </p>
-              </div>
-            </div>
+                <span className="ln-weight">{holding.weight}%</span>
+              </li>
+            ))}
+          </ul>
+          <div className="ln-counterpoint">
+            <span className="ln-counterpoint-symbol" aria-hidden="true">↔</span>
+            <div><h4>Every conviction needs a counterargument.</h4><p>The shift can happen without these companies winning. Each thesis includes the strongest case against it, before you invest.</p></div>
           </div>
-        </article>
-
-        <div className="ln-example-note">
-          <Link href="/explore" className="ln-btn ln-btn--secondary">
-            Read the full thesis
-            <ArrowRight className="ln-arrow" size={18} strokeWidth={2} aria-hidden="true" />
-          </Link>
-          <span className="ln-meta">
-            Weights above are a preview. Nothing on this page connects to a wallet or asks for a
-            signature.
-          </span>
         </div>
       </div>
     </section>

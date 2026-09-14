@@ -25,7 +25,10 @@ export type ThesisCard = {
   horizonLabel: string;
   versionNumber: number;
   publishedAt: Date | null;
-  evidenceCount: number;
+  /** Sources that argue for the claim. */
+  supportingCount: number;
+  /** Sources that argue against it. Shown separately — a thesis with none is hiding something. */
+  againstCount: number;
   holdings: ThesisCardHolding[];
 };
 
@@ -65,6 +68,8 @@ export async function listPublishedTheses(): Promise<ThesisCard[]> {
       .where(eq(thesisConstituent.versionId, row.versionId))
       .orderBy(asc(thesisConstituent.position));
 
+    const evidence = (Array.isArray(row.evidence) ? row.evidence : []) as EvidenceLink[];
+
     cards.push({
       slug: row.slug,
       title: row.title,
@@ -75,7 +80,8 @@ export async function listPublishedTheses(): Promise<ThesisCard[]> {
       horizonLabel: row.horizonLabel,
       versionNumber: row.versionNumber,
       publishedAt: row.publishedAt,
-      evidenceCount: Array.isArray(row.evidence) ? (row.evidence as EvidenceLink[]).length : 0,
+      supportingCount: evidence.filter((e) => !e.supportsCounterargument).length,
+      againstCount: evidence.filter((e) => e.supportsCounterargument).length,
       holdings,
     });
   }
