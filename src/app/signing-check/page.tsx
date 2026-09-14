@@ -19,7 +19,7 @@ type Verdict = { ok: boolean; [k: string]: unknown };
 
 const SYMBOLS = ["NVDAx", "MSFTx", "AMZNx", "COINx", "CRCLx", "HOODx", "METAx", "GOOGLx"];
 
-export default function DebugPage() {
+export default function SigningCheckPage() {
   const [wallet, setWallet] = useState<string | null>(null);
   const [symbol, setSymbol] = useState("NVDAx");
   const [usd, setUsd] = useState(25);
@@ -90,6 +90,7 @@ export default function DebugPage() {
   }, [order, wallet]);
 
   return (
+    <div style={S.sheet}>
     <main style={S.page}>
       <header style={S.header}>
         <h1 style={S.h1}>Signing path check</h1>
@@ -193,6 +194,7 @@ export default function DebugPage() {
 
       {error && <p style={S.error}>{error}</p>}
     </main>
+    </div>
   );
 }
 
@@ -208,7 +210,20 @@ function Row({ label, value, accent }: { label: string; value: string; accent?: 
 const mono = "ui-monospace, SFMono-Regular, Menlo, monospace";
 
 const S: Record<string, React.CSSProperties> = {
-  page: { maxWidth: 760, margin: "0 auto", padding: "48px 20px 96px", fontFamily: "system-ui, sans-serif", color: "#1c1c1c" },
+  sheet: { background: "#fff", colorScheme: "light", minHeight: "100vh" },
+  // This is an internal tool, so it commits to one theme rather than carrying a palette.
+  // Without an explicit background it inherits the dark body from globals.css and renders
+  // #1c1c1c text on #0a0a0a -- invisible everywhere except inside the white cards.
+  page: {
+    maxWidth: 760,
+    margin: "0 auto",
+    padding: "48px 20px 96px",
+    fontFamily: "system-ui, sans-serif",
+    color: "#1c1c1c",
+    background: "#fff",
+    colorScheme: "light",
+    minHeight: "100vh",
+  },
   header: { marginBottom: 36 },
   h1: { fontSize: 24, fontWeight: 600, margin: "0 0 10px" },
   lede: { fontSize: 15, lineHeight: 1.6, color: "#555", margin: 0 },
