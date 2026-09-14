@@ -47,6 +47,11 @@ pnpm dev
 `pnpm assets:verify` re-checks every allowlisted mint against the chain and against live
 two-way Jupiter routes. It exits non-zero on any disagreement.
 
+**Stop `pnpm dev` before running `pnpm build`.** Both write to `.next/`, and a production
+build run underneath a live dev server leaves it loading chunk files that no longer exist
+(`Cannot find module './491.js'`). If that happens: kill the dev server, `rm -rf .next`,
+start it again.
+
 ### Environment
 
 | Variable | What it is |
