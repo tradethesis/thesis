@@ -1,0 +1,587 @@
+{
+  "capturedAt": "2026-09-14T07:41:46.279Z",
+  "taker": "5hQmuDgjc8XZQDxL3u943GvamMkTfZXwF3iGL5Y3WrLg",
+  "orders": {
+    "preflight_buy_COINx": {
+      "swapType": "aggregator",
+      "inAmount": "16670000",
+      "outAmount": "9407916",
+      "otherAmountThreshold": "9407916",
+      "swapMode": "ExactIn",
+      "slippageBps": 0,
+      "priceImpactPct": "-0.012312756173351822",
+      "routePlan": [
+        {
+          "percent": 96.56,
+          "bps": 9656,
+          "usdValue": 16.09359078367556,
+          "swapInfo": {
+            "ammKey": "7ouGUDRMy4C9RJpTgPizRyfcxyJusAEe9ZbjqYv7BSqe",
+            "label": "Whirlpool",
+            "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "outputMint": "Xs7ZdzSHLU9ftNJsii5fCeJhoRWSC32SQGzGQtePxNu",
+            "inAmount": "16095854",
+            "outAmount": "9093086"
+          }
+        },
+        {
+          "percent": 3.44,
+          "bps": 344,
+          "usdValue": 0.5733425051350862,
+          "swapInfo": {
+            "ammKey": "EEUNhHsRoUVgJUFpkupmdF4v7uLUw1zhYLp7u9s8zFqG",
+            "label": "GoonFi V2",
+            "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "outputMint": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+            "inAmount": "574146",
+            "outAmount": "574345"
+          }
+        },
+        {
+          "percent": 100,
+          "bps": 10000,
+          "usdValue": 0.5733425051350862,
+          "swapInfo": {
+            "ammKey": "3rwTTnqfEKEpKXr6Wg5uB18R3ezQFpDMerhsu2tzkXXj",
+            "label": "Flux",
+            "inputMint": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+            "outputMint": "So11111111111111111111111111111111111111112",
+            "inAmount": "574345",
+            "outAmount": "5653064"
+          }
+        },
+        {
+          "percent": 100,
+          "bps": 10000,
+          "usdValue": 0.5733425051350862,
+          "swapInfo": {
+            "ammKey": "A4D97SV1dfCffDo58FEJtZoYycqVTaGVZiDdLiZffDNK",
+            "label": "Whirlpool",
+            "inputMint": "So11111111111111111111111111111111111111112",
+            "outputMint": "Xs7ZdzSHLU9ftNJsii5fCeJhoRWSC32SQGzGQtePxNu",
+            "inAmount": "5653064",
+            "outAmount": "324247"
+          }
+        }
+      ],
+      "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "feeBps": 10,
+      "platformFee": {
+        "feeBps": 10,
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "signatureFeeLamports": 0,
+      "signatureFeePayer": null,
+      "prioritizationFeeLamports": 0,
+      "prioritizationFeePayer": null,
+      "rentFeeLamports": 0,
+      "rentFeePayer": null,
+      "transaction": null,
+      "gasless": false,
+      "jitOptimized": false,
+      "taker": null,
+      "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "outputMint": "Xs7ZdzSHLU9ftNJsii5fCeJhoRWSC32SQGzGQtePxNu",
+      "router": "metis",
+      "guaranteedPrice": false,
+      "requestId": "01a09edd-4e48-75cc-b1c2-b56b05cbf41e",
+      "inUsdValue": 16.666933288810647,
+      "outUsdValue": 16.461717403068,
+      "swapUsdValue": 16.666933288810647,
+      "priceImpact": -1.2312756173351822,
+      "mode": "ultra",
+      "totalTime": 230
+    },
+    "buy_COINx": {
+      "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "outputMint": "Xs7ZdzSHLU9ftNJsii5fCeJhoRWSC32SQGzGQtePxNu",
+      "inAmount": "16670000",
+      "outAmount": "9315682",
+      "otherAmountThreshold": "9315682",
+      "swapMode": "ExactIn",
+      "slippageBps": 0,
+      "priceImpactPct": "-0.021995915041597102",
+      "routePlan": [
+        {
+          "percent": 100,
+          "bps": 10000,
+          "usdValue": 16.666933288810647,
+          "swapInfo": {
+            "ammKey": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+            "label": "JupiterZ",
+            "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "outputMint": "Xs7ZdzSHLU9ftNJsii5fCeJhoRWSC32SQGzGQtePxNu",
+            "inAmount": "16670000",
+            "outAmount": "9315682"
+          }
+        }
+      ],
+      "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "feeBps": 101,
+      "transaction": "AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIADAAgPeXi8jgWsCEcg+wxYecoIHkA544829DOdX9pRDXNtshcKI/LW57XKxPlrnBnjR8pwJqlB8IMXoWShoopBSd7LSEXI3JBi2dJBMZphAj2S+1WthR0MglODA6ltaP8EgojhbWkz6aVHdbHA0ww78Z4u4ymxSXkI/LIpyt/5L51WPDmA/XqR+gqh01Eo5q61eLJmblZ7ouA3QECUs5r/IUbGY5eMz0tQK5Za5FicykAoHn4hBpNykqzyB2gy4cJ4cE0q0dGigEZT/CdaDcMEOjUSZqcGTtIuxs9nGyioDwDAQv8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMGRm/lIRcy/+ytunLDm+e8jOW7xfcSayxDmzpAAAAABt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKkG3fbh7nWP3hhCXbzkbM3athr8TYO5DSf+vfko2KGL/AfoFl9SVJE/EJ8rELI25643FYKHO3LpJvUyDP5hJqmSSlhJ+3Kju+kf3FsOalf2PFoctFsgZ6btDKzTY5XIoQKMlyWPTiSJ8bs9ECkUjg2DC1oTmdr/EIQEjnvY2+n4Wcb6evO+2606PWXzaqvJdDGxu+TC0vbg5HymAgNFL11hwGXfp5Ve6Id9GOTdG+MkHiFWLdu2q0q51G8nfAo325AECAAJA3ATAAAAAAAACAAFAkANAwANBgEDAgsHCgEBDAsCAAUEAwYOCQsKByWoYLejXAoooDBd/gAAAAAAYiWOAAAAAABppadqAAAAAGUAAAAAAA==",
+      "gasless": true,
+      "jitOptimized": false,
+      "signatureFeeLamports": 15000,
+      "signatureFeePayer": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+      "prioritizationFeeLamports": 996,
+      "prioritizationFeePayer": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+      "rentFeeLamports": 1488440,
+      "rentFeePayer": "gasTzr94Pmp4Gf8vknQnqxeYxdgwFjbgdJa4msYRpnB",
+      "requestId": "01a09edd-5147-7589-8d07-a9b0f42bd6b7",
+      "swapType": "rfq",
+      "router": "jupiterz",
+      "guaranteedPrice": true,
+      "quoteId": "0d22617c-d4f3-5cf4-bf61-3324776cc39d",
+      "maker": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+      "taker": "5hQmuDgjc8XZQDxL3u943GvamMkTfZXwF3iGL5Y3WrLg",
+      "expireAt": "1789371753",
+      "platformFee": {
+        "feeBps": 10,
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "inUsdValue": 16.666933288810647,
+      "outUsdValue": 16.300328840186,
+      "swapUsdValue": 16.666933288810647,
+      "priceImpact": -2.1995915041597103,
+      "mode": "ultra",
+      "totalTime": 299
+    },
+    "sell_COINx": {
+      "inputMint": "Xs7ZdzSHLU9ftNJsii5fCeJhoRWSC32SQGzGQtePxNu",
+      "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "inAmount": "9315682",
+      "outAmount": "16202842",
+      "otherAmountThreshold": "16202842",
+      "swapMode": "ExactIn",
+      "slippageBps": 0,
+      "priceImpactPct": "-0.0061635327255451285",
+      "routePlan": [
+        {
+          "percent": 100,
+          "bps": 10000,
+          "usdValue": 16.199861229942368,
+          "swapInfo": {
+            "ammKey": "2Cq2RNFFxxPXL7teNQAji1beA2vFbBDYW5BGPBFvoN9m",
+            "label": "JupiterZ",
+            "inputMint": "Xs7ZdzSHLU9ftNJsii5fCeJhoRWSC32SQGzGQtePxNu",
+            "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "inAmount": "9315682",
+            "outAmount": "16202842"
+          }
+        }
+      ],
+      "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "feeBps": 103,
+      "transaction": "AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIADAAgPEeNglbBROu1DVxtnSNyAvkSO5C1m02/NKKi13EqjLLAKI/LW57XKxPlrnBnjR8pwJqlB8IMXoWShoopBSd7LSEXI3JBi2dJBMZphAj2S+1WthR0MglODA6ltaP8EgojhIIXrbpwU22XtclJ081ReD6sW3OECcdV9R8my3SWCK4ttaTPppUd1scDTDDvxni7jKbFJeQj8sinK3/kvnVY8OZeMz0tQK5Za5FicykAoHn4hBpNykqzyB2gy4cJ4cE0qp2R8bdQuPkfgIpGPMXzyFpH6gGTkG/Pm4xrTEcye2oYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMGRm/lIRcy/+ytunLDm+e8jOW7xfcSayxDmzpAAAAABt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKkG3fbh7nWP3hhCXbzkbM3athr8TYO5DSf+vfko2KGL/AfoFl9SVJE/EJ8rELI25643FYKHO3LpJvUyDP5hJqmSSlhJ+3Kju+kf3FsOalf2PFoctFsgZ6btDKzTY5XIoQKMlyWPTiSJ8bs9ECkUjg2DC1oTmdr/EIQEjnvY2+n4Wcb6evO+2606PWXzaqvJdDGxu+TC0vbg5HymAgNFL11hJb4pMSNBaB3L6/vVSELCMs/j6bgKHPYXhz0g67XztaYECAAJA6YTAAAAAAAACAAFAkANAwANBgEFAg4HCQEBDAsCAAQGBQMLCg4JByWoYLejXAoooGIljgAAAAAAWjz3AAAAAABqpadqAAAAAGcAAAAAAA==",
+      "gasless": true,
+      "jitOptimized": false,
+      "signatureFeeLamports": 15000,
+      "signatureFeePayer": "2Cq2RNFFxxPXL7teNQAji1beA2vFbBDYW5BGPBFvoN9m",
+      "prioritizationFeeLamports": 1006,
+      "prioritizationFeePayer": "2Cq2RNFFxxPXL7teNQAji1beA2vFbBDYW5BGPBFvoN9m",
+      "rentFeeLamports": 1488440,
+      "rentFeePayer": "gasTzr94Pmp4Gf8vknQnqxeYxdgwFjbgdJa4msYRpnB",
+      "requestId": "01a09edd-5468-72a9-8306-856da643d47f",
+      "swapType": "rfq",
+      "router": "jupiterz",
+      "guaranteedPrice": true,
+      "quoteId": "8a440858-3a60-5317-93a2-cd7bd2b8f7b9",
+      "maker": "2Cq2RNFFxxPXL7teNQAji1beA2vFbBDYW5BGPBFvoN9m",
+      "taker": "5hQmuDgjc8XZQDxL3u943GvamMkTfZXwF3iGL5Y3WrLg",
+      "expireAt": "1789371754",
+      "platformFee": {
+        "feeBps": 10,
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "inUsdValue": 16.300328840186,
+      "outUsdValue": 16.199861229942368,
+      "swapUsdValue": 16.199861229942368,
+      "priceImpact": -0.6163532725545129,
+      "mode": "ultra",
+      "totalTime": 401
+    },
+    "preflight_buy_CRCLx": {
+      "swapType": "aggregator",
+      "inAmount": "16670000",
+      "outAmount": "18048603",
+      "otherAmountThreshold": "18048603",
+      "swapMode": "ExactIn",
+      "slippageBps": 0,
+      "priceImpactPct": "-0.015644939431401248",
+      "routePlan": [
+        {
+          "percent": 100,
+          "bps": 10000,
+          "usdValue": 16.666933288810647,
+          "swapInfo": {
+            "ammKey": "9PwXMVkFzWk5We1FUaQi8C1mp6YekUvuLsqHLY2vyJcf",
+            "label": "Riptide",
+            "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "outputMint": "XsueG8BtpquVJX9LVLLEGuViXUungE6WmK5YZ3p3bd1",
+            "inAmount": "16670000",
+            "outAmount": "18066669"
+          }
+        }
+      ],
+      "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "feeBps": 10,
+      "platformFee": {
+        "feeBps": 10,
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "signatureFeeLamports": 0,
+      "signatureFeePayer": null,
+      "prioritizationFeeLamports": 0,
+      "prioritizationFeePayer": null,
+      "rentFeeLamports": 0,
+      "rentFeePayer": null,
+      "transaction": null,
+      "gasless": false,
+      "jitOptimized": false,
+      "taker": null,
+      "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "outputMint": "XsueG8BtpquVJX9LVLLEGuViXUungE6WmK5YZ3p3bd1",
+      "router": "metis",
+      "guaranteedPrice": false,
+      "requestId": "01a09edd-5831-75d6-b818-2157d2f035f0",
+      "inUsdValue": 16.666933288810647,
+      "outUsdValue": 16.406180127,
+      "swapUsdValue": 16.666933288810647,
+      "priceImpact": -1.5644939431401248,
+      "mode": "ultra",
+      "totalTime": 236
+    },
+    "buy_CRCLx": {
+      "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "outputMint": "XsueG8BtpquVJX9LVLLEGuViXUungE6WmK5YZ3p3bd1",
+      "inAmount": "16670000",
+      "outAmount": "17883473",
+      "otherAmountThreshold": "17883473",
+      "swapMode": "ExactIn",
+      "slippageBps": 0,
+      "priceImpactPct": "-0.024650985558721483",
+      "routePlan": [
+        {
+          "percent": 100,
+          "bps": 10000,
+          "usdValue": 16.666933288810647,
+          "swapInfo": {
+            "ammKey": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+            "label": "JupiterZ",
+            "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "outputMint": "XsueG8BtpquVJX9LVLLEGuViXUungE6WmK5YZ3p3bd1",
+            "inAmount": "16670000",
+            "outAmount": "17883473"
+          }
+        }
+      ],
+      "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "feeBps": 101,
+      "transaction": "AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIADAAgPeXi8jgWsCEcg+wxYecoIHkA544829DOdX9pRDXNtshcKI/LW57XKxPlrnBnjR8pwJqlB8IMXoWShoopBSd7LSEXI3JBi2dJBMZphAj2S+1WthR0MglODA6ltaP8EgojhOI/daHusXqzxbMO7eHE5WZJ8LqfPSflxP3ziyFzQiEWA/XqR+gqh01Eo5q61eLJmblZ7ouA3QECUs5r/IUbGY5eMz0tQK5Za5FicykAoHn4hBpNykqzyB2gy4cJ4cE0qqyZSFNFduRgtgRvi+A9knJ1+qNmqY/deDXOj192VCREAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMGRm/lIRcy/+ytunLDm+e8jOW7xfcSayxDmzpAAAAABt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKkG3fbh7nWP3hhCXbzkbM3athr8TYO5DSf+vfko2KGL/Afo/FeK7Q/ddSPSr3MGA4mMIT7E/fcg1mbqJuhVXNnwSlhJ+3Kju+kf3FsOalf2PFoctFsgZ6btDKzTY5XIoQKMlyWPTiSJ8bs9ECkUjg2DC1oTmdr/EIQEjnvY2+n4Wcb6evO+2606PWXzaqvJdDGxu+TC0vbg5HymAgNFL11hdk8SQ+vLw4Fcg4JqJLzklynSfAJzKdK5x4kRTRd5lsEECAAJA84QAAAAAAAACAAFAkANAwANBgEDAgsHCgEBDAsCAAUEAwYOCQsKByWoYLejXAoooDBd/gAAAAAAUeEQAQAAAABrpadqAAAAAGUAAAAAAA==",
+      "gasless": true,
+      "jitOptimized": false,
+      "signatureFeeLamports": 15000,
+      "signatureFeePayer": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+      "prioritizationFeeLamports": 861,
+      "prioritizationFeePayer": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+      "rentFeeLamports": 1488440,
+      "rentFeePayer": "gasTzr94Pmp4Gf8vknQnqxeYxdgwFjbgdJa4msYRpnB",
+      "requestId": "01a09edd-5b13-7379-839e-7dff40364d4f",
+      "swapType": "rfq",
+      "router": "jupiterz",
+      "guaranteedPrice": true,
+      "quoteId": "8fc99f71-c7c9-5866-8ec9-8089798e2e41",
+      "maker": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+      "taker": "5hQmuDgjc8XZQDxL3u943GvamMkTfZXwF3iGL5Y3WrLg",
+      "expireAt": "1789371755",
+      "platformFee": {
+        "feeBps": 10,
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "inUsdValue": 16.666933288810647,
+      "outUsdValue": 16.256076957,
+      "swapUsdValue": 16.666933288810647,
+      "priceImpact": -2.465098555872148,
+      "mode": "ultra",
+      "totalTime": 311
+    },
+    "sell_CRCLx": {
+      "swapType": "aggregator",
+      "router": "metis",
+      "guaranteedPrice": false,
+      "requestId": "01a09edd-5e54-749c-9fec-32e8a3f3b8e5",
+      "inputMint": "XsueG8BtpquVJX9LVLLEGuViXUungE6WmK5YZ3p3bd1",
+      "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "inAmount": "17883473",
+      "outAmount": "16475391",
+      "otherAmountThreshold": "16310637",
+      "swapMode": "ExactIn",
+      "slippageBps": 100,
+      "priceImpactPct": "0.013304755741396817",
+      "routePlan": [
+        {
+          "percent": 5.26,
+          "bps": 526,
+          "usdValue": 0.8664461407458999,
+          "swapInfo": {
+            "ammKey": "5ThN8VGdJvRQUQcejyrGbe6KMpmuurgEw5q9J3L8qsK3",
+            "label": "Whirlpool",
+            "inputMint": "XsueG8BtpquVJX9LVLLEGuViXUungE6WmK5YZ3p3bd1",
+            "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "inAmount": "941073",
+            "outAmount": "867961"
+          }
+        },
+        {
+          "percent": 94.74,
+          "bps": 9474,
+          "usdValue": 15.605913949480335,
+          "swapInfo": {
+            "ammKey": "9BLPceGrgxKEHU7Qdz3r46vSpTzqqx7hmaeq9jgspCWh",
+            "label": "Scorch",
+            "inputMint": "XsueG8BtpquVJX9LVLLEGuViXUungE6WmK5YZ3p3bd1",
+            "outputMint": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+            "inAmount": "16942400",
+            "outAmount": "15627600"
+          }
+        },
+        {
+          "percent": 100,
+          "bps": 10000,
+          "usdValue": 15.605913949480335,
+          "swapInfo": {
+            "ammKey": "FJnaiidSLXFweWkgbinxEHRykVHsnkzDcYbNDR3RF5LN",
+            "label": "BisonFi",
+            "inputMint": "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
+            "outputMint": "So11111111111111111111111111111111111111112",
+            "inAmount": "15627600",
+            "outAmount": "153845736"
+          }
+        },
+        {
+          "percent": 91.01,
+          "bps": 9101,
+          "usdValue": 14.202942285422052,
+          "swapInfo": {
+            "ammKey": "F3ds62W3NNEBQrwi2ZFy2vX3xu5fxL6f7VMtRdmKjoCv",
+            "label": "Flux",
+            "inputMint": "So11111111111111111111111111111111111111112",
+            "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "inAmount": "140019146",
+            "outAmount": "14219693"
+          }
+        },
+        {
+          "percent": 8.99,
+          "bps": 899,
+          "usdValue": 1.402971664058282,
+          "swapInfo": {
+            "ammKey": "DbuvwPuLvH8uy2B1sKuu18aCd2QpCvfZdfDtdRZztBd2",
+            "label": "1DEX",
+            "inputMint": "So11111111111111111111111111111111111111112",
+            "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "inAmount": "13826590",
+            "outAmount": "1404229"
+          }
+        }
+      ],
+      "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "feeBps": 10,
+      "platformFee": {
+        "feeBps": 10,
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "taker": "5hQmuDgjc8XZQDxL3u943GvamMkTfZXwF3iGL5Y3WrLg",
+      "gasless": true,
+      "jitOptimized": false,
+      "signatureFeeLamports": 0,
+      "signatureFeePayer": null,
+      "prioritizationFeeLamports": 0,
+      "prioritizationFeePayer": null,
+      "rentFeeLamports": 0,
+      "rentFeePayer": null,
+      "transaction": "",
+      "errorCode": 1,
+      "errorMessage": "Insufficient funds",
+      "inUsdValue": 16.256076957,
+      "outUsdValue": 16.472360090226235,
+      "swapUsdValue": 16.472360090226235,
+      "priceImpact": 1.3304755741396816,
+      "mode": "ultra",
+      "error": "Insufficient funds",
+      "totalTime": 305
+    },
+    "preflight_buy_HOODx": {
+      "swapType": "aggregator",
+      "inAmount": "16670000",
+      "outAmount": "14847694",
+      "otherAmountThreshold": "14847694",
+      "swapMode": "ExactIn",
+      "slippageBps": 0,
+      "priceImpactPct": "0.0005997871243693102",
+      "routePlan": [
+        {
+          "percent": 9.34,
+          "bps": 934,
+          "usdValue": 1.5566915691749144,
+          "swapInfo": {
+            "ammKey": "3Z4H4H9bCcLyt1MmK44J5KZWkJ7taiU821QDTVZYaCpz",
+            "label": "Byreal",
+            "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "outputMint": "XsvNBAYkrDRNhA7wPHQfX3ZUXZyZLdnCQDfHZ56bzpg",
+            "inAmount": "1557391",
+            "outAmount": "1388518"
+          }
+        },
+        {
+          "percent": 90.66,
+          "bps": 9066,
+          "usdValue": 15.110241719635733,
+          "swapInfo": {
+            "ammKey": "48dhPm83sXfnRMxKRfv2YuE45DPqrhwPMvGrnTLufvFf",
+            "label": "Whirlpool",
+            "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "outputMint": "XsvNBAYkrDRNhA7wPHQfX3ZUXZyZLdnCQDfHZ56bzpg",
+            "inAmount": "15112609",
+            "outAmount": "13474038"
+          }
+        }
+      ],
+      "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "feeBps": 10,
+      "platformFee": {
+        "feeBps": 10,
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "signatureFeeLamports": 0,
+      "signatureFeePayer": null,
+      "prioritizationFeeLamports": 0,
+      "prioritizationFeePayer": null,
+      "rentFeeLamports": 0,
+      "rentFeePayer": null,
+      "transaction": null,
+      "gasless": false,
+      "jitOptimized": false,
+      "taker": null,
+      "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "outputMint": "XsvNBAYkrDRNhA7wPHQfX3ZUXZyZLdnCQDfHZ56bzpg",
+      "router": "metis",
+      "guaranteedPrice": false,
+      "requestId": "01a09edd-61ab-71f7-9a30-e6d9dbcb14ec",
+      "inUsdValue": 16.666933288810647,
+      "outUsdValue": 16.676929900799998,
+      "swapUsdValue": 16.666933288810647,
+      "priceImpact": 0.059978712436931016,
+      "mode": "ultra",
+      "totalTime": 404
+    },
+    "buy_HOODx": {
+      "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "outputMint": "XsvNBAYkrDRNhA7wPHQfX3ZUXZyZLdnCQDfHZ56bzpg",
+      "inAmount": "16670000",
+      "outAmount": "14692484",
+      "otherAmountThreshold": "14692484",
+      "swapMode": "ExactIn",
+      "slippageBps": 0,
+      "priceImpactPct": "-0.009859957867652562",
+      "routePlan": [
+        {
+          "percent": 100,
+          "bps": 10000,
+          "usdValue": 16.666933288810647,
+          "swapInfo": {
+            "ammKey": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+            "label": "JupiterZ",
+            "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "outputMint": "XsvNBAYkrDRNhA7wPHQfX3ZUXZyZLdnCQDfHZ56bzpg",
+            "inAmount": "16670000",
+            "outAmount": "14692484"
+          }
+        }
+      ],
+      "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "feeBps": 101,
+      "transaction": "AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIADAAgPeXi8jgWsCEcg+wxYecoIHkA544829DOdX9pRDXNtshcKI/LW57XKxPlrnBnjR8pwJqlB8IMXoWShoopBSd7LSEXI3JBi2dJBMZphAj2S+1WthR0MglODA6ltaP8EgojhgP16kfoKodNRKOautXiyZm5We6LgN0BAlLOa/yFGxmOXjM9LUCuWWuRYnMpAKB5+IQaTcpKs8gdoMuHCeHBNKph3+DzXXZVWSGtTgII4TWP1EtfnR5rMDt6zvmsidG/duKbeu/W6Mg7IauUn04HcaqdU+trbVx1dXSYsS/F+Q9sAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMGRm/lIRcy/+ytunLDm+e8jOW7xfcSayxDmzpAAAAABt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKkG3fbh7nWP3hhCXbzkbM3athr8TYO5DSf+vfko2KGL/Afo//LUhlqE7TjY14XKBMeJ3UyDSH1R0GsYdZgQ8vrxSlhJ+3Kju+kf3FsOalf2PFoctFsgZ6btDKzTY5XIoQKMlyWPTiSJ8bs9ECkUjg2DC1oTmdr/EIQEjnvY2+n4Wcb6evO+2606PWXzaqvJdDGxu+TC0vbg5HymAgNFL11hF4uAzDkx5SnUeP7XivJ1fyNGZcI0NL6mrdeIgMXft8YECAAJAx4XAAAAAAAACAAFAkANAwANBgEGAgsHCgEBDAsCAAQDBgUOCQsKByWoYLejXAoooDBd/gAAAAAAhDDgAAAAAABupadqAAAAAGUAAAAAAA==",
+      "gasless": true,
+      "jitOptimized": false,
+      "signatureFeeLamports": 15000,
+      "signatureFeePayer": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+      "prioritizationFeeLamports": 1184,
+      "prioritizationFeePayer": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+      "rentFeeLamports": 1488440,
+      "rentFeePayer": "gasTzr94Pmp4Gf8vknQnqxeYxdgwFjbgdJa4msYRpnB",
+      "requestId": "01a09edd-6554-76b3-989d-38c97ddbce0a",
+      "swapType": "rfq",
+      "router": "jupiterz",
+      "guaranteedPrice": true,
+      "quoteId": "e4dcd966-ef90-552e-8543-14fd5d14d8fa",
+      "maker": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+      "taker": "5hQmuDgjc8XZQDxL3u943GvamMkTfZXwF3iGL5Y3WrLg",
+      "expireAt": "1789371758",
+      "platformFee": {
+        "feeBps": 10,
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "inUsdValue": 16.666933288810647,
+      "outUsdValue": 16.502598028799998,
+      "swapUsdValue": 16.666933288810647,
+      "priceImpact": -0.9859957867652561,
+      "mode": "ultra",
+      "totalTime": 540
+    },
+    "sell_HOODx": {
+      "inputMint": "XsvNBAYkrDRNhA7wPHQfX3ZUXZyZLdnCQDfHZ56bzpg",
+      "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "inAmount": "14692484",
+      "outAmount": "16313626",
+      "otherAmountThreshold": "16313626",
+      "swapMode": "ExactIn",
+      "slippageBps": 0,
+      "priceImpactPct": "-0.011632906467118039",
+      "routePlan": [
+        {
+          "percent": 100,
+          "bps": 10000,
+          "usdValue": 16.31062484946652,
+          "swapInfo": {
+            "ammKey": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+            "label": "JupiterZ",
+            "inputMint": "XsvNBAYkrDRNhA7wPHQfX3ZUXZyZLdnCQDfHZ56bzpg",
+            "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+            "inAmount": "14692484",
+            "outAmount": "16313626"
+          }
+        }
+      ],
+      "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "feeBps": 102,
+      "transaction": "AwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIADAAgPeXi8jgWsCEcg+wxYecoIHkA544829DOdX9pRDXNtshcKI/LW57XKxPlrnBnjR8pwJqlB8IMXoWShoopBSd7LSEXI3JBi2dJBMZphAj2S+1WthR0MglODA6ltaP8EgojhgP16kfoKodNRKOautXiyZm5We6LgN0BAlLOa/yFGxmOXjM9LUCuWWuRYnMpAKB5+IQaTcpKs8gdoMuHCeHBNKph3+DzXXZVWSGtTgII4TWP1EtfnR5rMDt6zvmsidG/duKbeu/W6Mg7IauUn04HcaqdU+trbVx1dXSYsS/F+Q9sAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMGRm/lIRcy/+ytunLDm+e8jOW7xfcSayxDmzpAAAAABt324ddloZPZy+FGzut5rBy0he1fWzeROoz1hX7/AKkG3fbh7nWP3hhCXbzkbM3athr8TYO5DSf+vfko2KGL/Afo//LUhlqE7TjY14XKBMeJ3UyDSH1R0GsYdZgQ8vrxSlhJ+3Kju+kf3FsOalf2PFoctFsgZ6btDKzTY5XIoQKMlyWPTiSJ8bs9ECkUjg2DC1oTmdr/EIQEjnvY2+n4Wcb6evO+2606PWXzaqvJdDGxu+TC0vbg5HymAgNFL11hQgpr+3BBVpP43VoTOLipjZgQjR7duU5lsNE36qIZiJ0ECAAJA0IYAAAAAAAACAAFAkANAwANBgEEAg4HCQEBDAsCAAYFBAMLCg4JByWoYLejXAoooIQw4AAAAAAAGu34AAAAAABvpadqAAAAAGYAAAAAAA==",
+      "gasless": true,
+      "jitOptimized": false,
+      "signatureFeeLamports": 15000,
+      "signatureFeePayer": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+      "prioritizationFeeLamports": 1242,
+      "prioritizationFeePayer": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+      "rentFeeLamports": 1488440,
+      "rentFeePayer": "gasTzr94Pmp4Gf8vknQnqxeYxdgwFjbgdJa4msYRpnB",
+      "requestId": "01a09edd-696d-708d-80ed-32059dacf437",
+      "swapType": "rfq",
+      "router": "jupiterz",
+      "guaranteedPrice": true,
+      "quoteId": "d616085c-56a3-56d6-87b2-859b9e0bce5e",
+      "maker": "9BB7Tt5uE5VdRsxA5XRqrjwNaq8XtgAUQW8czA6ymUPG",
+      "taker": "5hQmuDgjc8XZQDxL3u943GvamMkTfZXwF3iGL5Y3WrLg",
+      "expireAt": "1789371759",
+      "platformFee": {
+        "feeBps": 10,
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "inUsdValue": 16.502598028799998,
+      "outUsdValue": 16.31062484946652,
+      "swapUsdValue": 16.31062484946652,
+      "priceImpact": -1.1632906467118038,
+      "mode": "ultra",
+      "totalTime": 311
+    }
+  }
+}
