@@ -30,8 +30,17 @@ export async function POST(request: Request) {
   }
 
   try {
-    return NextResponse.json({ verdict: verifyUserSignature({ unsignedB64, signedB64, wallet }) });
+    const verdict = verifyUserSignature({ unsignedB64, signedB64, wallet });
+    // A 200 here means the check ran, not that it passed. Log which, so a run leaves
+    // evidence behind rather than only a status code.
+    console.log(
+      verdict.ok
+        ? `[signing-check] PASS wallet=${wallet} slot=${verdict.signerIndex} derivable=${verdict.signatureDerivable} takerSig=${verdict.takerSignature}`
+        : `[signing-check] FAIL wallet=${wallet} code=${verdict.code} ${verdict.message}`,
+    );
+    return NextResponse.json({ verdict });
   } catch (error) {
+    console.log(`[signing-check] ERROR wallet=${wallet} ${(error as Error).message}`);
     return NextResponse.json({ error: (error as Error).message }, { status: 400 });
   }
 }
