@@ -17,7 +17,8 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx src/server/db/seed.ts",
-    "assets:verify": "tsx src/server/assets/verify.ts"
+    "assets:verify": "tsx src/server/assets/verify.ts",
+    "content:publish": "tsx src/server/content/seed.ts"
   },
   "dependencies": {
     "@solana/web3.js": "1.98.4",

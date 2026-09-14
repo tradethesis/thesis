@@ -1,0 +1,190 @@
+/*
+ * Explore. Shares every token with the landing page — the design system lives in
+ * landing.css and this only adds the catalogue layout.
+ *
+ * PRD Screen A is deliberately plain: three claims, what expresses each one, and one way
+ * in. No performance ranking, because there is no comparable history and a ranking would
+ * invent one.
+ */
+
+.ex-head {
+  padding-block: clamp(2.5rem, 7vw, 4.5rem) clamp(1.75rem, 4vw, 2.5rem);
+}
+
+.ex-question {
+  font-size: clamp(1.875rem, 5.5vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.028em;
+  font-weight: 620;
+  margin: 0 0 0.75rem;
+  max-width: 18ch;
+}
+
+.ex-sub {
+  color: var(--ln-ink-2);
+  max-width: 56ch;
+  margin: 0;
+}
+
+.ex-list {
+  display: grid;
+  gap: 1.25rem;
+  padding-bottom: clamp(2rem, 5vw, 3rem);
+}
+
+@media (min-width: 900px) {
+  .ex-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    /* Stretch, not start: three claims of different lengths should still line their
+       holdings up with each other, so the baskets can be compared at a glance. */
+    align-items: stretch;
+  }
+}
+
+.ex-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--ln-surface);
+  border: 1px solid var(--ln-line);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: border-color 140ms ease;
+}
+
+.ex-card:hover,
+.ex-card:focus-within {
+  border-color: var(--ln-line-strong);
+}
+
+.ex-card-meta {
+  display: flex;
+  white-space: nowrap;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.85rem;
+  padding: 0.7rem 1.25rem;
+  border-bottom: 1px solid var(--ln-line);
+  background: var(--ln-surface-sunken);
+  font-size: 0.8125rem;
+  color: var(--ln-ink-3);
+}
+
+.ex-card-body {
+  padding: 1.35rem 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  flex: 1;
+}
+
+.ex-claim {
+  font-size: 1.375rem;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  margin: 0;
+}
+
+@media (min-width: 900px) {
+  /* Two lines of claim on every card, so the summaries start at the same height. */
+  .ex-claim {
+    min-height: 3.24em;
+  }
+}
+
+.ex-claim a {
+  color: inherit;
+}
+
+.ex-claim a:hover {
+  text-decoration: none;
+}
+
+/* The card is the target; the link inside still carries the accessible name. */
+.ex-claim a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.ex-summary {
+  color: var(--ln-ink-2);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+.ex-holdings {
+  list-style: none;
+  margin: 0.15rem 0 0;
+  padding: 0;
+  border-top: 1px solid var(--ln-line);
+}
+
+.ex-holding {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--ln-line);
+  font-size: 0.875rem;
+}
+
+.ex-holding:last-child {
+  border-bottom: 0;
+}
+
+.ex-ticker {
+  font-family: var(--ln-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  min-width: 4.25rem;
+}
+
+.ex-company {
+  color: var(--ln-ink-2);
+  flex: 1;
+  min-width: 0;
+}
+
+.ex-role {
+  color: var(--ln-ink-3);
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.ex-foot {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 44px;
+}
+
+.ex-open {
+  font-weight: 550;
+  color: var(--ln-accent);
+  font-size: 0.9375rem;
+}
+
+.ex-weights {
+  font-family: var(--ln-mono);
+  font-size: 0.8125rem;
+  color: var(--ln-ink-3);
+}
+
+.ex-empty {
+  border: 1px dashed var(--ln-line-strong);
+  border-radius: 14px;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  color: var(--ln-ink-2);
+}
+
+.ex-note {
+  color: var(--ln-ink-3);
+  font-size: 0.875rem;
+  max-width: 64ch;
+  padding-bottom: clamp(3rem, 8vw, 5rem);
+}

@@ -82,9 +82,9 @@ export const EQUITY_ASSETS: AllowlistEntry[] = [
   xstock("AMZNx", "Amazon.com", "AMZN", "Xs3eBt7uRfJX8QUs4suhyU8p2M6DoUDrJyWBa8LLZsg"),
   xstock("NVDAx", "NVIDIA", "NVDA", "Xsc9qvGR1efVDFGLrVsmkzv3qi45LTBjeUKSPmx9qEh"),
   xstock("MSFTx", "Microsoft", "MSFT", "XspzcW1PRtgf6Wj92HCiZdjzKCyFekVD8P5Ueh3dRMX"),
+  xstock("PLTRx", "Palantir Technologies", "PLTR", "XsoBhf2ufR8fTyNSjqfU71DYGaE6Z3SUGAidpzriAA4"),
   // Verified mints held in reserve — not listed in a thesis yet.
   xstock("AAPLx", "Apple", "AAPL", "XsbEhLAtcf6HdfpFZ5xEMdqW8nfAvcsP5bdudRLJzJp", false),
-  xstock("PLTRx", "Palantir Technologies", "PLTR", "XsoBhf2ufR8fTyNSjqfU71DYGaE6Z3SUGAidpzriAA4", false),
   xstock("SPYx", "S&P 500 ETF", "SPY", "XsoCS1TfEyfFhfvj8EtZ528L3CaKBDBRqRapnBbDF2W", false),
   xstock("TSLAx", "Tesla", "TSLA", "XsDoVfqeBukxuZHWhdvWHBhgEHjGNst4MLodqsJHzoB", false),
 ];
