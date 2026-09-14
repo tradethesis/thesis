@@ -55,7 +55,7 @@ export default function DebugPage() {
     setSignedB64(null);
     setVerdict(null);
     try {
-      const res = await fetch(`/api/debug/order?wallet=${wallet}&symbol=${symbol}&usd=${usd}`);
+      const res = await fetch(`/api/signing-check/order?wallet=${wallet}&symbol=${symbol}&usd=${usd}`);
       const data = (await res.json()) as OrderResponse;
       if (!res.ok) throw new Error(data.error ?? "order failed");
       setOrder(data);
@@ -74,7 +74,7 @@ export default function DebugPage() {
     try {
       const signed = await signWithPhantom(order.unsignedB64, provider);
       setSignedB64(signed);
-      const res = await fetch("/api/debug/verify", {
+      const res = await fetch("/api/signing-check/verify", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ unsignedB64: order.unsignedB64, signedB64: signed, wallet }),
