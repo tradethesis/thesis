@@ -15,10 +15,18 @@ const eslintConfig = [
     ignores: [
       "node_modules/**",
       ".next/**",
+      // Isolated build output, so a production build can run while a dev server holds .next.
+      ".next-build/**",
       "out/**",
       "build/**",
+      "output/**",
       "next-env.d.ts",
     ],
+  },
+  {
+    // Browser checks run under plain node, not the bundler, so require() is correct here.
+    files: ["**/*.cjs"],
+    rules: { "@typescript-eslint/no-require-imports": "off" },
   },
 ];
 

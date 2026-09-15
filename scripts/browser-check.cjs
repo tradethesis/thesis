@@ -8,7 +8,6 @@
  *   BASE=http://localhost:3100 node scripts/browser-check.cjs
  */
 const { chromium } = require("/Users/limon/figma-export/node_modules/playwright");
-const assert = require("node:assert/strict");
 const fs = require("node:fs");
 
 const BASE = process.env.BASE || "http://localhost:3100";
