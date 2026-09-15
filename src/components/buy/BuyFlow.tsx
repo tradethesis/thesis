@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Check, CircleAlert, Loader2, Wallet } from "lucide-react";
 import { MAX_WEIGHT_BPS, MIN_WEIGHT_BPS } from "@/lib/money/allocate";
@@ -38,6 +38,7 @@ type Leg = {
 
 type Intent = {
   id: string;
+  thesisVersionId: string;
   status: string;
   executionMode: "live" | "simulation";
   budgetRaw: string;
@@ -52,10 +53,16 @@ const MIN_W = MIN_WEIGHT_BPS / 100;
 const MAX_W = MAX_WEIGHT_BPS / 100;
 const MIN_USD = Number(MIN_BASKET_RAW) / 1e6;
 
+class ApiError extends Error {
+  constructor(message: string, readonly code?: string, readonly detail?: Record<string, unknown>) {
+    super(message);
+  }
+}
+
 async function api<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(path, { ...init, headers: { "content-type": "application/json", ...(init?.headers ?? {}) } });
   const body = await res.json().catch(() => null);
-  if (!res.ok) throw new Error(body?.error?.message ?? `request failed (${res.status})`);
+  if (!res.ok) throw new ApiError(body?.error?.message ?? `request failed (${res.status})`, body?.error?.code, body?.error?.detail);
   return body as T;
 }
 
@@ -65,27 +72,55 @@ function tokens(raw: string | null, decimals: number): string {
   return v.toLocaleString("en-US", { maximumFractionDigits: 6 });
 }
 
-export function BuyFlow({ slug, claim, holdings }: { slug: string; claim: string; holdings: Holding[] }) {
+export function BuyFlow({ slug, claim, holdings, versionId, initialWeights, callStatement, initialNotice }: { slug: string; claim: string; holdings: Holding[]; versionId: string; initialWeights?: number[]; callStatement?: string; initialNotice?: string }) {
   const w = useWallet();
   const [budget, setBudget] = useState(Number(DEFAULT_BASKET_RAW) / 1e6);
-  const [weights, setWeights] = useState(holdings.map((h) => h.weightBps / 100));
+  const [weights, setWeights] = useState(initialWeights ?? holdings.map((h) => h.weightBps / 100));
   const [intent, setIntent] = useState<Intent | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
+  const [notice, setNotice] = useState<string | null>(initialNotice ?? null);
+  const [restoring, setRestoring] = useState(false);
+  const [inProgressId, setInProgressId] = useState<string | null>(null);
 
   const authorWeights = useMemo(() => holdings.map((h) => h.weightBps / 100), [holdings]);
   const total = weights.reduce((a, b) => a + b, 0);
   const remainder = 100 - total;
   const edited = weights.some((x, i) => x !== authorWeights[i]);
-  const budgetRaw = BigInt(Math.round(budget * 1e6));
+  const validBudget = Number.isFinite(budget) && budget >= 0 && budget <= 1_000_000;
+  const budgetRaw = validBudget ? BigInt(Math.round(budget * 1e6)) : 0n;
   const costRaw = weights.reduce(
     (sum, weight) => sum + estimateLegCost((budgetRaw * BigInt(weight)) / 100n).estimatedCostRaw,
     0n,
   );
 
   const belowMin = budget < MIN_USD;
-  const canReview = w.wallet !== null && total === 100 && !belowMin;
+  const canReview = w.wallet !== null && total === 100 && !belowMin && validBudget && !restoring;
+
+  // The server still authorizes every read. This key only restores the user's own progress.
+  const storageKey = w.wallet ? "thesis.buy." + w.wallet + "." + slug : null;
+  useEffect(() => {
+    if (!storageKey) return;
+    let active = true;
+    let id: string | null = null;
+    try { id = localStorage.getItem(storageKey); } catch {}
+    if (!id) return;
+    setRestoring(true);
+    api<Intent>(`/api/intents/${id}`).then(next => {
+      if (active && next.thesisVersionId === versionId && next.status !== "cancelled") setIntent(next);
+    }).catch(() => {}).finally(() => { if (active) setRestoring(false); });
+    return () => { active = false; };
+  }, [storageKey, versionId]);
+  useEffect(() => {
+    if (!storageKey || !intent) return;
+    try { localStorage.setItem(storageKey, intent.id); } catch {}
+  }, [intent, storageKey]);
+  useEffect(() => {
+    if (!intent || !["executing", "needs_reconciliation"].includes(intent.status) || busy) return;
+    let active = true;
+    const timer = setInterval(() => { api<Intent>(`/api/intents/${intent.id}`).then(next => { if (active) setIntent(next); }).catch(() => {}); }, 5000);
+    return () => { active = false; clearInterval(timer); };
+  }, [intent, busy]);
 
   const refresh = useCallback(async (id: string) => {
     const next = await api<Intent>(`/api/intents/${id}`);
@@ -101,18 +136,24 @@ export function BuyFlow({ slug, claim, holdings }: { slug: string; claim: string
         method: "POST",
         body: JSON.stringify({
           slug,
+          versionId,
           budgetUsdc: budget,
           idempotencyKey: crypto.randomUUID(),
           weights: holdings.map((h, i) => ({ symbol: h.symbol, weightBps: Math.round(weights[i] * 100) })),
         }),
       });
+      setIntent(created);
       setIntent(await api<Intent>(`/api/intents/${created.id}/quote`, { method: "POST" }));
     } catch (e) {
+      // A basket already in progress is a dead end unless we offer the way back to it.
+      if (e instanceof ApiError && e.code === "basket_in_progress") {
+        setInProgressId(typeof e.detail?.intentId === "string" ? e.detail.intentId : null);
+      }
       setError((e as Error).message);
     } finally {
       setBusy(null);
     }
-  }, [slug, budget, weights, holdings]);
+  }, [slug, budget, weights, holdings, versionId]);
 
   /** Legs run one at a time. Three approvals is the PRD's deliberate choice, not an accident. */
   const buy = useCallback(async () => {
@@ -148,7 +189,8 @@ export function BuyFlow({ slug, claim, holdings }: { slug: string; claim: string
           method: "POST",
           body: JSON.stringify({ signedTransaction: signed }),
         });
-        await refresh(intent.id);
+        const next = await refresh(intent.id);
+        if (next.frozen.frozen || next.legs.find(l => l.id === leg.id)?.status !== "confirmed") break;
       } catch (e) {
         setError((e as Error).message);
         await refresh(intent.id).catch(() => {});
@@ -323,8 +365,10 @@ export function BuyFlow({ slug, claim, holdings }: { slug: string; claim: string
 
   return (
     <div className="by-panel">
-      <h2 className="by-h2">How much, and how split?</h2>
+      <h1 className="by-h2">Back this thesis.</h1>
       <p className="by-claim">{claim}</p>
+      {callStatement && <div className="by-call-context"><strong>The creator’s call</strong><p>{callStatement}</p><small>Your investment starts at your own entry price. The deadline does not sell your holdings.</small></div>}
+      {notice && <p className="by-notice" role="status">{notice}</p>}
 
       <label className="by-budget">
         <span>Amount in USDC</span>
@@ -332,6 +376,7 @@ export function BuyFlow({ slug, claim, holdings }: { slug: string; claim: string
           type="number"
           inputMode="decimal"
           min={MIN_USD}
+          max={1_000_000}
           step={25}
           value={budget}
           onChange={(e) => setBudget(Number(e.target.value))}
@@ -342,6 +387,7 @@ export function BuyFlow({ slug, claim, holdings }: { slug: string; claim: string
           The minimum is ${MIN_USD}. Below that, fees are a large share of what you put in.
         </p>
       )}
+      {!validBudget && <p className="by-error" role="alert">Enter an amount between $75 and $1,000,000.</p>}
 
       <ul className="by-weights">
         {holdings.map((h, i) => {
@@ -407,7 +453,7 @@ export function BuyFlow({ slug, claim, holdings }: { slug: string; claim: string
         <div className="by-actions">
           <button className="ln-btn ln-btn--ink" onClick={review} disabled={!canReview || busy !== null}>
             {busy === "quoting" ? <Loader2 size={16} className="by-spin" aria-hidden="true" /> : null}
-            Price this basket
+            {restoring ? "Restoring your basket…" : "Review whole basket"}
           </button>
           <span className="by-connected">
             <Check size={13} aria-hidden="true" />
@@ -421,6 +467,24 @@ export function BuyFlow({ slug, claim, holdings }: { slug: string; claim: string
         <p className="by-error">
           <CircleAlert size={14} aria-hidden="true" /> {error ?? w.error}
         </p>
+      )}
+      {inProgressId && (
+        <div className="by-actions">
+          <button
+            className="ln-btn ln-btn--secondary"
+            onClick={async () => {
+              setError(null);
+              setInProgressId(null);
+              try {
+                setIntent(await api<Intent>(`/api/intents/${inProgressId}`));
+              } catch (e) {
+                setError((e as Error).message);
+              }
+            }}
+          >
+            Open the basket I already have
+          </button>
+        </div>
       )}
     </div>
   );

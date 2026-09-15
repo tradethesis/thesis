@@ -2,6 +2,7 @@ import { asc, desc, eq } from "drizzle-orm";
 import { db } from "../db/client";
 import { asset, thesis, thesisConstituent, thesisVersion } from "../db/schema";
 import type { EvidenceLink } from "./evidence";
+import { sourcePostFromEvidence, type SourcePost } from "@/lib/source-post";
 
 /**
  * Reads for the public catalogue. No wallet, no session — PRD TH-01: a visitor opens every
@@ -16,6 +17,16 @@ export type ThesisCardHolding = {
 };
 
 export type ThesisCard = {
+  versionId: string;
+  /**
+   * The post that prompted this thesis, read out of the published evidence snapshot.
+   *
+   * Deliberately not looked up from the seed files at render time: the seeds are mutable
+   * and the snapshot is not, so attribution shown next to a basket is the attribution that
+   * was published with it.
+   */
+  sourcePost: SourcePost | null;
+  authorHandle: string | null;
   slug: string;
   title: string;
   claim: string;
@@ -39,6 +50,7 @@ export async function listPublishedTheses(): Promise<ThesisCard[]> {
       title: thesis.title,
       category: thesis.category,
       authorName: thesis.authorName,
+      authorHandle: thesis.authorHandle,
       versionId: thesisVersion.id,
       versionNumber: thesisVersion.versionNumber,
       claim: thesisVersion.claim,
@@ -71,6 +83,9 @@ export async function listPublishedTheses(): Promise<ThesisCard[]> {
     const evidence = (Array.isArray(row.evidence) ? row.evidence : []) as EvidenceLink[];
 
     cards.push({
+      versionId: row.versionId,
+      sourcePost: sourcePostFromEvidence(row.evidence),
+      authorHandle: row.authorHandle,
       slug: row.slug,
       title: row.title,
       claim: row.claim,

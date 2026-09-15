@@ -8,9 +8,9 @@ export function Hero() {
   return (
     <section className="ws-hero">
       <div className="ln-container ws-intro">
-        <p className="ln-hero-kicker"><span aria-hidden="true" /> A world of ideas. A basket of stocks.</p>
+        <p className="ln-hero-kicker"><span aria-hidden="true" /> Real takes. Real exposure. A finish line.</p>
         <h1>Buy what<br className="ws-mobile-break" /> you <span>believe.</span></h1>
-        <p className="ws-lead">The future doesn’t come with a ticker.<br className="ln-hide-sm" /> Find an idea you believe in. Own the businesses behind it.</p>
+        <p className="ws-lead">Find a creator’s take on what happens next.<br className="ln-hide-sm" /> Buy the basket. Follow the call.</p>
         <div className="ln-cta-row">
           <Link href="/explore" className="ln-btn ln-btn--primary">Find your thesis <ArrowRight size={17} aria-hidden="true" /></Link>
           <a href="#allocation-preview" className="ln-text-link">Try a basket <SlidersHorizontal size={15} aria-hidden="true" /></a>

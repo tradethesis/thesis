@@ -1,6 +1,6 @@
-import { and, asc, eq, inArray, sql as raw } from "drizzle-orm";
+import { and, asc, eq, inArray, isNotNull, sql as raw } from "drizzle-orm";
 import { db } from "../db/client";
-import { asset, fill, investmentIntent, position, positionHolding, swapLeg, thesis, thesisConstituent, thesisVersion } from "../db/schema";
+import { asset, fill, investmentIntent, swapLeg, thesis, thesisConstituent, thesisVersion } from "../db/schema";
 import { assetByMint, QUOTE_ASSET, USDC_MINT } from "../assets/allowlist";
 import { allocate, validateAllocation, type WeightedLeg } from "@/lib/money/allocate";
 import { MIN_BASKET_RAW, estimateBasketCost } from "@/lib/money/cost";
@@ -36,7 +36,12 @@ import { executionModeForWallet } from "../env";
  */
 
 export class IntentError extends Error {
-  constructor(readonly code: string, message: string) {
+  constructor(
+    readonly code: string,
+    message: string,
+    /** Anything the UI needs to offer a way out, such as the basket already in progress. */
+    readonly detail?: Record<string, unknown>,
+  ) {
     super(message);
     this.name = "IntentError";
   }
@@ -51,6 +56,7 @@ function fail(code: string, message: string): never {
 export type CreateIntentInput = {
   wallet: string;
   slug: string;
+  versionId?: string;
   budgetRaw: bigint;
   /** Symbol -> weight in basis points, as the user confirmed them. */
   weights: { symbol: string; weightBps: number }[];
@@ -75,12 +81,49 @@ export async function createIntent(input: CreateIntentInput) {
     return getIntent(existing.id, input.wallet);
   }
 
+  // PRD §5 allows one open position per wallet, and a partial unique index enforces it.
+  // An abandoned draft must not block a new basket, but one with money in it must: a
+  // half-filled basket is a position, and starting a second would lose track of the first.
+  const open = await db
+    .select({ id: investmentIntent.id, status: investmentIntent.status })
+    .from(investmentIntent)
+    .where(
+      and(
+        eq(investmentIntent.wallet, input.wallet),
+        inArray(investmentIntent.status, ["draft", "quoting", "ready", "executing", "partial", "needs_reconciliation"]),
+      ),
+    );
+
+  for (const prior of open) {
+    const legs = await loadLegs(prior.id);
+    const statuses = legs.map((l) => l.status as LegStatus);
+    const spent = statuses.some((st) => st === "confirmed");
+    const inFlight = statuses.some((st) => st === "submitted" || st === "unknown" || st === "awaiting_signature");
+
+    if (spent || inFlight) {
+      throw new IntentError(
+        "basket_in_progress",
+        inFlight
+          ? "You have a basket part-way through. Finish or resolve it before starting another."
+          : "You already hold a basket from an earlier purchase. Close it before starting another.",
+        { intentId: prior.id },
+      );
+    }
+    // Nothing was signed and nothing filled, so this was abandoned at the review screen.
+    // Retiring it is not destructive; it never touched the chain.
+    await db.transaction(async (tx) => {
+      await tx.update(swapLeg).set({ status: "cancelled", resolvedAt: new Date(), updatedAt: new Date() }).where(eq(swapLeg.intentId, prior.id));
+      await tx.update(investmentIntent).set({ status: "cancelled", updatedAt: new Date() }).where(eq(investmentIntent.id, prior.id));
+    });
+  }
+
   const [version] = await db
     .select({ id: thesisVersion.id, number: thesisVersion.versionNumber, claim: thesisVersion.claim })
     .from(thesis)
     .innerJoin(thesisVersion, eq(thesis.currentVersionId, thesisVersion.id))
-    .where(eq(thesis.slug, input.slug));
+    .where(and(eq(thesis.slug, input.slug), eq(thesis.status, "published"), isNotNull(thesisVersion.publishedAt)));
   if (!version) fail("unknown_thesis", "That thesis is not published.");
+  if (input.versionId && version.id !== input.versionId) fail("version_changed", "A new thesis version was published. Reload and review its holdings before buying.");
 
   const constituents = await db
     .select({
@@ -110,6 +153,8 @@ export async function createIntent(input: CreateIntentInput) {
 
   // Weights: the user's if supplied and valid, otherwise the author's.
   const bySymbol = new Map(input.weights.map((w) => [w.symbol, w.weightBps]));
+  if (bySymbol.size !== input.weights.length || input.weights.some(w => !constituents.some(c => c.symbol === w.symbol)) ||
+    input.weights.length !== 0 && input.weights.length !== constituents.length) fail("invalid_weights", "Provide each basket holding exactly once.");
   const legs: WeightedLeg[] = constituents.map((c) => ({
     assetId: c.symbol,
     positionIndex: c.position,
@@ -329,6 +374,7 @@ export async function getIntent(intentId: string, wallet: string, options: { rec
 
   return {
     id: intent.id,
+    thesisVersionId: intent.thesisVersionId,
     wallet: intent.wallet,
     status: derived,
     executionMode: intent.executionMode,

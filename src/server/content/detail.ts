@@ -3,6 +3,7 @@ import { and, asc, desc, eq, isNotNull } from "drizzle-orm";
 import { db } from "../db/client";
 import { asset, thesis, thesisConstituent, thesisUpdate, thesisVersion } from "../db/schema";
 import type { EvidenceLink } from "./evidence";
+import { sourcePostFromEvidence } from "@/lib/source-post";
 
 /** Public, read-only detail. Render the published snapshot, never the editable seed. */
 export const getPublishedThesis = cache(async (slug: string) => {
@@ -51,7 +52,7 @@ export const getPublishedThesis = cache(async (slug: string) => {
     return typeof e.url === "string" && /^https?:\/\//.test(e.url)
       && typeof e.title === "string" && typeof e.source === "string" && typeof e.relevance === "string";
   });
-  return { ...row, holdings, evidence };
+  return { ...row, holdings, evidence, sourcePost: sourcePostFromEvidence(row.evidence) };
 });
 
 export type VersionRecord = {

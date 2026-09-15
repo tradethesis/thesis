@@ -39,6 +39,7 @@
 .td-disclosure { padding-top: 24px; border-top: 1px solid var(--ln-line); color: var(--ln-ink-3); font-size: 12px; }
 .td-disclosure p + p { margin-top: 12px; }
 .td-sidebar { position: sticky; top: 28px; }
+.ln-alloc .td-buy { margin: 20px 0 0; width: 100%; }
 .td-allocation-jump { display: none; }
 .td-mobile-dock { display: none; }
 #thesis-allocation { scroll-margin-top: 24px; }

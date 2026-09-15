@@ -15,6 +15,7 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
+import type { CallHolding, CallSnapshot } from "@/lib/calls";
 
 /**
  * Every on-chain quantity is numeric(39,0), not bigint: a u64 maxes at 1.8e19 and
@@ -28,6 +29,25 @@ const rawAmount = (name: string) => numeric(name, { precision: 39, scale: 0 });
 
 const createdAt = timestamp("created_at", { withTimezone: true }).notNull().defaultNow();
 const updatedAt = timestamp("updated_at", { withTimezone: true }).notNull().defaultNow();
+
+/** A separate, immutable prediction contract attached to one published research version. */
+export const thesisCall = pgTable("thesis_call", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  versionId: uuid("version_id").notNull().references(() => thesisVersion.id),
+  statement: text("statement").notNull(),
+  benchmark: text("benchmark").notNull(),
+  durationDays: smallint("duration_days").notNull(),
+  rules: text("rules").notNull(),
+  holdings: jsonb("holdings").$type<CallHolding[]>().notNull(),
+  benchmarkHolding: jsonb("benchmark_holding").$type<CallHolding>().notNull(),
+  startsAt: timestamp("starts_at", { withTimezone: true }).notNull(),
+  endsAt: timestamp("ends_at", { withTimezone: true }).notNull(),
+  startSnapshot: jsonb("start_snapshot").$type<CallSnapshot>().notNull(),
+  latestSnapshot: jsonb("latest_snapshot").$type<CallSnapshot>().notNull(),
+  status: text("status").notNull().default("open"),
+  lastError: text("last_error"),
+  updatedAt,
+}, t => [uniqueIndex("thesis_call_version_key").on(t.versionId)]);
 
 /* ------------------------------------------------------------------ assets */
 

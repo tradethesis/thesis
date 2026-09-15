@@ -1,18 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, CalendarDays } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, BookOpen, CalendarDays } from "lucide-react";
 import { SiteHeader } from "@/components/landing/SiteHeader";
 import { SiteFooter } from "@/components/landing/SiteFooter";
 import { AllocationPreview } from "@/components/landing/AllocationPreview";
 import { MobileBasketBar } from "@/components/landing/MobileBasketBar";
 import { SaveThesis } from "@/components/landing/SaveThesis";
 import { ThesisArtwork } from "@/components/landing/ThesisArtwork";
+import { SourcePost } from "@/components/calls/SourcePost";
 import { getPublishedThesis, getUpdates, getVersionHistory } from "@/server/content/detail";
 import { listPublishedTheses } from "@/server/content/queries";
 import { bpsToPercentLabel } from "@/lib/money/allocate";
 import "../../landing.css";
 import "./thesis.css";
+import "../../calls.css";
+import { CallPanel } from "@/components/calls/CallPanel";
+import { getCalls } from "@/server/calls/service";
 
 export const revalidate = 60;
 
@@ -40,7 +44,8 @@ export default async function ThesisPage({ params }: Props) {
   const slug = (await params).slug;
   const t = await getPublishedThesis(slug);
   if (!t) notFound();
-  const [versions, updates] = await Promise.all([getVersionHistory(slug), getUpdates(slug)]);
+  const [versions, updates, calls] = await Promise.all([getVersionHistory(slug), getUpdates(slug), getCalls()]);
+  const call = calls.find(c => c.versionId === t.versionId) ?? null;
   const fmtDate = (d: Date) =>
     d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
   const previewHoldings = t.holdings.map(h => ({
@@ -67,6 +72,8 @@ export default async function ThesisPage({ params }: Props) {
               <SaveThesis slug={t.slug} title={t.claim} />
             </div>
             <ThesisArtwork category={t.category} className="td-art" />
+            {t.sourcePost ? <SourcePost post={t.sourcePost} /> : null}
+            <CallPanel call={call} />
             <section className="td-section" aria-labelledby="argument-heading"><p className="ln-eyebrow">The argument</p><h2 id="argument-heading">Why this idea. Why these businesses.</h2><p>{t.rationale}</p></section>
             <section className="td-section" aria-labelledby="holdings-heading">
               <h2 id="holdings-heading">Inside the basket</h2>
@@ -134,7 +141,7 @@ export default async function ThesisPage({ params }: Props) {
             <div className="td-disclosure"><p>{t.authorDisclosure}</p><p>Tracking begins at publication. This thesis has no established performance history. Tokenized stocks carry issuer and market risk.</p></div>
           </article>
           <aside className="td-sidebar" id="thesis-allocation" aria-label="Basket allocation preview">
-            <div className="td-basket"><div className="td-basket-head"><span className="ln-eyebrow">Make it yours</span><h2>Your take on the thesis.</h2><p>Adjust the weights to reflect your conviction.</p></div><AllocationPreview holdings={previewHoldings} version={t.versionNumber} /><Link href={`/buy/${t.slug}`} className="ln-btn ln-btn--ink td-buy">Build this basket<ArrowRight size={16} aria-hidden="true" /></Link><div className="td-availability"><p>The editor above is a preview. Amounts, live prices and every cost are shown for review before anything is signed.</p></div></div>
+            <div className="td-basket"><div className="td-basket-head"><span className="ln-eyebrow">Make it yours</span><h2>Your take on the thesis.</h2><p>Adjust the weights to reflect your conviction.</p></div><AllocationPreview holdings={previewHoldings} version={t.versionNumber} buyHref={`/buy/${t.slug}`} versionId={t.versionId} /><div className="td-availability"><p>The editor above is a preview. Amounts, live prices and every cost are shown for review before anything is signed.</p></div></div>
             <p className="td-sidebar-note">You choose the allocation. A new author version never changes your holdings automatically.</p>
           </aside>
         </div>
