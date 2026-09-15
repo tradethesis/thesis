@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { BrandMark } from "./BrandMark";
 
-export function SiteHeader({ active }: { active?: "home" | "explore" | "thesis" } = {}) {
+export function SiteHeader({ active }: { active?: "home" | "explore" | "thesis" | "join" } = {}) {
   return (
     <header className="ln-header">
       <div className="ln-container ln-header-inner">
@@ -17,6 +17,7 @@ export function SiteHeader({ active }: { active?: "home" | "explore" | "thesis" 
           <Link href="/#how-it-works" className="ln-hide-sm">
             How it works
           </Link>
+          <Link href="/join" aria-current={active === "join" ? "page" : undefined}>Join</Link>
           </div>
         </nav>
           <Link href="/explore" className="ln-btn ln-btn--ink" aria-current={active === "explore" ? "page" : undefined}>

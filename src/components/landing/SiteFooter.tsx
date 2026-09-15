@@ -27,6 +27,7 @@ export function SiteFooter() {
           </div>
           <nav className="ln-footer-links" aria-label="Footer">
             <Link href="/explore">Explore theses</Link>
+            <Link href="/join">Join the waitlist</Link>
             <Link href="/#what-you-should-know">What you should know</Link>
             {FOOTER.links.map((link) => (
               <a key={link.href} href={link.href} target="_blank" rel="noreferrer noopener">

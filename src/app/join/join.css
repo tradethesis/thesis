@@ -1,0 +1,41 @@
+/*
+ * Join. One column, one decision, nothing to scroll past before the field.
+ * Tokens come from landing.css.
+ */
+
+.jn-main { padding-block: clamp(36px, 7vw, 72px) clamp(56px, 9vw, 96px); max-width: 620px; }
+.jn-head { margin-bottom: 28px; }
+.jn-h1 { font-size: clamp(32px, 5.4vw, 48px); line-height: 1.06; letter-spacing: -0.034em; font-weight: 620; margin: 12px 0 14px; }
+.jn-lead { color: var(--ln-ink-2); font-size: 17px; line-height: 1.58; margin: 0; max-width: 52ch; }
+
+.jn-card { background: var(--ln-surface); border: 1px solid var(--ln-line); border-radius: var(--ln-radius); padding: clamp(20px, 4vw, 28px); }
+.jn-field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }
+.jn-field label { font-size: 13px; font-weight: 550; }
+.jn-field small { color: var(--ln-ink-3); font-size: 12px; }
+.jn-field input, .jn-field textarea {
+  font: inherit; font-size: 16px; padding: 12px 14px; min-height: 48px;
+  border: 1px solid var(--ln-line-strong); border-radius: 10px;
+  background: var(--ln-surface); color: var(--ln-ink); width: 100%;
+}
+.jn-field textarea { min-height: 88px; resize: vertical; line-height: 1.5; }
+.jn-field input:focus-visible, .jn-field textarea:focus-visible { outline: 2px solid var(--ln-focus); outline-offset: 2px; }
+.jn-field--error input { border-color: var(--ln-accent); }
+.jn-error { color: var(--ln-accent); font-size: 13px; }
+
+.jn-submit { width: 100%; justify-content: center; min-height: 48px; }
+.jn-fine { margin-top: 16px; font-size: 12px; line-height: 1.55; color: var(--ln-ink-3); }
+
+.jn-done { text-align: left; }
+.jn-done h2 { font-size: 24px; letter-spacing: -0.025em; font-weight: 600; margin: 0 0 12px; }
+.jn-done p { color: var(--ln-ink-2); font-size: 15px; line-height: 1.6; margin: 0 0 10px; }
+.jn-done-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+
+.jn-honest { margin-top: 26px; border-top: 1px solid var(--ln-line); padding-top: 20px; }
+.jn-honest h2 { font-size: 15px; font-weight: 600; margin: 0 0 10px; }
+.jn-honest ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px; }
+.jn-honest li { font-size: 14px; line-height: 1.5; color: var(--ln-ink-2); display: flex; gap: 9px; }
+.jn-honest li::before { content: "·"; color: var(--ln-brand); font-weight: 700; }
+
+.jn-spin { animation: jn-rotate 1s linear infinite; }
+@keyframes jn-rotate { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .jn-spin { animation: none; } }
