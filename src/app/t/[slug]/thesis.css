@@ -99,3 +99,5 @@
 .td-sk--art { height: 200px; width: 100%; margin-top: 10px; border-radius: 14px; }
 @keyframes td-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
 @media (prefers-reduced-motion: reduce) { .td-sk { animation: none; } }
+
+.td-buy { width: 100%; justify-content: center; margin-top: 16px; }

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, BookOpen, CalendarDays } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, BookOpen, CalendarDays } from "lucide-react";
 import { SiteHeader } from "@/components/landing/SiteHeader";
 import { SiteFooter } from "@/components/landing/SiteFooter";
 import { AllocationPreview } from "@/components/landing/AllocationPreview";
@@ -134,13 +134,13 @@ export default async function ThesisPage({ params }: Props) {
             <div className="td-disclosure"><p>{t.authorDisclosure}</p><p>Tracking begins at publication. This thesis has no established performance history. Tokenized stocks carry issuer and market risk.</p></div>
           </article>
           <aside className="td-sidebar" id="thesis-allocation" aria-label="Basket allocation preview">
-            <div className="td-basket"><div className="td-basket-head"><span className="ln-eyebrow">Make it yours</span><h2>Your take on the thesis.</h2><p>Adjust the weights to reflect your conviction.</p></div><AllocationPreview holdings={previewHoldings} version={t.versionNumber} /><div className="td-availability"><strong>Buying opens soon.</strong><p>You can explore this allocation now. This preview does not connect to a wallet or place orders.</p></div></div>
+            <div className="td-basket"><div className="td-basket-head"><span className="ln-eyebrow">Make it yours</span><h2>Your take on the thesis.</h2><p>Adjust the weights to reflect your conviction.</p></div><AllocationPreview holdings={previewHoldings} version={t.versionNumber} /><Link href={`/buy/${t.slug}`} className="ln-btn ln-btn--ink td-buy">Build this basket<ArrowRight size={16} aria-hidden="true" /></Link><div className="td-availability"><p>The editor above is a preview. Amounts, live prices and every cost are shown for review before anything is signed.</p></div></div>
             <p className="td-sidebar-note">You choose the allocation. A new author version never changes your holdings automatically.</p>
           </aside>
         </div>
       </main>
       <SiteFooter />
-      <MobileBasketBar />
+      <MobileBasketBar slug={t.slug} />
     </div>
   );
 }
