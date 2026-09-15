@@ -27,7 +27,7 @@ export function CallGrid({ theses, calls, featured = false }: { theses: ThesisCa
   return <>
     {!featured && <div className="cg-toolbar"><div className="cg-filters" role="group" aria-label="Filter calls">
       {([["all", "All calls"], ["open", "Open"], ["resolved", "Resolved"], ["saved", "Saved"]] as const).map(([id, label]) => <button type="button" key={id} aria-pressed={filter === id} onClick={() => setFilter(id)}>{id === "saved" && <Bookmark size={13} aria-hidden="true" />}{label}</button>)}
-    </div><label className="cg-search"><Search size={16} aria-hidden="true" /><span className="ln-sr-only">Search calls, creators, or tokens</span><input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder="A belief, creator, or token…" /></label></div>}
+    </div><label className="cg-search"><Search size={16} aria-hidden="true" /><span className="ln-sr-only">Search ideas, authors, or tokens</span><input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder="An idea, an author, or a token…" /></label></div>}
     <p className="ln-sr-only" role="status">{filtered.length} {filtered.length === 1 ? "thesis" : "theses"} shown</p>
     {filtered.length ? <div className="cg-grid">{filtered.map(t => {
       const call = calls.find(c => c.versionId === t.versionId) ?? null;
@@ -41,7 +41,7 @@ export function CallGrid({ theses, calls, featured = false }: { theses: ThesisCa
           <p className="cg-prediction">{call ? `The call: beat ${call.benchmark} in ${call.durationDays} days.` : "Read the argument. Choose your exposure."}</p>
           <div className="cg-holdings" aria-label="Basket allocation">{t.holdings.map((h, i) => <div key={h.symbol}><span className={`ln-stock-initial ln-asset-tone-${i % 3}`} aria-hidden="true">{h.company[0]}</span><span><strong>{h.symbol}</strong><small>{h.role}</small></span><b>{h.weightBps / 100}%</b></div>)}</div>
           <CallStatus call={call} compact />
-          <div className="cg-evidence"><span>{t.supportingCount} sources for · {t.againstCount} against</span><span title="No verified creator wallet position is attached to this thesis.">Position unverified</span></div>
+          <div className="cg-evidence"><span>{t.supportingCount} sources for · {t.againstCount} against</span><span title="Nobody's wallet position is attached to this thesis. Thesis holds none of it, and the author of the original post has not endorsed it.">No one&rsquo;s position</span></div>
           <div className="cg-actions"><Link href={`/buy/${t.slug}?version=${t.versionId}`} className="ln-btn ln-btn--ink">Buy basket <ArrowRight size={16} aria-hidden="true" /><span className="ln-sr-only">: {t.claim}</span></Link><Link href={`/t/${t.slug}`} className="ln-text-link">Read thesis<span className="ln-sr-only">: {t.claim}</span></Link></div>
         </div>
       </article>;

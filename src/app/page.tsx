@@ -36,7 +36,7 @@ export default async function Home() {
       <SiteHeader active="home" />
       <main id="main">
         <Hero />
-        <section className="ln-section" id="calls"><div className="ln-container"><div className="cg-featured-head"><p className="ln-eyebrow">Open calls</p><h2 className="ln-h2">Someone has a take.<br />Make it your position.</h2><p className="ln-section-lead">Read the creator’s reasoning. Inspect the basket. Follow the call to its finish line.</p></div><CallGrid theses={theses} calls={calls} featured /></div></section>
+        <section className="ln-section" id="calls"><div className="ln-container"><div className="cg-featured-head"><p className="ln-eyebrow">Open calls</p><h2 className="ln-h2">Someone had a thought.<br />We read it as a portfolio.</h2><p className="ln-section-lead">Read the argument, inspect the basket, and watch our call run to its deadline. Every basket here is written by Thesis editorial.</p></div><CallGrid theses={theses} calls={calls} featured /></div></section>
         <HowItWorks />
         <WhatYouShouldKnow />
         <ClosingCta />

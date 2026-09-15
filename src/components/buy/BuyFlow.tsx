@@ -367,7 +367,7 @@ export function BuyFlow({ slug, claim, holdings, versionId, initialWeights, call
     <div className="by-panel">
       <h1 className="by-h2">Back this thesis.</h1>
       <p className="by-claim">{claim}</p>
-      {callStatement && <div className="by-call-context"><strong>The creator’s call</strong><p>{callStatement}</p><small>Your investment starts at your own entry price. The deadline does not sell your holdings.</small></div>}
+      {callStatement && <div className="by-call-context"><strong>Thesis’s call</strong><p>{callStatement}</p><small>Your investment starts at your own entry price. The deadline does not sell your holdings.</small></div>}
       {notice && <p className="by-notice" role="status">{notice}</p>}
 
       <label className="by-budget">
