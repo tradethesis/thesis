@@ -16,16 +16,12 @@ import { siteMode } from "@/lib/site-mode";
 import "./join/join.css";
 
 export const metadata: Metadata = {
-  title: "Thesis — Buy what you believe.",
+  // The default title, not the "%s — Thesis" template: this is the front door and its
+  // title is the whole name.
+  title: { absolute: "Thesis — Buy what you believe." },
   description:
     "Read a claim about the world, see the three tokenized stocks that express it, change the weights, and buy the basket with USDC from your own Solana wallet.",
-  openGraph: {
-    title: "Thesis — Buy what you believe.",
-    description:
-      "A claim, three tokenized stocks with a stated job and a stated weakness, weights you can change, and the strongest argument against. Bought with USDC from your own wallet.",
-    siteName: "Thesis",
-    type: "website",
-  },
+  alternates: { canonical: "/" },
 };
 
 /**

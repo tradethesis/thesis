@@ -1,3 +1,5 @@
+import { StructuredData } from "@/components/seo/StructuredData";
+
 import { JoinForm } from "./JoinForm";
 
 /**
@@ -17,6 +19,16 @@ import { JoinForm } from "./JoinForm";
 export function WaitlistLanding({ source }: { source: string }) {
   return (
     <div className="landing jn-page">
+      {/*
+        Inside this div rather than at the root of <body>, which is where it started.
+        A script that is a direct child of <body> sits among the placeholder nodes
+        Next uses to stream suspense boundaries, and those get reparented as chunks
+        land — so hydration would intermittently find the body's children in a
+        different order than it rendered them. As a descendant of a real element it
+        is just an ordinary child. JSON-LD is read wherever it appears in the document.
+      */}
+      <StructuredData />
+
       <a className="ln-skip" href="#main">
         Skip to content
       </a>

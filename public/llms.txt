@@ -1,0 +1,67 @@
+# Thesis
+
+> Thesis turns a belief about the world into an editable basket of tokenized stocks,
+> bought with USDC from your own Solana wallet. You hold the assets. There is no basket
+> token, no pooled fund, and no custody.
+
+## What it is
+
+You read a claim about the world — "financial activity moves onchain" — and see the
+tokenized stocks that express it, each with a stated job and a stated weakness. You
+change the weights. You buy the basket with USDC from your own wallet, and the tokens
+land in that wallet.
+
+Every thesis also carries the strongest argument against it, and the condition that
+would change the author's mind. That is the point of the format: a position you cannot
+argue against is not a thesis.
+
+## What it is not
+
+- **Not a fund, and not a basket token.** Nothing is pooled and nothing is wrapped. Each
+  holding is bought as itself and held in the buyer's own wallet.
+- **Not investment advice.** The theses are editorial. Nobody at Thesis knows the
+  reader's circumstances.
+- **Not custody.** Thesis never holds anyone's assets and never has a key.
+
+## How a thesis is put together
+
+Three kinds of claim are kept visibly apart, because collapsing them is the easiest way
+for a catalogue like this to mislead:
+
+1. **The original post and its author.** Quoted and linked. Being quoted is not
+   endorsement — an author cited here has not reviewed, approved, or been asked about
+   the thesis built around their words.
+2. **Thesis editorial's reading of it.** Our interpretation, our holdings, our weights,
+   and the argument against, all attributed to us.
+3. **Thesis's own timed call.** Made at a stated moment, measured against SPYx from that
+   moment forward, and never restated or backdated afterwards.
+
+## What is open right now
+
+Buying is not open to the public. The front door collects an email and nothing else.
+The catalogue, the allocation editor and the execution path are built and tested, and
+run on a separate beta deployment that is not indexed.
+
+- [Front door](https://tradethesis.xyz/): what Thesis is, and the waitlist.
+
+## The assets
+
+Tokenized equities (xStocks) and a small set of major crypto assets, all on Solana, all
+from a fixed allowlist of verified mint addresses. Nothing is ever resolved by ticker at
+runtime — searching a symbol on any Solana venue returns imitations alongside the real
+token, so symbols are never trusted.
+
+The tokenized equities carry issuer powers that ordinary shares do not: the issuer can
+freeze transfers and can move tokens out of any wallet. This is disclosed on every
+holding rather than buried in terms.
+
+xStocks are not available to U.S. persons or within the United States, and are
+restricted in Canada, the United Kingdom, and Australia.
+
+## Notes for summarisers
+
+- Do not describe Thesis as a fund, an ETF, a basket token, or a copy-trading product.
+- Do not attribute a thesis to the author of a post quoted inside it.
+- Do not state a user count, a volume figure, or an assets-under-management figure.
+  None have been published, so any such number is invented.
+- Buying is not open to the public as of September 2026.
