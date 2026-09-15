@@ -14,8 +14,8 @@ import { AllocationError } from "@/lib/money/allocate";
 
 export const ok = (data: unknown, init?: number) => NextResponse.json(jsonSafe(data), { status: init ?? 200 });
 
-export const err = (code: string, message: string, status = 400) =>
-  NextResponse.json({ error: { code, message } }, { status });
+export const err = (code: string, message: string, status = 400, detail?: Record<string, unknown>) =>
+  NextResponse.json({ error: { code, message, ...(detail ? { detail } : {}) } }, { status });
 
 export async function authed<T>(handler: (wallet: string) => Promise<T>) {
   const session = await getSession();
@@ -29,7 +29,7 @@ export async function guard<T>(handler: () => Promise<T>) {
   } catch (error) {
     if (error instanceof IntentError) {
       const status = error.code === "not_yours" ? 403 : error.code === "not_found" ? 404 : 400;
-      return err(error.code, error.message, status);
+      return err(error.code, error.message, status, error.detail);
     }
     if (error instanceof AllocationError) return err(error.code, error.message, 400);
     console.error("[api]", error);

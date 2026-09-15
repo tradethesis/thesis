@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import Link from "next/link";
 import { RotateCcw } from "lucide-react";
 import { MAX_WEIGHT_BPS, MIN_WEIGHT_BPS } from "@/lib/money/allocate";
 import { DEFAULT_BASKET_RAW, estimateLegCost, formatUsdc } from "@/lib/money/cost";
@@ -23,7 +24,7 @@ function legAmountRaw(weight: number): bigint {
   return (DEFAULT_BASKET_RAW * BigInt(weight)) / 100n;
 }
 
-export function AllocationPreview({ holdings, compact = false, version = 1 }: { holdings: Holding[]; compact?: boolean; version?: number }) {
+export function AllocationPreview({ holdings, compact = false, version = 1, buyHref, versionId }: { holdings: Holding[]; compact?: boolean; version?: number; buyHref?: string; versionId?: string }) {
   const id = useId();
   const authorWeights = holdings.map((h) => h.weight);
   const [weights, setWeights] = useState(authorWeights);
@@ -113,6 +114,7 @@ export function AllocationPreview({ holdings, compact = false, version = 1 }: { 
       </div>
 
       <p className="ln-preview-disclaimer">Interactive preview. No funds move.</p>
+      {buyHref && (total === 100 ? <Link href={buyHref + "?" + new URLSearchParams({ weights: weights.join(","), ...(versionId ? { version: versionId } : {}) })} className="ln-btn ln-btn--ink td-buy">Buy this basket →</Link> : <p className="ln-meta">Set the total to 100% to continue to purchase review.</p>)}
       {!compact && <details className="ln-cost"><summary>Estimated fees <span className="ln-num">{formatUsdc(costRaw)}</span> <span className="ln-meta">({(costBps / 100).toFixed(2)}%)</span></summary><p>Estimate on {formatUsdc(investedRaw)}: about $0.16 per purchase plus 0.1%, charged by Jupiter. Thesis adds no fee. A purchase requires fresh quotes and your approval for each holding.</p></details>}
     </div>
   );

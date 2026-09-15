@@ -13,7 +13,7 @@ export function SiteHeader({ active }: { active?: "home" | "explore" | "thesis" 
         <nav className="ln-header-nav" aria-label="Main">
           <div className="ln-nav-tabs">
           <Link href="/" aria-current={active === "home" ? "page" : undefined}>Overview</Link>
-          <Link href="/explore" aria-current={active === "explore" ? "page" : undefined}>Theses</Link>
+          <Link href="/explore" aria-current={active === "explore" ? "page" : undefined}>Calls</Link>
           <Link href="/#how-it-works" className="ln-hide-sm">
             How it works
           </Link>

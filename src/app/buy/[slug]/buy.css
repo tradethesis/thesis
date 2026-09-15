@@ -59,5 +59,9 @@
 .by-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; margin-top: 24px; }
 .by-connected { display: inline-flex; align-items: center; gap: 6px; font-family: var(--ln-mono); font-size: 12px; color: var(--ln-ink-3); }
 .by-spin { animation: by-rotate 1s linear infinite; }
+.by-call-context { padding: 16px; margin-block: 20px; background: var(--ln-surface-2); border-radius: 9px; font-size: 13px; }
+.by-call-context strong { font-weight: 550; }
+.by-call-context p { margin-top: 6px; }
+.by-call-context small { display: block; margin-top: 8px; color: var(--ln-ink-3); font-size: 11px; }
 @keyframes by-rotate { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .by-spin { animation: none; } }

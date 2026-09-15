@@ -98,6 +98,7 @@ export async function searchTokens(query: string): Promise<JupiterToken[]> {
 }
 
 export type LiteQuote = {
+  contextSlot: number;
   inputMint: string;
   outputMint: string;
   inAmount: string;

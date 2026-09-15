@@ -42,3 +42,6 @@ next-env.d.ts
 
 # generation scratch (source prompts + full-res originals + zip)
 /output
+
+# isolated production build output
+/.next-build

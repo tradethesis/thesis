@@ -4,6 +4,7 @@ import { db } from "../db/client";
 import { asset, thesis, thesisConstituent, thesisVersion } from "../db/schema";
 import { THESES, AUTHOR, type ThesisSeed } from "./theses";
 import { EVIDENCE, MIN_EVIDENCE_LINKS, type EvidenceLink } from "./evidence";
+import { CURATED_THESES, CURATED_EVIDENCE, type CuratedEvidence } from "./curated";
 import { validateAllocation } from "@/lib/money/allocate";
 
 /**
@@ -16,6 +17,17 @@ import { validateAllocation } from "@/lib/money/allocate";
  */
 
 export class ContentError extends Error {}
+
+/**
+ * Editorial theses and curated ones are published by the same pipeline and validated by the
+ * same gates. They are kept in separate files so that adding a curated entry never edits
+ * evidence.ts or theses.ts, which hold sources already verified.
+ */
+export const ALL_SEEDS: ThesisSeed[] = [...THESES, ...CURATED_THESES];
+
+export function evidenceFor(slug: string): CuratedEvidence[] {
+  return CURATED_EVIDENCE[slug] ?? EVIDENCE[slug] ?? [];
+}
 
 /** Canonical JSON over the fields a reader would call "the thesis". Order is fixed. */
 export function contentHash(seed: ThesisSeed, evidence: EvidenceLink[]): string {
@@ -32,7 +44,30 @@ export function contentHash(seed: ThesisSeed, evidence: EvidenceLink[]): string 
       .slice()
       .sort((a, b) => a.position - b.position)
       .map((c) => ({ symbol: c.symbol, position: c.position, weightBps: c.weightBps, role: c.role, why: c.why, limitation: c.limitation })),
-    evidence: evidence.map((e) => ({ url: e.url, title: e.title, source: e.source, publishedAt: e.publishedAt, relevance: e.relevance })),
+    evidence: evidence.map((e) => {
+      const post = (e as CuratedEvidence).sourcePost;
+      return {
+        url: e.url,
+        title: e.title,
+        source: e.source,
+        publishedAt: e.publishedAt,
+        relevance: e.relevance,
+        // Present only for curated entries. Adding an absent key would change every
+        // existing hash and orphan the versions already published against them.
+        ...(post
+          ? {
+              sourcePost: {
+                url: post.url,
+                author: post.author,
+                handle: post.handle,
+                text: post.text,
+                postedAt: post.postedAt,
+                verifiedAt: post.verifiedAt,
+              },
+            }
+          : {}),
+      };
+    }),
   });
   return createHash("sha256").update(canonical).digest("hex");
 }
@@ -68,8 +103,8 @@ export async function publishAll(options: { allowUnsourced?: boolean } = {}) {
   const allowUnsourced = options.allowUnsourced ?? false;
   const results: { slug: string; action: "created" | "new_version" | "unchanged"; version: number }[] = [];
 
-  for (const seed of THESES) {
-    const evidence = EVIDENCE[seed.slug] ?? [];
+  for (const seed of ALL_SEEDS) {
+    const evidence = evidenceFor(seed.slug);
     validateSeed(seed, evidence, allowUnsourced);
 
     // Resolve every constituent against the verified asset table. A symbol that is not

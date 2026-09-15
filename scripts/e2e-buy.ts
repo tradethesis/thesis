@@ -124,6 +124,38 @@ async function main() {
   check("nothing unspent", BigInt(f.unspentRaw) === 0n, `unspent=${f.unspentRaw}`);
   check("spent equals the budget", f.spentRaw === intent.budgetRaw);
 
+  console.log("\nopen-basket rules");
+  // A basket abandoned at the review screen must not block the next one.
+  const abandoned = await call("/api/intents", {
+    method: "POST",
+    body: JSON.stringify({ slug: SLUG, budgetUsdc: 150, idempotencyKey: crypto.randomUUID() }),
+  });
+  check("a new basket can be started after a completed one", abandoned.status === 200, `http=${abandoned.status}`);
+  const abandonedId = (abandoned.body as never as { id: string }).id;
+
+  const replaced = await call("/api/intents", {
+    method: "POST",
+    body: JSON.stringify({ slug: SLUG, budgetUsdc: 175, idempotencyKey: crypto.randomUUID() }),
+  });
+  check("an untouched draft is retired rather than blocking", replaced.status === 200, `http=${replaced.status}`);
+  check("and it is a different basket", (replaced.body as never as { id: string }).id !== abandonedId);
+
+  // But one with a confirmed leg is a position, and must block.
+  const partialId = (replaced.body as never as { id: string }).id;
+  await call(`/api/intents/${partialId}/quote`, { method: "POST" });
+  const partialLegs = (await call(`/api/intents/${partialId}`)).body as never as { legs: { id: string }[] };
+  await call(`/api/intents/${partialId}/legs/${partialLegs.legs[0].id}/simulate`, { method: "POST" });
+
+  const blocked = await call("/api/intents", {
+    method: "POST",
+    body: JSON.stringify({ slug: SLUG, budgetUsdc: 150, idempotencyKey: crypto.randomUUID() }),
+  });
+  check(
+    "a part-filled basket blocks a new one",
+    blocked.status === 400 && (blocked.body as never as { error: { code: string } }).error.code === "basket_in_progress",
+    `http=${blocked.status} ${JSON.stringify(blocked.body).slice(0, 80)}`,
+  );
+
   console.log("\nownership");
   cookie = "";
   const stranger = await call(`/api/intents/${intent.id}`);

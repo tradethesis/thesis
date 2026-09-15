@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import "./landing.css";
 import "./workshop.css";
+import "./calls.css";
 import { SiteHeader } from "@/components/landing/SiteHeader";
 import { Hero } from "@/components/landing/Hero";
-import { WorkedExample } from "@/components/landing/WorkedExample";
+import { CallGrid } from "@/components/calls/CallGrid";
+import { listPublishedTheses } from "@/server/content/queries";
+import { getCalls } from "@/server/calls/service";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { WhatYouShouldKnow } from "@/components/landing/WhatYouShouldKnow";
 import { ClosingCta, SiteFooter } from "@/components/landing/SiteFooter";
@@ -21,7 +24,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function Home() {
+export const revalidate = 60;
+
+export default async function Home() {
+  const [theses, calls] = await Promise.all([listPublishedTheses(), getCalls()]);
   return (
     <div className="landing">
       <a className="ln-skip" href="#main">
@@ -30,7 +36,7 @@ export default function Home() {
       <SiteHeader active="home" />
       <main id="main">
         <Hero />
-        <WorkedExample />
+        <section className="ln-section" id="calls"><div className="ln-container"><div className="cg-featured-head"><p className="ln-eyebrow">Open calls</p><h2 className="ln-h2">Someone has a take.<br />Make it your position.</h2><p className="ln-section-lead">Read the creator’s reasoning. Inspect the basket. Follow the call to its finish line.</p></div><CallGrid theses={theses} calls={calls} featured /></div></section>
         <HowItWorks />
         <WhatYouShouldKnow />
         <ClosingCta />
