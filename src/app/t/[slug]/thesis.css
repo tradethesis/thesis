@@ -88,3 +88,14 @@
   .landing:has(.td-mobile-dock) .ln-footer { padding-bottom: calc(110px + env(safe-area-inset-bottom)); }
   .td-sources > li { gap: 12px; }
 }
+
+/* Loading skeleton. Motion is a slow pulse, and reduced-motion gets a flat block. */
+.td-skeleton { padding-top: 24px; display: flex; flex-direction: column; gap: 14px; max-width: 680px; }
+.td-sk { background: var(--ln-surface-2); border-radius: 8px; animation: td-pulse 1.6s ease-in-out infinite; }
+.td-sk--meta { height: 12px; width: 180px; }
+.td-sk--title { height: 38px; width: 100%; }
+.td-sk--line { height: 14px; width: 100%; }
+.td-sk--short { width: 62%; }
+.td-sk--art { height: 200px; width: 100%; margin-top: 10px; border-radius: 14px; }
+@keyframes td-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+@media (prefers-reduced-motion: reduce) { .td-sk { animation: none; } }
