@@ -43,8 +43,8 @@ fs.mkdirSync(OUT, { recursive: true });
       if (r.status() >= 400 && r.url().includes("/_next/static/")) brokenAssets.push(`${r.status()} ${r.url().split("/").pop()}`);
     });
 
-    await page.goto(`${BASE}/explore`, { waitUntil: "networkidle", timeout: 60000 });
-    const total = await page.locator(".cg-card").count();
+    await page.goto(`${BASE}/app`, { waitUntil: "networkidle", timeout: 60000 });
+    const total = await page.locator(".cc").count();
     check("grid renders cards", total > 0, `${total} cards`);
 
     // Check this before anything that clicks. When the client bundle fails to load, React
@@ -69,21 +69,21 @@ fs.mkdirSync(OUT, { recursive: true });
     check("Resolved becomes pressed", (await resolved.getAttribute("aria-pressed")) === "true", `aria-pressed=${await resolved.getAttribute("aria-pressed")}`);
     check("empty state explains itself", await page.locator(".cg-empty").isVisible());
     await page.getByRole("button", { name: "See all calls", exact: true }).click();
-    check("See all calls restores the grid", (await page.locator(".cg-card").count()) === total);
+    check("See all calls restores the grid", (await page.locator(".cc").count()) === total);
 
     // Search, including by the source author
     const search = page.getByRole("searchbox");
     await search.fill("naval");
-    const byAuthor = await page.locator(".cg-card").count();
+    const byAuthor = await page.locator(".cc").count();
     check("search finds a thesis by its source author", byAuthor >= 1, `${byAuthor} card(s)`);
     await search.fill("MSFTx");
-    check("search finds a thesis by ticker", (await page.locator(".cg-card").count()) >= 1);
+    check("search finds a thesis by ticker", (await page.locator(".cc").count()) >= 1);
     await search.fill("");
 
     await page.addStyleTag({ content: "nextjs-portal{display:none!important}" });
     await page.screenshot({ path: `${OUT}/grid-${width}.png`, fullPage: true });
 
-    const links = await page.locator(".cg-card h2 a").evaluateAll((a) => a.map((x) => x.getAttribute("href")));
+    const links = await page.locator(".cc .cc-claim a").evaluateAll((a) => a.map((x) => x.getAttribute("href")));
 
     for (const path of ["/", ...links]) {
       const response = await page.goto(BASE + path, { waitUntil: "networkidle", timeout: 60000 });

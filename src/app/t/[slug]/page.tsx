@@ -8,6 +8,7 @@ import { AllocationPreview } from "@/components/landing/AllocationPreview";
 import { MobileBasketBar } from "@/components/landing/MobileBasketBar";
 import { SaveThesis } from "@/components/landing/SaveThesis";
 import { ThesisArtwork } from "@/components/landing/ThesisArtwork";
+import { RecordView } from "@/components/calls/RecordView";
 import { SourcePost } from "@/components/calls/SourcePost";
 import { getPublishedThesis, getUpdates, getVersionHistory } from "@/server/content/detail";
 import { listPublishedTheses } from "@/server/content/queries";
@@ -55,10 +56,11 @@ export default async function ThesisPage({ params }: Props) {
   const weightRationale = t.holdings.find(h => h.weightRationale)?.weightRationale;
   return (
     <div className="landing">
+      <RecordView thesisVersionId={t.versionId} />
       <a className="ln-skip" href="#main">Skip to content</a>
       <SiteHeader active="thesis" />
       <main className="ln-container td-main" id="main">
-        <Link href="/explore" className="ln-text-link td-back"><ArrowLeft size={15} aria-hidden="true" /> All theses</Link>
+        <Link href="/app" className="ln-text-link td-back"><ArrowLeft size={15} aria-hidden="true" /> All calls</Link>
         <div className="td-layout">
           <article className="td-research">
             <header className="td-heading">

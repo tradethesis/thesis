@@ -6,35 +6,12 @@
 .cg-search { display: flex; align-items: center; gap: 8px; padding: 0 13px; border: 1px solid var(--ln-line); border-radius: 9px; min-height: 44px; color: var(--ln-ink-3); background: var(--ln-surface); }
 .cg-search input { width: 225px; min-width: 0; min-height: 44px; border: 0; background: transparent; color: var(--ln-ink); font: inherit; font-size: 13px; }
 .cg-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 22px; padding-bottom: 44px; }
-.cg-card { border: 1px solid var(--ln-line); border-radius: 16px; background: var(--ln-surface); overflow: hidden; min-width: 0; display: flex; flex-direction: column; }
-.cg-art-wrap { position: relative; }
-.cg-art { height: 116px; }
-.cg-category { position: absolute; left: 18px; top: 17px; padding: 4px 9px; border-radius: 5px; background: var(--ln-surface); color: var(--ln-ink); font-size: 11px; }
-.cg-body { padding: 22px; display: flex; flex-direction: column; flex: 1; }
-.cg-creator { display: flex; gap: 9px; align-items: center; margin-bottom: 18px; font-size: 12px; }
-.cg-avatar { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: var(--ln-surface-2); color: var(--ln-accent); font-size: 11px; font-weight: 600; }
-.cg-creator small { display: block; color: var(--ln-ink-3); font-size: 10px; }
-.cg-card h2 { font-size: 24px; line-height: 1.15; letter-spacing: -.04em; font-weight: 580; }
-.landing .cg-card h2 a { color: var(--ln-ink); text-decoration: none; }
-.cg-card h2 a:hover { color: var(--ln-accent); }
-.cg-summary { color: var(--ln-ink-2); font-size: 13px; margin-top: 12px !important; line-height: 1.55; }
-.cg-prediction { font-size: 12px; font-weight: 550; color: var(--ln-accent); margin-top: 18px !important; }
-.cg-holdings { margin-top: 20px; padding-block: 4px; border-block: 1px solid var(--ln-line); }
-.cg-holdings > div { display: flex; align-items: center; gap: 9px; padding-block: 9px; }
-.cg-holdings .ln-stock-initial { width: 29px; height: 29px; font-size: 14px; border-radius: 7px; }
-.cg-holdings strong { display: block; font-size: 11px; font-weight: 550; }
-.cg-holdings small { display: block; font-size: 10px; color: var(--ln-ink-3); }
-.cg-holdings b { margin-left: auto; font-size: 12px; font-weight: 550; font-variant-numeric: tabular-nums; }
 .call-status { margin-block: 18px; }
 .call-status-line { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 11px; }
 .call-clock { display: inline-flex; align-items: center; gap: 6px; font-weight: 550; }
 .call-clock > span { width: 6px; height: 6px; border-radius: 50%; background: var(--ln-brand); }
 .call-status--resolved .call-clock > span { background: var(--ln-ink-3); }
 .call-status > small { display: block; margin-top: 6px; color: var(--ln-ink-3); font-size: 10px; }
-.cg-evidence { display: flex; justify-content: space-between; gap: 8px; font-size: 10px; color: var(--ln-ink-3); margin-top: auto; padding-bottom: 18px; }
-.cg-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.cg-actions .ln-btn { min-height: 44px; padding: 11px 16px; font-size: 12px; flex: 1; }
-.cg-actions .ln-text-link { font-size: 12px; }
 .cg-empty { padding: 64px 24px 90px; text-align: center; }
 .cg-empty h2 { font-size: 27px; font-weight: 550; letter-spacing: -.04em; }
 .cg-empty p { margin-block: 14px 24px !important; color: var(--ln-ink-2); }
@@ -68,12 +45,10 @@
 }
 @media(max-width:600px) {
  .cg-grid { grid-template-columns: 1fr; }
- .cg-art { height: 88px; }
- .cg-body { padding: 20px; }
- .cg-summary { font-size: 14px; }
- .cg-creator small, .cg-holdings small, .cg-evidence, .call-status > small { font-size: 11px; }
- .cg-holdings strong { font-size: 12px; }
- .cg-actions .ln-btn, .cg-actions .ln-text-link { font-size: 13px; }
+ .cc-claim { font-size: 27px; }
+ .cs, .source-post--compact, .cc-holdings li { font-size: 12.5px; }
+ .call-status > small { font-size: 11px; }
+ .cc-actions .ln-btn, .cc-actions .ln-text-link { font-size: 13px; }
  .call-dates > div { display: block; }
  .call-dates dd { text-align: left; margin-top: 3px; }
 }
@@ -149,11 +124,103 @@
   color: var(--ln-ink-3);
 }
 
-.source-post--compact { padding: 12px 14px; margin-bottom: 14px; }
-.source-post--compact blockquote { font-size: 14px; }
-.source-post--compact .source-post-attribution { font-size: 10px; }
+.source-post--compact {
+  border: 0; border-radius: 0; background: none; padding: 0;
+  margin: 11px 0 0; font-size: 11.5px; line-height: 1.5; color: var(--ln-ink-3);
+}
+.landing .source-post--compact a { display: inline-flex; align-items: center; gap: 3px; color: var(--ln-accent); }
+.source-post--compact .source-post-attribution {
+  margin: 0; padding: 0; border: 0; font-size: inherit; font-weight: 400; color: var(--ln-ink-3);
+}
 
 @media (max-width: 420px) {
   .source-post-meta { flex-direction: column; gap: 4px; }
   .source-post blockquote { font-size: 15px; }
 }
+
+/* ─── Call card ───────────────────────────────────────────────────────────────
+ *
+ * Three tiers in the order a reader decides in: the idea, whether it is working,
+ * and how to act on it. Each tier is a block of the card rather than a run of
+ * margins, so the seams land in the same place across a grid row however long a
+ * claim happens to be.
+ *
+ * The middle tier is sunken and the bottom tier is not, which is what makes the
+ * buy action read as the end of the card rather than one more row of text.
+ */
+
+.cc {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--ln-line);
+  border-radius: 16px;
+  background: var(--ln-surface);
+  overflow: hidden;
+}
+
+/* Tier 1 — the idea */
+.cc-idea { flex: 1; padding: 18px 20px 16px; }
+.cc-category {
+  display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px;
+  background: var(--ln-surface-2); color: var(--ln-ink-2);
+}
+
+.cc-claim {
+  margin-top: 13px;
+  font-size: 25px; line-height: 1.12; letter-spacing: -0.04em; font-weight: 580;
+}
+/* Three classes deep on purpose. `.landing a:not(.ln-btn):not(.ln-wordmark)` in
+   landing.css is (0,3,1) and was quietly winning, which painted every card's claim in
+   the accent — so the headline competed with the button meant to be the loudest thing
+   on the card. This ties that specificity and wins on order. */
+.landing .cc .cc-claim a { color: var(--ln-ink); text-decoration: none; }
+.landing .cc .cc-claim a:hover { color: var(--ln-accent); text-decoration: underline; }
+
+.cc-byline { margin-top: 11px !important; font-size: 11.5px; color: var(--ln-ink-3); }
+
+/* Tier 2 — the scoreboard */
+.cs {
+  padding: 14px 20px;
+  background: var(--ln-surface-sunken);
+  border-block: 1px solid var(--ln-line);
+  font-size: 12px;
+}
+.cs--pending { color: var(--ln-ink-3); }
+
+.cs-clock { display: inline-flex; align-items: center; gap: 5px; margin-left: auto; color: var(--ln-ink-3); white-space: nowrap; }
+.cs-clock i { width: 5px; height: 5px; border-radius: 50%; background: var(--ln-brand); }
+.cs--resolved .cs-clock i, .cs--stale .cs-clock i { background: var(--ln-ink-3); }
+
+.cs-bars { display: grid; gap: 6px; }
+.cs-bar { display: grid; grid-template-columns: 4.2em 1fr auto; align-items: center; gap: 10px; }
+.cs-bar-label { color: var(--ln-ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cs-bar-track { height: 5px; border-radius: 3px; background: var(--ln-surface-2); overflow: hidden; }
+.cs-bar-fill { display: block; height: 100%; border-radius: 3px; background: var(--ln-ink-3); }
+.cs-bar--basket .cs-bar-fill { background: var(--ln-ink); }
+.cs-bar.is-down .cs-bar-fill { background: var(--ln-accent); }
+.cs-bar--basket.is-up .cs-bar-fill { background: var(--ln-confirmed); }
+.cs-bar-value { font-variant-numeric: tabular-nums; font-weight: 550; }
+
+.cs-edge, .cs-waiting { display: flex; align-items: center; gap: 10px; margin: 10px 0 0 !important; color: var(--ln-ink-2); }
+.cs-edge strong { font-variant-numeric: tabular-nums; font-weight: 600; }
+.cs-edge.is-ahead strong { color: var(--ln-confirmed); }
+.cs-edge.is-behind strong { color: var(--ln-accent); }
+
+/* Tier 3 — the basket, and how to buy it */
+.cc-basket { padding: 14px 20px 16px; }
+.cc-holdings {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.cc-holdings li {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  padding: 4px 9px; border-radius: 7px;
+  background: var(--ln-surface-2); font-size: 11.5px;
+}
+.cc-holdings strong { font-weight: 550; }
+.cc-holdings span { color: var(--ln-ink-3); font-variant-numeric: tabular-nums; }
+
+.cc-actions { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+.cc-actions .ln-btn { flex: 1; min-height: 44px; padding: 11px 16px; font-size: 12.5px; }
+.cc-actions .ln-text-link { font-size: 12px; white-space: nowrap; }

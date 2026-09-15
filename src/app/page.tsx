@@ -1,12 +1,8 @@
 import type { Metadata } from "next";
 import "./landing.css";
 import "./workshop.css";
-import "./calls.css";
 import { SiteHeader } from "@/components/landing/SiteHeader";
 import { Hero } from "@/components/landing/Hero";
-import { CallGrid } from "@/components/calls/CallGrid";
-import { listPublishedTheses } from "@/server/content/queries";
-import { getCalls } from "@/server/calls/service";
 import { HowItWorks } from "@/components/landing/HowItWorks";
 import { WhatYouShouldKnow } from "@/components/landing/WhatYouShouldKnow";
 import { SiteFooter } from "@/components/landing/SiteFooter";
@@ -33,7 +29,7 @@ export const metadata: Metadata = {
  */
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
+export default function Home() {
   const gated = siteMode() === "waitlist";
 
   // Waitlist mode: the same hero and the same working allocation preview, with the form
@@ -42,7 +38,6 @@ export default async function Home() {
   // exist.
   if (gated) return <WaitlistLanding source="home" />;
 
-  const [theses, calls] = await Promise.all([listPublishedTheses(), getCalls()]);
   return (
     <div className="landing">
       <a className="ln-skip" href="#main">
@@ -51,7 +46,6 @@ export default async function Home() {
       <SiteHeader active="home" />
       <main id="main">
         <Hero />
-        <section className="ln-section" id="calls"><div className="ln-container"><div className="cg-featured-head"><p className="ln-eyebrow">Open calls</p><h2 className="ln-h2">Someone had a thought.<br />We read it as a portfolio.</h2><p className="ln-section-lead">Read the argument, inspect the basket, and watch our call run to its deadline. Every basket here is written by Thesis editorial.</p></div><CallGrid theses={theses} calls={calls} featured /></div></section>
         <HowItWorks />
         <WhatYouShouldKnow />
         <ClosingCta />

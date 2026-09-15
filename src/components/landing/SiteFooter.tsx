@@ -11,7 +11,7 @@ export function ClosingCta() {
       <div className="ln-container ln-close">
         <h2 className="ln-h2">The next big shift<br />starts with an idea.</h2>
         <p className="ln-section-lead">Find one you believe in. Make it yours.</p>
-        <Link href={gated ? "/join" : "/explore"} className="ln-btn ln-btn--ink">{gated ? "Join the waitlist" : "Explore theses"}<ArrowRight size={18} aria-hidden="true" /></Link>
+        <Link href={gated ? "/join" : "/app"} className="ln-btn ln-btn--ink">{gated ? "Join the waitlist" : "Open the app"}<ArrowRight size={18} aria-hidden="true" /></Link>
       </div>
     </section>
   );
@@ -29,7 +29,7 @@ export function SiteFooter() {
             <p className="ln-footer-note ln-build-note">Early access build. Public allocation previews do not move funds. Live trading is limited to eligible, allowlisted wallets.</p>
           </div>
           <nav className="ln-footer-links" aria-label="Footer">
-            {!gated && <Link href="/explore">Explore theses</Link>}
+            {!gated && <Link href="/app">Open calls</Link>}
             <Link href="/join">Join the waitlist</Link>
             <Link href="/#what-you-should-know">What you should know</Link>
             {FOOTER.links.map((link) => (

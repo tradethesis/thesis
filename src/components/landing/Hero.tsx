@@ -19,7 +19,7 @@ export function Hero({ gated = false }: { gated?: boolean } = {}) {
         <div className="ln-cta-row">
           {gated
             ? <Link href="/join" className="ln-btn ln-btn--primary">Join the waitlist <ArrowRight size={17} aria-hidden="true" /></Link>
-            : <Link href="/explore" className="ln-btn ln-btn--primary">Find your thesis <ArrowRight size={17} aria-hidden="true" /></Link>}
+            : <Link href="/app" className="ln-btn ln-btn--primary">Open the app <ArrowRight size={17} aria-hidden="true" /></Link>}
           <a href="#allocation-preview" className="ln-text-link">Try a basket <SlidersHorizontal size={15} aria-hidden="true" /></a>
         </div>
         <p className="ln-hero-note">{gated ? "Not open yet. Move the sliders below to see how it works." : "Explore freely. No wallet needed."}</p>

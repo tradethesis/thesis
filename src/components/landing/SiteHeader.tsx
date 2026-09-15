@@ -17,7 +17,7 @@ export function SiteHeader({ active }: { active?: "home" | "explore" | "thesis" 
         <nav className="ln-header-nav" aria-label="Main">
           <div className="ln-nav-tabs">
           <Link href="/" aria-current={active === "home" ? "page" : undefined}>Overview</Link>
-          {!gated && <Link href="/explore" aria-current={active === "explore" ? "page" : undefined}>Calls</Link>}
+          {!gated && <Link href="/app" aria-current={active === "explore" ? "page" : undefined}>Calls</Link>}
           <Link href="/#how-it-works" className="ln-hide-sm">
             How it works
           </Link>
@@ -25,7 +25,7 @@ export function SiteHeader({ active }: { active?: "home" | "explore" | "thesis" 
           </div>
         </nav>
           <Link
-            href={gated ? "/join" : "/explore"}
+            href={gated ? "/join" : "/app"}
             className="ln-btn ln-btn--ink"
             aria-current={active === (gated ? "join" : "explore") ? "page" : undefined}
           >

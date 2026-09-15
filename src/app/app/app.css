@@ -1,0 +1,112 @@
+/*
+ * The product surface.
+ *
+ * Quieter than the marketing site on purpose. The landing page's job is to make an
+ * argument, so it has a hero, sections, and generous vertical rhythm. This page's job is
+ * to be read through, so the chrome gets out of the way: a thin header, a small title,
+ * and the grid starting near the top of the screen.
+ *
+ * Every token comes from landing.css. Nothing here defines a colour.
+ */
+
+.ap {
+  min-height: 100dvh;
+}
+
+/* ------------------------------------------------------------------ header */
+
+.ap-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in oklab, var(--ln-bg) 88%, transparent);
+  backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid var(--ln-line);
+}
+
+.ap-header-inner {
+  max-width: var(--ln-maxw);
+  margin-inline: auto;
+  padding-inline: var(--ln-gutter);
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.landing .ap-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--ln-ink);
+  text-decoration: none;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.landing .ap-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  font-size: 13px;
+  color: var(--ln-ink-2);
+  text-decoration: none;
+}
+
+.landing .ap-back:hover {
+  color: var(--ln-ink);
+  text-decoration: underline;
+}
+
+/* -------------------------------------------------------------------- page */
+
+.ap-main {
+  max-width: var(--ln-maxw);
+  margin-inline: auto;
+  padding-inline: var(--ln-gutter);
+}
+
+.ap-head {
+  padding-block: clamp(24px, 3.5vw, 40px) clamp(14px, 2vw, 22px);
+}
+
+.ap-title {
+  margin: 0;
+  font-size: clamp(27px, 3.4vw, 38px);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+
+.ap-note {
+  color: var(--ln-ink-3);
+  font-size: 13px;
+  line-height: 1.6;
+  max-width: 66ch;
+  padding-bottom: clamp(48px, 8vw, 84px);
+}
+
+/* The toolbar sticks under the header so the filters stay reachable while reading down
+   a long grid. Its own background is opaque — a translucent bar over scrolling cards
+   turns the filter labels into mush. */
+.ap .cg-toolbar {
+  position: sticky;
+  top: 58px;
+  z-index: 10;
+  background: var(--ln-bg);
+  padding-block: 12px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--ln-line);
+}
+
+@media (max-width: 760px) {
+  .ap .cg-toolbar { position: static; border-bottom: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ap-header { backdrop-filter: none; background: var(--ln-bg); }
+}

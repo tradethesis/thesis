@@ -19,7 +19,7 @@ export function siteMode(value: string | undefined = process.env.SITE_MODE): Sit
 }
 
 /** Product routes, closed while the site is in waitlist mode. */
-export const GATED_PREFIXES = ["/explore", "/t/", "/buy/", "/signing-check"] as const;
+export const GATED_PREFIXES = ["/app", "/explore", "/t/", "/buy/", "/signing-check"] as const;
 
 export function isGatedPath(pathname: string): boolean {
   return GATED_PREFIXES.some((p) => pathname === p.replace(/\/$/, "") || pathname.startsWith(p));

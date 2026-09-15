@@ -1,33 +1,13 @@
-import type { Metadata } from "next";
-import "../landing.css";
-import "../calls.css";
-import "./explore.css";
-import { SiteHeader } from "@/components/landing/SiteHeader";
-import { SiteFooter } from "@/components/landing/SiteFooter";
-import { CallGrid } from "@/components/calls/CallGrid";
-import { listPublishedTheses } from "@/server/content/queries";
-import { getCalls } from "@/server/calls/service";
+import { permanentRedirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Explore calls · Thesis",
-  description: "Ideas worth arguing about, read as investments. The original post, our interpretation, the basket, and a call with a deadline.",
-};
-export const revalidate = 60;
-
-export default async function ExplorePage() {
-  const [theses, calls] = await Promise.all([listPublishedTheses(), getCalls()]);
-  return <div className="landing">
-    <a className="ln-skip" href="#main">Skip to content</a>
-    <SiteHeader active="explore" />
-    <main id="main" className="ln-container">
-      <section className="ex-head">
-        <p className="ln-eyebrow">Conviction has a clock.</p>
-        <h1 className="ln-h2 ex-question">Find a take.<br />Put money behind it.</h1>
-        <p className="ex-sub">An idea someone shared. Our reading of what it means for a portfolio. A basket you can buy, and a call with a finish line.</p>
-      </section>
-      <CallGrid theses={theses} calls={calls} />
-      <p className="ex-note">Every call keeps its original rules. Buy the underlying tokens in your own wallet, then follow how the call plays out. Your entry price and allocation can differ from the model basket the call is scored against.</p>
-    </main>
-    <SiteFooter />
-  </div>;
+/**
+ * The catalogue moved to /app when the marketing site and the product were split.
+ *
+ * A permanent redirect rather than a deleted route: /explore is in the wild — it is what
+ * the site header pointed at, what the sitemap listed, and what anyone who bookmarked the
+ * calls has. 308 so the move is cached and search engines transfer the URL rather than
+ * indexing two addresses for one page.
+ */
+export default function ExploreRedirect(): never {
+  permanentRedirect("/app");
 }

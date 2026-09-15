@@ -12,7 +12,7 @@ describe("siteMode", () => {
 
 describe("isGatedPath", () => {
   it("closes the product routes", () => {
-    for (const p of ["/explore", "/t/ai-liability-favors-big-cloud", "/buy/x", "/signing-check"]) {
+    for (const p of ["/app", "/explore", "/t/ai-liability-favors-big-cloud", "/buy/x", "/signing-check"]) {
       expect(isGatedPath(p), p).toBe(true);
     }
   });

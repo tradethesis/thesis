@@ -29,7 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const theses = await listPublishedTheses();
     return [
       ...front,
-      { url: canonical("/explore"), lastModified: now, changeFrequency: "daily", priority: 0.9 },
+      { url: canonical("/app"), lastModified: now, changeFrequency: "daily", priority: 0.9 },
       ...theses.map((t) => ({
         url: canonical(`/t/${t.slug}`),
         lastModified: t.publishedAt ?? now,
