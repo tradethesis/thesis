@@ -6,6 +6,7 @@ import type { ThesisCard } from "@/server/content/queries";
 
 import { CallScore } from "./CallScore";
 import { SourcePost } from "./SourcePost";
+import { TokenLogo } from "./TokenLogo";
 
 /**
  * One call, in the order a reader decides in: the idea, whether it is working, what to buy.
@@ -34,7 +35,10 @@ export function CallCard({ thesis, call }: { thesis: ThesisCard; call: CallRecor
         {thesis.sourcePost ? (
           <SourcePost post={thesis.sourcePost} compact />
         ) : (
-          <p className="cc-byline">{thesis.authorName}</p>
+          <p className="cc-byline">
+            <span className="cc-byline-mark" aria-hidden="true" />
+            {thesis.authorName}
+          </p>
         )}
       </div>
 
@@ -42,10 +46,11 @@ export function CallCard({ thesis, call }: { thesis: ThesisCard; call: CallRecor
 
       <div className="cc-basket">
         <ul className="cc-holdings" aria-label="What the basket holds">
-          {thesis.holdings.map((h) => (
+          {thesis.holdings.map((h, i) => (
             <li key={h.symbol}>
+              <TokenLogo symbol={h.symbol} company={h.company} tone={i} />
               <strong>{h.symbol}</strong>
-              <span>{h.weightBps / 100}%</span>
+              <span className="cc-weight">{h.weightBps / 100}%</span>
             </li>
           ))}
         </ul>

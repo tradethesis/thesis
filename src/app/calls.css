@@ -5,7 +5,10 @@
 .cg-filters button:hover:not([aria-pressed="true"]) { background: var(--ln-surface-2); }
 .cg-search { display: flex; align-items: center; gap: 8px; padding: 0 13px; border: 1px solid var(--ln-line); border-radius: 9px; min-height: 44px; color: var(--ln-ink-3); background: var(--ln-surface); }
 .cg-search input { width: 225px; min-width: 0; min-height: 44px; border: 0; background: transparent; color: var(--ln-ink); font: inherit; font-size: 13px; }
-.cg-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 22px; padding-bottom: 44px; }
+/* A list, not a grid of tiles. With four theses a three-column grid always leaves an
+   orphan on the second row, and more to the point a grid invites ranking the claims
+   against each other while a list invites reading them one after another. */
+.cg-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; padding-bottom: 44px; }
 .call-status { margin-block: 18px; }
 .call-status-line { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 11px; }
 .call-clock { display: inline-flex; align-items: center; gap: 6px; font-weight: 550; }
@@ -33,7 +36,6 @@
 .call-rules p { margin-top: 12px; color: var(--ln-ink-2); }
 .call-rules a { display: inline-flex; align-items: center; min-height: 44px; }
 .cg-featured-head { margin-bottom: 32px; }
-@media(max-width:1100px) { .cg-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media(max-width:760px) {
  .cg-toolbar { align-items: stretch; flex-direction: column; gap: 14px; }
  .cg-search input { width: 100%; }
@@ -44,7 +46,6 @@
  .call-panel-heading { align-items: flex-start; }
 }
 @media(max-width:600px) {
- .cg-grid { grid-template-columns: 1fr; }
  .cc-claim { font-size: 27px; }
  .cs, .source-post--compact, .cc-holdings li { font-size: 12.5px; }
  .call-status > small { font-size: 11px; }
@@ -125,12 +126,17 @@
 }
 
 .source-post--compact {
+  display: flex; align-items: center; gap: 8px;
   border: 0; border-radius: 0; background: none; padding: 0;
-  margin: 11px 0 0; font-size: 11.5px; line-height: 1.5; color: var(--ln-ink-3);
+  margin: 12px 0 0; font-size: 11.5px; line-height: 1.4;
 }
-.landing .source-post--compact a { display: inline-flex; align-items: center; gap: 3px; color: var(--ln-accent); }
+.source-post-who { display: flex; flex-direction: column; min-width: 0; }
+.landing .cc .source-post--compact a {
+  display: inline-flex; align-items: center; gap: 3px; color: var(--ln-ink-2); font-weight: 550;
+}
+.landing .cc .source-post--compact a:hover { color: var(--ln-accent); }
 .source-post--compact .source-post-attribution {
-  margin: 0; padding: 0; border: 0; font-size: inherit; font-weight: 400; color: var(--ln-ink-3);
+  margin: 0; padding: 0; border: 0; font-size: 10.5px; font-weight: 400; color: var(--ln-ink-3);
 }
 
 @media (max-width: 420px) {
@@ -177,7 +183,35 @@
 .landing .cc .cc-claim a { color: var(--ln-ink); text-decoration: none; }
 .landing .cc .cc-claim a:hover { color: var(--ln-accent); text-decoration: underline; }
 
-.cc-byline { margin-top: 11px !important; font-size: 11.5px; color: var(--ln-ink-3); }
+.cc-byline {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 12px !important; font-size: 11.5px; color: var(--ln-ink-3);
+}
+/* The editorial theses get a mark too, so a card with a quoted author and a card without
+   have the same shape. A row that appears on some cards and not others is what made the
+   old grid's claims land at four different heights. */
+.cc-byline-mark {
+  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  background: var(--ln-surface-2);
+  border: 1px solid var(--ln-line);
+  background-image: url("/icon-192.png");
+  background-size: cover;
+}
+
+/* Author tile on a quoted post. */
+.am {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+  color: var(--ln-on-accent); font-size: 12px; font-weight: 600; line-height: 1;
+}
+
+/* Token logo tile. The tint shows through only if the image is missing. */
+.tl {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 5px; overflow: hidden; flex-shrink: 0;
+  font-size: 9px;
+}
+.tl img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* Tier 2 — the scoreboard */
 .cs {
@@ -209,18 +243,59 @@
 
 /* Tier 3 — the basket, and how to buy it */
 .cc-basket { padding: 14px 20px 16px; }
-.cc-holdings {
-  list-style: none; margin: 0; padding: 0;
-  display: flex; flex-wrap: wrap; gap: 6px;
-}
+/* One holding per row. Three across fitted the width only by clipping the tickers, and
+   a ticker abbreviated to "MSF…" tells a reader nothing — the whole point of the row is
+   which asset it is. Rows also keep the card's height the same whatever the tickers are. */
+.cc-holdings { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
 .cc-holdings li {
-  display: inline-flex; align-items: baseline; gap: 6px;
-  padding: 4px 9px; border-radius: 7px;
-  background: var(--ln-surface-2); font-size: 11.5px;
+  display: flex; align-items: center; gap: 8px; min-width: 0;
+  padding: 5px 2px; font-size: 12px;
 }
-.cc-holdings strong { font-weight: 550; }
-.cc-holdings span { color: var(--ln-ink-3); font-variant-numeric: tabular-nums; }
+.cc-holdings strong { font-weight: 550; white-space: nowrap; }
+/* Its own class, not `.cc-holdings span`: the logo tile is a span too, so the bare
+   selector pushed the logo to the right instead of the weight. */
+.cc-weight {
+  margin-left: auto; padding-left: 8px;
+  color: var(--ln-ink-3); font-variant-numeric: tabular-nums;
+}
 
 .cc-actions { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
 .cc-actions .ln-btn { flex: 1; min-height: 44px; padding: 11px 16px; font-size: 12.5px; }
 .cc-actions .ln-text-link { font-size: 12px; white-space: nowrap; }
+
+/* ─── Wide rows ───────────────────────────────────────────────────────────────
+ *
+ * Above 900px the three tiers stop stacking and run left to right — the idea, then
+ * whether it is working, then what to buy — which is the order a reader decides in laid
+ * out along the direction they already read in. The scoreboard gains enough width for
+ * the two bars to be worth comparing, which they are not in a narrow column.
+ *
+ * Below 900px every rule here drops and the row is the stacked card again.
+ */
+@media (min-width: 900px) {
+  .cc {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr) minmax(224px, 0.7fr);
+    align-items: stretch;
+  }
+
+  /* All three columns centre their own content, so a row reads as one horizontal band
+     rather than three columns of different heights hanging from the top. */
+  .cc-idea, .cs, .cc-basket {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 18px 22px;
+  }
+
+  /* Without this the chip is a flex item in a stretched column and runs the full width
+     of the claim beneath it. */
+  .cc-category { align-self: flex-start; }
+  .cc-claim { margin-top: 11px; font-size: 27px; }
+  .cc-idea .source-post--compact, .cc-idea .cc-byline { margin-top: 12px !important; }
+
+  .cs { border-block: 0; border-inline: 1px solid var(--ln-line); }
+
+  .cc-holdings li { padding-block: 3px; }
+  .cc-actions { margin-top: 12px; flex-direction: column; align-items: stretch; gap: 6px; }
+  .cc-actions .ln-btn { flex: none; }
+  .cc-actions .ln-text-link { text-align: center; min-height: 24px; }
+}

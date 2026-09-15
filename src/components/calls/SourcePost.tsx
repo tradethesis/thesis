@@ -1,6 +1,8 @@
 import { ArrowUpRight } from "lucide-react";
 import type { SourcePost as Post } from "@/lib/source-post";
 
+import { AuthorMark } from "./AuthorMark";
+
 /**
  * The post a thesis was built from, and the line that says we do not speak for its author.
  *
@@ -22,21 +24,22 @@ export function SourcePost({ post, compact = false }: { post: Post; compact?: bo
   });
 
   if (compact) {
-    // One line. The quotation is the subject of a thesis page and mere provenance on a
-    // card, and a card that reprints it pushes the basket off the bottom of the screen.
-    // What cannot be shortened away is the non-endorsement: quoting someone beside a
-    // basket implies they stand behind it unless it is said, in as many words, that they
-    // do not.
+    // The quotation is the subject of a thesis page and mere provenance on a card, so the
+    // card gets who it came from rather than what they said. What cannot be shortened away
+    // is the non-endorsement: quoting a person beside a basket implies they stand behind it
+    // unless it is said, in as many words, that they do not.
     return (
-      <p className="source-post source-post--compact">
-        Our reading of{" "}
-        <a href={post.url} target="_blank" rel="noopener noreferrer">
-          {post.handle} on X
-          <ArrowUpRight size={11} aria-hidden="true" />
-          <span className="ln-sr-only"> (opens in a new tab)</span>
-        </a>
-        . <span className="source-post-attribution">No author endorsement.</span>
-      </p>
+      <div className="source-post source-post--compact">
+        <AuthorMark handle={post.handle} author={post.author} />
+        <span className="source-post-who">
+          <a href={post.url} target="_blank" rel="noopener noreferrer">
+            {post.handle} on X
+            <ArrowUpRight size={11} aria-hidden="true" />
+            <span className="ln-sr-only"> (opens in a new tab)</span>
+          </a>
+          <span className="source-post-attribution">Our reading. No author endorsement.</span>
+        </span>
+      </div>
     );
   }
 
