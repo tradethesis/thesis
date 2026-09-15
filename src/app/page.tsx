@@ -11,7 +11,7 @@ import { HowItWorks } from "@/components/landing/HowItWorks";
 import { WhatYouShouldKnow } from "@/components/landing/WhatYouShouldKnow";
 import { SiteFooter } from "@/components/landing/SiteFooter";
 import { ClosingCta } from "@/components/landing/SiteFooter";
-import { JoinForm } from "@/components/join/JoinForm";
+import { WaitlistLanding } from "@/components/join/WaitlistLanding";
 import { siteMode } from "@/lib/site-mode";
 import "./join/join.css";
 
@@ -44,36 +44,7 @@ export default async function Home() {
   // where the catalogue would be. The product is built and running on beta; this is the
   // front door while access is worked out, not a placeholder for something that does not
   // exist.
-  if (gated) {
-    return (
-      <div className="landing">
-        <a className="ln-skip" href="#main">
-          Skip to content
-        </a>
-        <SiteHeader active="home" />
-        <main id="main">
-          <Hero gated />
-          <section className="ln-section" id="join">
-            <div className="ln-container jn-main">
-              <header className="jn-head">
-                <p className="ln-eyebrow">Early access</p>
-                <h2 className="jn-h1">Get in when buying opens.</h2>
-                <p className="jn-lead">
-                  Four theses are written and running, each with its sources and the strongest argument against it.
-                  Buying is open to a small allowlist of wallets while market access is worked out. Leave an email and
-                  we will tell you when that changes.
-                </p>
-              </header>
-              <JoinForm source="home" />
-            </div>
-          </section>
-          <HowItWorks />
-          <WhatYouShouldKnow />
-        </main>
-        <SiteFooter />
-      </div>
-    );
-  }
+  if (gated) return <WaitlistLanding source="home" />;
 
   const [theses, calls] = await Promise.all([listPublishedTheses(), getCalls()]);
   return (

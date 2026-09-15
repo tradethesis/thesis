@@ -1,41 +1,180 @@
 /*
- * Join. One column, one decision, nothing to scroll past before the field.
- * Tokens come from landing.css.
+ * The waitlist page.
+ *
+ * A headline, a field, a button, and the paper city holding the floor. The artwork is the
+ * page's whole visual argument, so it gets the room: full bleed along the bottom, faded
+ * into the paper at its top edge so it reads as ground rather than as a picture pasted on.
+ *
+ * Laid out as a full-height column with the artwork as the last row, so the copy sits in
+ * the upper third on a tall phone and stays centred on a short laptop, without either one
+ * needing its own breakpoint.
  */
 
-.jn-main { padding-block: clamp(36px, 7vw, 72px) clamp(56px, 9vw, 96px); max-width: 620px; }
-.jn-head { margin-bottom: 28px; }
-.jn-h1 { font-size: clamp(32px, 5.4vw, 48px); line-height: 1.06; letter-spacing: -0.034em; font-weight: 620; margin: 12px 0 14px; }
-.jn-lead { color: var(--ln-ink-2); font-size: 17px; line-height: 1.58; margin: 0; max-width: 52ch; }
-
-.jn-card { background: var(--ln-surface); border: 1px solid var(--ln-line); border-radius: var(--ln-radius); padding: clamp(20px, 4vw, 28px); }
-.jn-field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 18px; }
-.jn-field label { font-size: 13px; font-weight: 550; }
-.jn-field small { color: var(--ln-ink-3); font-size: 12px; }
-.jn-field input, .jn-field textarea {
-  font: inherit; font-size: 16px; padding: 12px 14px; min-height: 48px;
-  border: 1px solid var(--ln-line-strong); border-radius: 10px;
-  background: var(--ln-surface); color: var(--ln-ink); width: 100%;
+.jn-page {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  background: var(--ln-bg);
+  overflow-x: hidden;
 }
-.jn-field textarea { min-height: 88px; resize: vertical; line-height: 1.5; }
-.jn-field input:focus-visible, .jn-field textarea:focus-visible { outline: 2px solid var(--ln-focus); outline-offset: 2px; }
-.jn-field--error input { border-color: var(--ln-accent); }
-.jn-error { color: var(--ln-accent); font-size: 13px; }
 
-.jn-submit { width: 100%; justify-content: center; min-height: 48px; }
-.jn-fine { margin-top: 16px; font-size: 12px; line-height: 1.55; color: var(--ln-ink-3); }
+.jn-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: clamp(32px, 7vw, 72px) clamp(20px, 4vw, 40px);
+}
 
-.jn-done { text-align: left; }
-.jn-done h2 { font-size: 24px; letter-spacing: -0.025em; font-weight: 600; margin: 0 0 12px; }
-.jn-done p { color: var(--ln-ink-2); font-size: 15px; line-height: 1.6; margin: 0 0 10px; }
-.jn-done-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.jn-eyebrow {
+  color: var(--ln-brand);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  margin: 0 0 16px;
+}
 
-.jn-honest { margin-top: 26px; border-top: 1px solid var(--ln-line); padding-top: 20px; }
-.jn-honest h2 { font-size: 15px; font-weight: 600; margin: 0 0 10px; }
-.jn-honest ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 9px; }
-.jn-honest li { font-size: 14px; line-height: 1.5; color: var(--ln-ink-2); display: flex; gap: 9px; }
-.jn-honest li::before { content: "·"; color: var(--ln-brand); font-weight: 700; }
+.jn-h1 {
+  font-size: clamp(38px, 7.4vw, 76px);
+  line-height: 1.01;
+  letter-spacing: -0.04em;
+  font-weight: 620;
+  margin: 0;
+  max-width: 14ch;
+  text-wrap: balance;
+}
 
-.jn-spin { animation: jn-rotate 1s linear infinite; }
-@keyframes jn-rotate { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { .jn-spin { animation: none; } }
+.jn-h1 em {
+  font-style: normal;
+  color: var(--ln-brand);
+}
+
+.jn-sub {
+  margin: 18px 0 0;
+  font-size: clamp(16px, 2vw, 19px);
+  line-height: 1.55;
+  color: var(--ln-ink-2);
+  max-width: 46ch;
+}
+
+/* ------------------------------------------------------------------- form */
+
+.jn-form { margin-top: clamp(26px, 4vw, 38px); max-width: 480px; }
+
+.jn-row {
+  display: flex;
+  gap: 8px;
+  background: var(--ln-surface);
+  border: 1px solid var(--ln-line-strong);
+  border-radius: 14px;
+  padding: 6px;
+  transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
+}
+
+.jn-row:focus-within {
+  border-color: var(--ln-brand);
+  box-shadow: 0 0 0 4px oklch(64% 0.22 34 / 0.12);
+}
+
+.jn-row input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 16px; /* 16px or iOS zooms the page on focus */
+  padding: 12px 14px;
+  min-height: 52px;
+  border: 0;
+  background: transparent;
+  color: var(--ln-ink);
+}
+
+.jn-row input::placeholder { color: var(--ln-ink-3); }
+.jn-row input:focus { outline: none; }
+
+.jn-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  min-height: 52px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--ln-ink);
+  color: var(--ln-bg);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 160ms ease-out;
+}
+
+.jn-go:hover:not(:disabled) { background: var(--ln-brand); }
+.jn-go:disabled { opacity: 0.6; cursor: default; }
+.jn-go:focus-visible { outline: 2px solid var(--ln-focus); outline-offset: 2px; }
+
+@media (max-width: 460px) {
+  .jn-row { flex-direction: column; padding: 8px; }
+  .jn-go { justify-content: center; }
+}
+
+.jn-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0 0;
+  font-size: 14px;
+  color: var(--ln-brand);
+}
+
+.jn-done {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: clamp(26px, 4vw, 38px) 0 0;
+  font-size: 17px;
+  font-weight: 550;
+  color: var(--ln-ink);
+}
+
+.jn-done svg { color: var(--ln-confirmed); flex-shrink: 0; }
+
+.jn-note { margin: 16px 0 0; font-size: 13px; color: var(--ln-ink-3); }
+
+/* ---------------------------------------------------------------- artwork */
+
+.jn-art {
+  position: relative;
+  width: 100%;
+  line-height: 0;
+  pointer-events: none;
+  /* Fade the top edge into the paper so the city sits on the page rather than on top of it. */
+  mask-image: linear-gradient(to bottom, transparent, black 22%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 22%);
+}
+
+.jn-art img {
+  width: 100%;
+  height: auto;
+  display: block;
+  mix-blend-mode: multiply;
+}
+
+/* On a narrow screen the city is mostly empty paper on the right, so lean it left and
+   let it run past the edge rather than shrinking it into nothing. */
+@media (max-width: 760px) {
+  .jn-art { margin-inline: -18%; width: 136%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jn-row { transition: none; }
+  .jn-go { transition: none; }
+}
+
+/* The waitlist header carries the wordmark and nothing else, so it needs no border or
+   height of its own. */
+.jn-header { border: 0; background: transparent; }
+.jn-header .ln-container { display: flex; align-items: center; min-height: 84px; }
+
+/* The wordmark is the only link on the page, so it clears the 44px target rather than
+   sitting at the 36px the header elsewhere gets away with. */
+.jn-header .ln-wordmark { min-height: 44px; display: inline-flex; align-items: center; }
