@@ -17,7 +17,13 @@ const WIDTHS = [320, 390, 768, 1440];
 fs.mkdirSync(OUT, { recursive: true });
 
 (async () => {
-  const browser = await chromium.launch({ headless: true });
+    // HOST_RESOLVE="name=1.2.3.4" pins a hostname, for when the machine's resolver has a
+  // stale negative cache for a domain that was queried before its DNS record existed.
+  const pin = process.env.HOST_RESOLVE;
+  const browser = await chromium.launch({
+    headless: true,
+    args: pin ? [`--host-resolver-rules=MAP ${pin.split("=")[0]} ${pin.split("=")[1]}`, "--ignore-certificate-errors"] : [],
+  });
   const results = [];
   let failures = 0;
 
@@ -31,11 +37,25 @@ fs.mkdirSync(OUT, { recursive: true });
     console.log(`\n${width}px`);
     const page = await browser.newPage({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
     const errors = [];
+    const brokenAssets = [];
     page.on("pageerror", (e) => errors.push(e.message));
+    page.on("response", (r) => {
+      if (r.status() >= 400 && r.url().includes("/_next/static/")) brokenAssets.push(`${r.status()} ${r.url().split("/").pop()}`);
+    });
 
     await page.goto(`${BASE}/explore`, { waitUntil: "networkidle", timeout: 60000 });
     const total = await page.locator(".cg-card").count();
     check("grid renders cards", total > 0, `${total} cards`);
+
+    // Check this before anything that clicks. When the client bundle fails to load, React
+    // never attaches and every interaction silently does nothing -- which looks exactly
+    // like a broken filter or a dead button, and sends you hunting in the wrong place.
+    check("client assets all loaded", brokenAssets.length === 0, brokenAssets.slice(0, 3).join(", "));
+    const hydrated = await page.evaluate(() => {
+      const el = document.querySelector("button[aria-pressed]") || document.querySelector("a");
+      return el ? Object.keys(el).some((k) => k.startsWith("__react")) : false;
+    });
+    check("React is hydrated", hydrated, hydrated ? "" : "no React fibre on the DOM; clicks will do nothing");
 
     // The conversation must lead, with the non-endorsement attached to it.
     const quotes = await page.locator(".source-post").count();

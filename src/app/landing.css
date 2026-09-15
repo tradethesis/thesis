@@ -261,3 +261,13 @@ body:has(.landing) { background: var(--ln-bg); }
   .ln-holding-details summary { min-height: 44px; }
   .ln-cost summary { line-height: 1.7; }
 }
+
+/* At 320px a fourth tab pushed the header three pixels past the viewport. Tighten the tab
+   padding rather than hide a destination: the nav is how someone reaches Join, and the
+   whole row still clears the 44px touch target. */
+@media (max-width: 380px) {
+  .ln-header-inner { gap: 10px; }
+  .ln-header-nav { gap: 8px; }
+  .ln-nav-tabs { padding: 3px; }
+  .landing .ln-nav-tabs a { padding: 10px 11px; font-size: 11px; }
+}
