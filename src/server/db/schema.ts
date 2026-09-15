@@ -439,3 +439,33 @@ export const event = pgTable("event", {
   props: jsonb("props"),
   createdAt,
 });
+
+/* ------------------------------------------------------------------ waitlist */
+
+/**
+ * People who want in before the doors open.
+ *
+ * Deliberately small. An email address is enough to tell someone the doors are open, and
+ * everything else is optional, because asking for more than you need is how a signup form
+ * becomes a reason not to sign up.
+ *
+ * What is NOT here is the point: no IP address, no user agent, no referrer, no tracking id.
+ * PRD §13 keeps wallet identities out of third-party analytics, and the same reasoning
+ * applies to an email nobody agreed to be profiled by.
+ */
+export const waitlistSignup = pgTable(
+  "waitlist_signup",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    /** Stored lowercased and trimmed so one person cannot occupy two places. */
+    email: text("email").notNull(),
+    /** Optional. Someone who already has a wallet can be let in first. */
+    wallet: text("wallet"),
+    /** Optional, free text: what they would want a thesis about. */
+    note: text("note"),
+    /** Which surface they signed up from. A page name, never a tracking id. */
+    source: text("source").notNull().default("join"),
+    createdAt,
+  },
+  (t) => [uniqueIndex("waitlist_email_key").on(t.email)],
+);
