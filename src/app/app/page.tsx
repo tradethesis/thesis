@@ -11,7 +11,7 @@ import "../buy/[slug]/buy.css";
 import "./app.css";
 
 export const metadata: Metadata = {
-  title: "Open calls",
+  title: "Discover theses",
   description:
     "Every open call: the idea, how it is doing against its benchmark, and the basket you can buy in your own wallet.",
   alternates: { canonical: "/app" },
@@ -42,7 +42,9 @@ export default async function AppPage() {
 
       <main id="main" className="ap-main">
         <div className="ap-head">
-          <h1 className="ap-title">Open calls</h1>
+          <p className="ln-eyebrow">A different way to see what’s next</p>
+          <h1 className="ap-title">Find an idea worth backing.</h1>
+          <p className="ap-intro">Read the take. Question the logic. Make it your position.</p>
         </div>
 
         <CallGrid theses={theses} calls={calls} />

@@ -68,8 +68,8 @@ fs.mkdirSync(OUT, { recursive: true });
     await page.waitForFunction(() => document.querySelector('button[aria-pressed="true"]')?.textContent?.includes("Resolved"), null, { timeout: 5000 }).catch(() => {});
     check("Resolved becomes pressed", (await resolved.getAttribute("aria-pressed")) === "true", `aria-pressed=${await resolved.getAttribute("aria-pressed")}`);
     check("empty state explains itself", await page.locator(".cg-empty").isVisible());
-    await page.getByRole("button", { name: "See all calls", exact: true }).click();
-    check("See all calls restores the grid", (await page.locator(".cc").count()) === total);
+    await page.getByRole("button", { name: "Discover theses", exact: true }).click();
+    check("Discover theses restores the grid", (await page.locator(".cc").count()) === total);
 
     // Search, including by the source author
     const search = page.getByRole("searchbox");

@@ -29,3 +29,11 @@ Generic blue finance dashboards, neon crypto terminals, speculative return promi
 ## Accessibility
 
 Target WCAG 2.2 AA. Keyboard access, explicit labels, visible focus, accessible status updates, 44 px interactive targets, responsive 360 px layouts, and reduced-motion support.
+
+## Discovery and return visits
+
+The app should feel like finding a sharp investment argument in a thoughtful group chat: curious while reading, opinionated when making a case, and calm when handling money. Lead with the causal link between an idea and its assets. Keep the original source distinct from the basket's author. Performance measures the portfolio, not whether the underlying argument is true.
+
+Discover, Following and Resolved share one public feed. Each entry exposes its case, strongest objection and asset rationale inline, with a permanent detail link for sources and history. Following preserves existing browser bookmarks and surfaces published editorial updates and call status. It is local to this browser and does not send notifications or sync to an account. Share uses the device share sheet, then clipboard, then a selectable URL if access is refused.
+
+Buying starts with an amount and the published allocation. Customization is optional and preserves edited weights when collapsed. Always name the allocation author, especially when a basket draws inspiration from someone else's post.

@@ -1,14 +1,3 @@
-.cg-toolbar { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding-block: 6px 28px; }
-.cg-filters { display: flex; gap: 5px; flex-wrap: wrap; }
-.cg-filters button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 44px; border: 1px solid transparent; padding: 10px 16px; background: transparent; color: var(--ln-ink-2); border-radius: 8px; font: inherit; font-size: 13px; cursor: pointer; }
-.cg-filters button[aria-pressed="true"] { background: var(--ln-ink); color: var(--ln-surface); }
-.cg-filters button:hover:not([aria-pressed="true"]) { background: var(--ln-surface-2); }
-.cg-search { display: flex; align-items: center; gap: 8px; padding: 0 13px; border: 1px solid var(--ln-line); border-radius: 9px; min-height: 44px; color: var(--ln-ink-3); background: var(--ln-surface); }
-.cg-search input { width: 225px; min-width: 0; min-height: 44px; border: 0; background: transparent; color: var(--ln-ink); font: inherit; font-size: 13px; }
-/* A list, not a grid of tiles. With four theses a three-column grid always leaves an
-   orphan on the second row, and more to the point a grid invites ranking the claims
-   against each other while a list invites reading them one after another. */
-.cg-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; padding-bottom: 44px; }
 .call-status { margin-block: 18px; }
 .call-status-line { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 11px; }
 .call-clock { display: inline-flex; align-items: center; gap: 6px; font-weight: 550; }
@@ -35,347 +24,127 @@
 .call-rules summary { display: flex; justify-content: space-between; align-items: center; min-height: 48px; }
 .call-rules p { margin-top: 12px; color: var(--ln-ink-2); }
 .call-rules a { display: inline-flex; align-items: center; min-height: 44px; }
-.cg-featured-head { margin-bottom: 32px; }
+
+/* Discovery is a reading surface. The argument owns the space; execution sits beside it. */
+.cg-toolbar { display:flex; align-items:center; justify-content:space-between; gap:20px; padding-block:12px 22px; }
+.cg-filters { display:flex; gap:4px; }
+.cg-filters button, .feed-action { display:inline-flex; align-items:center; justify-content:center; gap:7px; min-height:44px; border:0; background:transparent; color:var(--ln-ink-2); padding:9px 14px; font:inherit; font-size:13px; border-radius:7px; cursor:pointer; }
+.cg-filters button[aria-pressed="true"] { background:var(--ln-ink); color:var(--ln-surface); }
+.cg-filters button:hover:not([aria-pressed="true"]), .feed-action:hover { background:var(--ln-surface-2); color:var(--ln-ink); }
+.feed-action[aria-pressed="true"] { color:var(--ln-accent); }
+.feed-action:disabled { opacity:.5; cursor:wait; }
+.cg-search { display:flex; align-items:center; gap:8px; padding:0 13px; border:1px solid var(--ln-line); border-radius:9px; color:var(--ln-ink-3); background:var(--ln-surface); }
+.cg-search input { width:245px; min-width:0; min-height:44px; border:0; background:transparent; color:var(--ln-ink); font:inherit; font-size:13px; }
+.cg-grid { display:grid; grid-template-columns:minmax(0,1fr); gap:24px; padding-bottom:44px; }
+.cc { min-width:0; border:1px solid var(--ln-line); border-radius:14px; background:var(--ln-surface); overflow:hidden; }
+.cc-overview { display:grid; grid-template-columns:minmax(0,1.8fr) minmax(260px,1fr); }
+.cc-idea { min-width:0; padding:28px 32px 20px; }
+.cc-meta { display:flex; flex-wrap:wrap; align-items:center; gap:10px; font-size:11px; color:var(--ln-ink-3); }
+.cc-category { padding:4px 9px; border-radius:5px; background:var(--ln-surface-2); color:var(--ln-ink-2); }
+/* !important because `.landing :is(p,h1,h2,...)` in landing.css is (0,2,1) and was
+   collapsing this to zero — the chip row sat directly on the claim. */
+.cc-claim { margin-top:20px !important; font-size:29px; line-height:1.15; letter-spacing:-.035em; font-weight:600; max-width:26ch; }
+.landing .cc .cc-claim a { color:var(--ln-ink); text-decoration:none; }
+.landing .cc .cc-claim a:hover { color:var(--ln-accent); }
+.cc-connection { margin-top:13px !important; font-size:15px; line-height:1.65; color:var(--ln-ink-2); max-width:65ch; }
+.cc-social { display:flex; align-items:flex-start; flex-wrap:wrap; gap:6px; margin-top:14px; margin-left:-10px; }
+.feed-action { padding-inline:10px; }
+.follow-note, .follow-error, .share-status { font-size:12px; color:var(--ln-ink-3); line-height:1.5; }
+.follow-error { display:block; color:var(--ln-accent); max-width:30ch; }
+.share-control { display:flex; flex-wrap:wrap; align-items:center; gap:4px; }
+.share-fallback { max-width:100%; width:230px; border:1px solid var(--ln-line); border-radius:6px; padding:10px; font:inherit; font-size:12px; }
+.cc-basket { padding:30px 28px 24px; align-self:center; }
+.cc-basket-label { font-size:11px; font-weight:550; color:var(--ln-ink-3); margin-bottom:10px !important; }
+.cc-holdings { list-style:none; padding:0; margin:0; }
+.cc-holdings li { display:flex; align-items:center; gap:10px; padding-block:10px; }
+.cc-asset { display:flex; flex-direction:column; min-width:0; }
+.cc-asset strong { font-size:13px; font-weight:550; }
+.cc-asset small { font-size:11px; color:var(--ln-ink-3); margin-top:3px; line-height:1.4; }
+.cc-weight { margin-left:auto; font-size:13px; font-variant-numeric:tabular-nums; }
+.tl { width:27px; height:27px; border-radius:6px; overflow:hidden; flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; }
+.tl img { width:100%; height:100%; object-fit:cover; }
+.cc-actions { display:flex; margin-top:17px; }
+.cc-actions > .ln-btn { min-height:46px; flex:1; font-size:13px; }
+.cc-basket-note { margin-top:10px !important; color:var(--ln-ink-3); font-size:11px; text-align:center; }
+.cc-read { border-top:1px solid var(--ln-line); }
+.cc-read > summary { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:15px 32px; min-height:60px; font-size:13px; font-weight:550; cursor:pointer; }
+.cc-read > summary small { margin-left:14px; color:var(--ln-ink-3); font-size:11px; font-weight:400; }
+.cc-read > summary:hover { background:var(--ln-surface-2); }
+.cc-read[open] > summary > svg, .call-brief[open] .call-brief-clock > svg:last-child { transform:rotate(180deg); }
+.cc-research { display:grid; grid-template-columns:1fr 1fr; gap:30px; padding:16px 32px 30px; }
+.cc-research h3 { font-size:18px; font-weight:550; letter-spacing:-.025em; margin-bottom:12px; }
+.cc-research p { font-size:14px; line-height:1.75; color:var(--ln-ink-2); max-width:70ch; }
+.cc-objection h3 { color:var(--ln-accent); }
+.cc-research-holdings { grid-column:1/-1; }
+.cc-research-holdings > div { padding-block:18px; border-top:1px solid var(--ln-line); }
+.cc-research-holdings h4 { font-size:14px; font-weight:550; margin-bottom:8px; }
+.cc-research-holdings h4 span { font-size:12px; color:var(--ln-ink-3); font-weight:400; margin-left:8px; }
+.cc-research .cc-limitation { margin-top:8px; }
+.cc-full-link { display:inline-flex; align-items:center; gap:6px; min-height:44px; font-size:13px; grid-column:1/-1; justify-self:start; }
+.call-brief { border-top:1px solid var(--ln-line); padding:0 32px; background:var(--ln-surface-sunken); font-size:12px; color:var(--ln-ink-2); }
+.call-brief > summary { display:flex; justify-content:space-between; align-items:center; gap:16px; min-height:60px; padding-block:12px; cursor:pointer; }
+.call-brief summary small { display:block; font-size:10px; color:var(--ln-ink-3); margin-top:3px; }
+.call-brief-clock { display:inline-flex; align-items:center; gap:7px; white-space:nowrap; font-size:11px; color:var(--ln-ink-3); }
+.call-brief-detail { padding-block:0 20px; max-width:70ch; font-size:12px; line-height:1.65; }
+.call-brief-detail p + p { margin-top:10px; }
+.call-brief-detail dl { display:flex; gap:36px; padding-block:14px; }
+.call-brief-detail dt { color:var(--ln-ink-3); }
+.call-brief-detail dd { margin:4px 0 0; font-variant-numeric:tabular-nums; font-size:18px; color:var(--ln-ink); }
+.call-brief--pending { padding-block:15px; }
+.cg-follow-intro { margin-block:14px 26px; max-width:65ch; }
+.cg-follow-intro h2 { font-size:22px; letter-spacing:-.03em; font-weight:550; }
+.cg-follow-intro p { font-size:14px; color:var(--ln-ink-2); line-height:1.6; margin-top:8px; }
+.cc-follow-update { padding:18px 32px; border-top:1px solid var(--ln-line); background:var(--ln-surface-sunken); font-size:13px; line-height:1.65; }
+.cc-follow-update strong { display:block; }
+.cc-follow-update p { color:var(--ln-ink-2); max-width:70ch; }
+.cc-follow-update a { display:inline-flex; align-items:center; gap:4px; min-height:44px; }
+.source-post { padding:20px; border:1px solid var(--ln-line); border-radius:10px; background:var(--ln-surface-sunken); margin-bottom:18px; }
+.source-post-meta { display:flex; justify-content:space-between; gap:12px; font-size:12px; color:var(--ln-ink-3); }
+.source-post-meta a { display:inline-flex; align-items:center; gap:4px; }
+.source-post blockquote { margin:12px 0; white-space:pre-line; font-size:16px; line-height:1.6; }
+.source-post-credit { font-size:12px; color:var(--ln-ink-3); }
+.source-post-attribution { font-size:11px; color:var(--ln-ink-3); margin-top:12px; line-height:1.5; }
+.source-post--compact { padding:14px 0 0; margin:16px 0 0; background:none; border:0; border-top:1px solid var(--ln-line); border-radius:0; }
+.source-post--compact blockquote { display:block; margin:0; font-size:13px; line-height:1.6; color:var(--ln-ink-2); }
+.source-post--compact .source-post-credit { display:flex; align-items:center; gap:8px; margin-top:10px; }
+.source-post-who { display:flex; flex-wrap:wrap; align-items:center; gap:5px 10px; }
+.landing .cc .source-post-who a { display:inline-flex; gap:3px; align-items:center; color:var(--ln-ink-2); font-size:11px; }
+.source-post--compact .source-post-attribution { margin:0; font-size:10px; }
+.am { display:inline-flex; align-items:center; justify-content:center; width:25px; height:25px; border-radius:50%; font-size:11px; font-weight:550; flex-shrink:0; color:var(--ln-on-accent); }
+.bm { border:0; padding:0; background:transparent; max-width:min(560px,100vw - 32px); width:100%; max-height:calc(100dvh - 40px); margin:auto; overflow:visible; color:var(--ln-ink); }
+.bm::backdrop { background:oklch(25% .012 140 / .42); }
+.bm-panel { position:relative; max-height:calc(100dvh - 40px); overflow-y:auto; overscroll-behavior:contain; background:var(--ln-surface); border:1px solid var(--ln-line); border-radius:16px; padding:26px; box-shadow:0 24px 60px oklch(25% .012 140 / .18); }
+.bm-close { position:sticky; top:0; float:right; display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; margin:-12px -12px 0 8px; border:1px solid var(--ln-line); border-radius:9px; background:var(--ln-surface); color:var(--ln-ink-2); cursor:pointer; z-index:1; }
+.bm-panel .by-panel { border:0; padding:0; background:transparent; }
+.bm-panel .by-main { padding:0; max-width:none; }
+@media(max-width:899px) {
+ .cc-overview { grid-template-columns:1fr; }
+ .cc-idea { padding:24px 24px 0; }
+ .cc-basket { padding:18px 24px 22px; }
+ .cc-holdings li { padding-block:7px; }
+ .cc-read > summary, .cc-follow-update { padding-inline:24px; }
+ .cc-research { grid-template-columns:1fr; padding-inline:24px; gap:24px; }
+ .call-brief { padding-inline:24px; }
+ .cc-claim { font-size:26px; max-width:30ch; }
+}
 @media(max-width:760px) {
- .cg-toolbar { align-items: stretch; flex-direction: column; gap: 14px; }
- .cg-search input { width: 100%; }
- .cg-filters { justify-content: space-between; }
- .cg-filters button { padding-inline: 12px; }
- .cg-grid { gap: 20px; }
- .call-panel { padding: 22px 18px; }
- .call-panel-heading { align-items: flex-start; }
+ .cg-toolbar { flex-direction:column; align-items:stretch; gap:14px; }
+ .cg-search input { width:100%; }
+ .cg-filters { gap:6px; }
+ .cg-filters button { flex:1; }
+ .cc-read > summary small { display:block; margin:4px 0 0; }
+ .source-post-meta { flex-wrap:wrap; }
 }
-@media(max-width:600px) {
- .cc-claim { font-size: 27px; }
- .cs, .source-post--compact, .cc-holdings li { font-size: 12.5px; }
- .call-status > small { font-size: 11px; }
- .cc-actions .ln-btn, .cc-actions .ln-text-link { font-size: 13px; }
- .call-dates > div { display: block; }
- .call-dates dd { text-align: left; margin-top: 3px; }
+@media(max-width:420px) {
+ .cc-idea { padding:20px 18px 0; }
+ .cc-basket { padding-inline:18px; }
+ .cc-claim { font-size:25px; }
+ .cc-connection { font-size:14px; }
+ .cc-read > summary, .cc-follow-update, .call-brief { padding-inline:18px; }
+ .cc-research { padding-inline:18px; }
+ .call-brief > summary { align-items:flex-start; flex-direction:column; gap:8px; }
 }
-
-/* ------------------------------------------------------- the conversation
- *
- * The original post leads, and it has to read as someone else's writing rather than ours.
- * Hence the quote mark, the ivory ground and the rule down the left: a different voice on
- * the page, with our interpretation underneath it and labelled as ours.
- *
- * The non-endorsement line is part of the component, not an optional prop, so a card can
- * never show a person's words next to a basket without saying they did not pick it.
- */
-
-.source-post {
-  border: 1px solid var(--ln-line);
-  border-left: 3px solid var(--ln-brand);
-  border-radius: 10px;
-  background: var(--ln-surface-sunken);
-  padding: 14px 16px;
-  margin-bottom: 18px;
-}
-
-.source-post-meta {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 10px;
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--ln-ink-3);
-}
-
-.source-post-meta a {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  text-transform: none;
-  letter-spacing: 0;
-  font-size: 12px;
-  color: var(--ln-accent);
-  white-space: nowrap;
-}
-
-.source-post blockquote {
-  margin: 10px 0 0;
-  font-size: 16px;
-  line-height: 1.45;
-  letter-spacing: -0.012em;
-  color: var(--ln-ink);
-  white-space: pre-line;
-}
-
-.source-post-credit {
-  margin: 8px 0 0;
-  font-size: 12px;
-  color: var(--ln-ink-3);
-}
-
-.source-post-attribution {
-  margin: 12px 0 0;
-  padding-top: 10px;
-  border-top: 1px solid var(--ln-line);
-  font-size: 11px;
-  line-height: 1.45;
-  color: var(--ln-ink-2);
-  font-weight: 550;
-}
-
-.source-post-attribution span {
-  font-weight: 400;
-  color: var(--ln-ink-3);
-}
-
-.source-post--compact {
-  border: 0; border-left: 2px solid var(--ln-line-strong); border-radius: 0;
-  background: none; padding: 0 0 0 12px; margin: 13px 0 0;
-}
-.source-post--compact blockquote {
-  margin: 0; font-size: 13.5px; line-height: 1.45; color: var(--ln-ink);
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-}
-.source-post--compact .source-post-credit {
-  display: flex; align-items: center; gap: 8px; margin: 9px 0 0; font-size: 11.5px; line-height: 1.4;
-}
-.source-post-who { display: flex; flex-direction: column; min-width: 0; }
-.landing .cc .source-post--compact a {
-  display: inline-flex; align-items: center; gap: 3px; color: var(--ln-ink-2); font-weight: 550;
-}
-.landing .cc .source-post--compact a:hover { color: var(--ln-accent); }
-.source-post--compact .source-post-attribution {
-  margin: 0; padding: 0; border: 0; font-size: 10.5px; font-weight: 400; color: var(--ln-ink-3);
-}
-
-@media (max-width: 420px) {
-  .source-post-meta { flex-direction: column; gap: 4px; }
-  .source-post blockquote { font-size: 15px; }
-}
-
-/* ─── Call card ───────────────────────────────────────────────────────────────
- *
- * Three tiers in the order a reader decides in: the idea, whether it is working,
- * and how to act on it. Each tier is a block of the card rather than a run of
- * margins, so the seams land in the same place across a grid row however long a
- * claim happens to be.
- *
- * The middle tier is sunken and the bottom tier is not, which is what makes the
- * buy action read as the end of the card rather than one more row of text.
- */
-
-.cc {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-  border: 1px solid var(--ln-line);
-  border-radius: 16px;
-  background: var(--ln-surface);
-  overflow: hidden;
-}
-
-/* Tier 1 — the idea */
-.cc-idea { flex: 1; padding: 18px 20px 16px; }
-.cc-category {
-  display: inline-block; padding: 3px 9px; border-radius: 999px; font-size: 11px;
-  background: var(--ln-surface-2); color: var(--ln-ink-2);
-}
-
-.cc-claim {
-  margin-top: 13px;
-  font-size: 25px; line-height: 1.12; letter-spacing: -0.04em; font-weight: 580;
-}
-/* Three classes deep on purpose. `.landing a:not(.ln-btn):not(.ln-wordmark)` in
-   landing.css is (0,3,1) and was quietly winning, which painted every card's claim in
-   the accent — so the headline competed with the button meant to be the loudest thing
-   on the card. This ties that specificity and wins on order. */
-.landing .cc .cc-claim a { color: var(--ln-ink); text-decoration: none; }
-.landing .cc .cc-claim a:hover { color: var(--ln-accent); text-decoration: underline; }
-
-.cc-byline {
-  display: flex; align-items: center; gap: 8px;
-  margin-top: 12px !important; font-size: 11.5px; color: var(--ln-ink-3);
-}
-/* The editorial theses get a mark too, so a card with a quoted author and a card without
-   have the same shape. A row that appears on some cards and not others is what made the
-   old grid's claims land at four different heights. */
-.cc-byline-mark {
-  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
-  background: var(--ln-surface-2);
-  border: 1px solid var(--ln-line);
-  background-image: url("/icon-192.png");
-  background-size: cover;
-}
-
-/* Author tile on a quoted post. */
-.am {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
-  color: var(--ln-on-accent); font-size: 12px; font-weight: 600; line-height: 1;
-}
-
-/* Token logo tile. The tint shows through only if the image is missing. */
-.tl {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 18px; height: 18px; border-radius: 5px; overflow: hidden; flex-shrink: 0;
-  font-size: 9px;
-}
-.tl img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-/* Tier 2 — the scoreboard */
-.cs {
-  padding: 14px 20px;
-  background: var(--ln-surface-sunken);
-  border-block: 1px solid var(--ln-line);
-  font-size: 12px;
-}
-.cs--pending { color: var(--ln-ink-3); }
-
-.cs-clock { display: inline-flex; align-items: center; gap: 5px; margin-left: auto; color: var(--ln-ink-3); white-space: nowrap; }
-.cs-clock i { width: 5px; height: 5px; border-radius: 50%; background: var(--ln-brand); }
-.cs--resolved .cs-clock i, .cs--stale .cs-clock i { background: var(--ln-ink-3); }
-
-.cs-bars { display: grid; gap: 6px; }
-.cs-bar { display: grid; grid-template-columns: 4.2em 1fr auto; align-items: center; gap: 10px; }
-.cs-bar-label { color: var(--ln-ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.cs-bar-track { height: 5px; border-radius: 3px; background: var(--ln-surface-2); overflow: hidden; }
-.cs-bar-fill { display: block; height: 100%; border-radius: 3px; background: var(--ln-ink-3); }
-.cs-bar--basket .cs-bar-fill { background: var(--ln-ink); }
-.cs-bar.is-down .cs-bar-fill { background: var(--ln-accent); }
-.cs-bar--basket.is-up .cs-bar-fill { background: var(--ln-confirmed); }
-.cs-bar-value { font-variant-numeric: tabular-nums; font-weight: 550; }
-
-.cs-edge, .cs-waiting { display: flex; align-items: center; gap: 10px; margin: 10px 0 0 !important; color: var(--ln-ink-2); }
-.cs-edge strong { font-variant-numeric: tabular-nums; font-weight: 600; }
-.cs-edge.is-ahead strong { color: var(--ln-confirmed); }
-.cs-edge.is-behind strong { color: var(--ln-accent); }
-
-/* Tier 3 — the basket, and how to buy it */
-.cc-basket { padding: 14px 20px 16px; }
-/* One holding per row. Three across fitted the width only by clipping the tickers, and
-   a ticker abbreviated to "MSF…" tells a reader nothing — the whole point of the row is
-   which asset it is. Rows also keep the card's height the same whatever the tickers are. */
-.cc-holdings { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
-.cc-holdings li {
-  display: flex; align-items: center; gap: 8px; min-width: 0;
-  padding: 5px 2px; font-size: 12px;
-}
-.cc-holdings strong { font-weight: 550; white-space: nowrap; }
-/* Its own class, not `.cc-holdings span`: the logo tile is a span too, so the bare
-   selector pushed the logo to the right instead of the weight. */
-.cc-weight {
-  margin-left: auto; padding-left: 8px;
-  color: var(--ln-ink-3); font-variant-numeric: tabular-nums;
-}
-
-.cc-actions { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
-.cc-actions .ln-btn { flex: 1; min-height: 44px; padding: 11px 16px; font-size: 12.5px; }
-.cc-actions .ln-text-link { font-size: 12px; white-space: nowrap; }
-
-/* ─── Wide rows ───────────────────────────────────────────────────────────────
- *
- * Above 900px the three tiers stop stacking and run left to right — the idea, then
- * whether it is working, then what to buy — which is the order a reader decides in laid
- * out along the direction they already read in. The scoreboard gains enough width for
- * the two bars to be worth comparing, which they are not in a narrow column.
- *
- * Below 900px every rule here drops and the row is the stacked card again.
- */
-@media (min-width: 900px) {
-  .cc {
-    display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr) minmax(224px, 0.7fr);
-    align-items: stretch;
-  }
-
-  /* All three columns centre their own content, so a row reads as one horizontal band
-     rather than three columns of different heights hanging from the top. */
-  .cc-idea, .cs, .cc-basket {
-    display: flex; flex-direction: column; justify-content: center;
-    padding: 18px 22px;
-  }
-
-  /* Without this the chip is a flex item in a stretched column and runs the full width
-     of the claim beneath it. */
-  .cc-category { align-self: flex-start; }
-  .cc-claim { margin-top: 11px; font-size: 27px; }
-  .cc-idea .source-post--compact, .cc-idea .cc-byline { margin-top: 12px !important; }
-
-  .cs { border-block: 0; border-inline: 1px solid var(--ln-line); }
-
-  .cc-holdings li { padding-block: 3px; }
-  .cc-actions { margin-top: 12px; flex-direction: column; align-items: stretch; gap: 6px; }
-  .cc-actions .ln-btn { flex: none; }
-  .cc-actions .ln-text-link { text-align: center; min-height: 24px; }
-}
-
-/* ─── Buy modal ───────────────────────────────────────────────────────────────
- *
- * The flow opens over the list rather than at its own URL. Sizing is capped by the
- * viewport rather than by a fixed height, because the flow grows a lot between choosing
- * an amount and watching three legs settle, and a panel that scrolls internally keeps
- * the close control reachable throughout.
- */
-.bm {
-  border: 0;
-  padding: 0;
-  background: transparent;
-  max-width: min(680px, 100vw - 32px);
-  width: 100%;
-  max-height: min(88dvh, 100dvh - 32px);
-  margin: auto;
-  overflow: visible;
-  color: var(--ln-ink);
-}
-
-.bm::backdrop {
-  background: oklch(25% 0.012 140 / 0.42);
-  backdrop-filter: blur(2px);
-}
-
-.bm-panel {
-  position: relative;
-  max-height: min(88dvh, 100dvh - 32px);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  background: var(--ln-bg);
-  border: 1px solid var(--ln-line);
-  border-radius: 16px;
-  padding: 22px;
-  box-shadow: 0 24px 60px oklch(25% 0.012 140 / 0.18);
-}
-
-.bm-close {
-  position: sticky;
-  top: 0;
-  float: right;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  margin: -6px -6px 0 8px;
-  border: 1px solid var(--ln-line);
-  border-radius: 9px;
-  background: var(--ln-surface);
-  color: var(--ln-ink-2);
-  cursor: pointer;
-  z-index: 1;
-}
-
-.bm-close:hover { color: var(--ln-ink); border-color: var(--ln-line-strong); }
-
-/* The flow was written for a page with its own container and back link. Inside the panel
-   it is already framed, so it drops its outer chrome. */
-.bm-panel .by-main { padding: 0; max-width: none; }
-
-@media (max-width: 560px) {
-  .bm { max-width: 100vw; max-height: 100dvh; }
-  .bm-panel {
-    max-height: 100dvh;
-    border-radius: 0;
-    border: 0;
-    padding: 18px 16px calc(18px + env(safe-area-inset-bottom, 0px));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .bm::backdrop { backdrop-filter: none; }
+@media(max-width:560px) {
+ .bm { max-width:100vw; max-height:100dvh; margin:auto 0 0; }
+ .bm-panel { max-height:94dvh; padding:24px 20px calc(22px + env(safe-area-inset-bottom,0px)); border-radius:18px 18px 0 0; border-bottom:0; }
 }

@@ -31,3 +31,11 @@ The conviction workshop is the homepage's visual world: tactile architectural pa
 ## Mobile reading
 
 Keep catalogue artwork short (88–112 px) so ideas and holdings appear sooner. Use 44 px slider targets with larger thumbs and readable amounts. On thesis detail, a bottom allocation shortcut respects device safe areas and hides whenever the editor intersects the viewport. Preserve an inline anchor as the no-JavaScript fallback. Reserve footer space so the shortcut never hides the last links.
+
+## App feed refinement (2026-09-15)
+
+Keep the separate `/app` and vertical feed. On desktop, the idea and short explanation take roughly two-thirds of a row, with the basket alongside. Follow and Share live with the idea. The original source quotation stays readable; short posts are never clipped before their key sentence. On phones, stack these surfaces with readable asset names and 44 px actions.
+
+Read the argument expands inline into the case, strongest objection and holding-by-holding rationale. Model performance is a compact disclosure below the argument with explicit observations and benchmark figures. Do not use independently normalized bars that exaggerate tiny differences. Following shows actual published updates and the call's state, including honest empty states.
+
+The buy dialog is a compact desktop panel and a bottom sheet on mobile. Lead with amount and an allocation summary; reveal sliders through Customize allocation. A native dialog provides focus containment and Escape dismissal. Preserve normal links to the dedicated purchase page.

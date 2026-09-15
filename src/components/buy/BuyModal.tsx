@@ -28,12 +28,14 @@ export function BuyModal({
   versionId,
   holdings,
   callStatement,
+  authorName,
 }: {
   slug: string;
   claim: string;
   versionId: string;
   holdings: Holding[];
   callStatement?: string;
+  authorName: string;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
@@ -102,6 +104,7 @@ export function BuyModal({
               versionId={versionId}
               holdings={holdings}
               callStatement={callStatement}
+              authorName={authorName}
             />
           )}
         </div>

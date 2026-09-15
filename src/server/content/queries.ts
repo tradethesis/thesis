@@ -1,6 +1,6 @@
-import { asc, desc, eq } from "drizzle-orm";
+import { asc, desc, eq, and, isNotNull, inArray, or, isNull } from "drizzle-orm";
 import { db } from "../db/client";
-import { asset, thesis, thesisConstituent, thesisVersion } from "../db/schema";
+import { asset, thesis, thesisConstituent, thesisVersion, thesisUpdate } from "../db/schema";
 import type { EvidenceLink } from "./evidence";
 import { sourcePostFromEvidence, type SourcePost } from "@/lib/source-post";
 
@@ -15,6 +15,8 @@ export type ThesisCardHolding = {
   symbol: string;
   company: string;
   role: string;
+  why: string;
+  limitation: string;
   weightBps: number;
 };
 
@@ -35,6 +37,9 @@ export type ThesisCard = {
   title: string;
   claim: string;
   summary: string;
+  rationale: string;
+  counterargument: string;
+  latestUpdate: { title: string; body: string; authoredAt: string } | null;
   category: string;
   authorName: string;
   horizonLabel: string;
@@ -60,17 +65,23 @@ export async function listPublishedTheses(): Promise<ThesisCard[]> {
       versionNumber: thesisVersion.versionNumber,
       claim: thesisVersion.claim,
       summary: thesisVersion.summary,
+      rationale: thesisVersion.rationale,
+      counterargument: thesisVersion.counterargument,
       horizonLabel: thesisVersion.horizonLabel,
       publishedAt: thesisVersion.publishedAt,
       evidence: thesisVersion.evidence,
     })
     .from(thesis)
     .innerJoin(thesisVersion, eq(thesis.currentVersionId, thesisVersion.id))
-    .where(eq(thesis.status, "published"))
+    .where(and(eq(thesis.status, "published"), isNotNull(thesisVersion.publishedAt)))
     .orderBy(desc(thesisVersion.publishedAt));
 
   if (!rows.length) return [];
 
+  const updates = await db.select({ thesisId: thesisUpdate.thesisId, title: thesisUpdate.title, body: thesisUpdate.body, authoredAt: thesisUpdate.authoredAt })
+    .from(thesisUpdate).leftJoin(thesisVersion, eq(thesisUpdate.versionId, thesisVersion.id))
+    .where(and(inArray(thesisUpdate.thesisId, rows.map(r => r.thesisId)), or(isNull(thesisUpdate.versionId), isNotNull(thesisVersion.publishedAt))))
+    .orderBy(desc(thesisUpdate.authoredAt));
   const cards: ThesisCard[] = [];
   for (const row of rows) {
     const holdings = await db
@@ -79,6 +90,8 @@ export async function listPublishedTheses(): Promise<ThesisCard[]> {
         symbol: asset.symbol,
         company: asset.company,
         role: thesisConstituent.exposureRole,
+        why: thesisConstituent.why,
+        limitation: thesisConstituent.limitation,
         weightBps: thesisConstituent.weightBps,
       })
       .from(thesisConstituent)
@@ -88,6 +101,7 @@ export async function listPublishedTheses(): Promise<ThesisCard[]> {
 
     const evidence = (Array.isArray(row.evidence) ? row.evidence : []) as EvidenceLink[];
 
+    const latestUpdate = updates.find(u => u.thesisId === row.thesisId);
     cards.push({
       versionId: row.versionId,
       thesisId: row.thesisId,
@@ -97,12 +111,15 @@ export async function listPublishedTheses(): Promise<ThesisCard[]> {
       title: row.title,
       claim: row.claim,
       summary: row.summary,
+      rationale: row.rationale,
+      counterargument: row.counterargument,
+      latestUpdate: latestUpdate ? { title: latestUpdate.title, body: latestUpdate.body, authoredAt: latestUpdate.authoredAt.toISOString() } : null,
       category: row.category,
       authorName: row.authorName,
       horizonLabel: row.horizonLabel,
       versionNumber: row.versionNumber,
       publishedAt: row.publishedAt,
-      supportingCount: evidence.filter((e) => !e.supportsCounterargument).length,
+      supportingCount: evidence.filter((e) => !e.supportsCounterargument && !("sourcePost" in e)).length,
       againstCount: evidence.filter((e) => e.supportsCounterargument).length,
       holdings,
     });

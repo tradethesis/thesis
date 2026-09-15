@@ -24,10 +24,8 @@ export function SourcePost({ post, compact = false }: { post: Post; compact?: bo
   });
 
   if (compact) {
-    // The quotation earns its place back. It is the sharpest writing on the card — someone
-    // else's line, which is the whole premise — and a card that replaces it with our own
-    // paraphrase throws away the reason the thesis exists. Clamped, because source posts
-    // run to any length and one long one drags a row past all of its neighbours.
+    // Short verified excerpts remain complete, including the sentence that makes the
+    // source worth discussing. Long posts should be excerpted during editorial review.
     return (
       <div className="source-post source-post--compact">
         <blockquote cite={post.url}>{post.text}</blockquote>

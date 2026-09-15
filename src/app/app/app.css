@@ -110,3 +110,13 @@
 @media (prefers-reduced-motion: reduce) {
   .ap-header { backdrop-filter: none; background: var(--ln-bg); }
 }
+
+.ap-head .ln-eyebrow { margin-bottom:12px; font-size:10px; }
+.ap-title { font-size:32px; }
+.ap-intro { margin-top:12px !important; color:var(--ln-ink-2); font-size:15px; line-height:1.6; }
+@media(max-width:600px) { .ap-title { font-size:28px; } .ap-intro { font-size:14px; max-width:30ch; } }
+@media(max-width:600px) {
+ .ap-head { padding-block:22px 10px; }
+ .ap-head .ln-eyebrow, .ap-intro { display:none; }
+ .ap-title { font-size:25px; }
+}

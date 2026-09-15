@@ -8,6 +8,7 @@ import { DEFAULT_BASKET_RAW, MIN_BASKET_RAW, estimateLegCost, formatUsdc } from 
 import { signWithPhantom } from "@/lib/wallet/transaction";
 import { getPhantom } from "@/lib/wallet/phantom";
 import { useWallet } from "./useWallet";
+import { TokenLogo } from "../calls/TokenLogo";
 
 /**
  * Screens C, D and E from the PRD, in one client component because they are one decision:
@@ -72,7 +73,7 @@ function tokens(raw: string | null, decimals: number): string {
   return v.toLocaleString("en-US", { maximumFractionDigits: 6 });
 }
 
-export function BuyFlow({ slug, claim, holdings, versionId, initialWeights, callStatement, initialNotice }: { slug: string; claim: string; holdings: Holding[]; versionId: string; initialWeights?: number[]; callStatement?: string; initialNotice?: string }) {
+export function BuyFlow({ slug, claim, holdings, versionId, initialWeights, callStatement, initialNotice, authorName = "Thesis editorial" }: { slug: string; claim: string; holdings: Holding[]; versionId: string; initialWeights?: number[]; callStatement?: string; initialNotice?: string; authorName?: string }) {
   const w = useWallet();
   const [budget, setBudget] = useState(Number(DEFAULT_BASKET_RAW) / 1e6);
   const [weights, setWeights] = useState(initialWeights ?? holdings.map((h) => h.weightBps / 100));
@@ -81,6 +82,7 @@ export function BuyFlow({ slug, claim, holdings, versionId, initialWeights, call
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(initialNotice ?? null);
   const [restoring, setRestoring] = useState(false);
+  const [customizing, setCustomizing] = useState(Boolean(initialWeights));
   const [inProgressId, setInProgressId] = useState<string | null>(null);
 
   const authorWeights = useMemo(() => holdings.map((h) => h.weightBps / 100), [holdings]);
@@ -365,9 +367,11 @@ export function BuyFlow({ slug, claim, holdings, versionId, initialWeights, call
 
   return (
     <div className="by-panel">
-      <h1 className="by-h2">Back this thesis.</h1>
-      <p className="by-claim">{claim}</p>
-      {callStatement && <div className="by-call-context"><strong>Thesis’s call</strong><p>{callStatement}</p><small>Your investment starts at your own entry price. The deadline does not sell your holdings.</small></div>}
+      <div className="by-head">
+        <p className="by-eyebrow">Back this thesis</p>
+        <h1 className="by-title">{claim}</h1>
+      </div>
+
       {notice && <p className="by-notice" role="status">{notice}</p>}
 
       <label className="by-budget">
@@ -389,12 +393,14 @@ export function BuyFlow({ slug, claim, holdings, versionId, initialWeights, call
       )}
       {!validBudget && <p className="by-error" role="alert">Enter an amount between $75 and $1,000,000.</p>}
 
-      <ul className="by-weights">
+      <div className="by-allocation-head"><span>{edited ? "Your allocation" : `${authorName}’s allocation`}</span><button type="button" className="by-customize" aria-expanded={customizing} aria-controls={`weights-${slug}`} onClick={() => setCustomizing(!customizing)}>{customizing ? "Done customizing" : "Customize allocation"}</button></div>
+      <ul className={`by-weights${customizing ? "" : " by-weights--summary"}`} id={`weights-${slug}`}>
         {holdings.map((h, i) => {
           const legRaw = (budgetRaw * BigInt(weights[i])) / 100n;
           return (
             <li key={h.symbol}>
               <div className="by-weight-top">
+                <TokenLogo symbol={h.symbol} company={h.company} tone={i} />
                 <span className="by-weight-name">
                   <strong>{h.symbol}</strong>
                   <span className="by-leg-company">{h.company} · {h.role}</span>
@@ -404,7 +410,7 @@ export function BuyFlow({ slug, claim, holdings, versionId, initialWeights, call
                   <span>{formatUsdc(legRaw)}</span>
                 </span>
               </div>
-              <input
+              {customizing && <input
                 type="range"
                 min={MIN_W}
                 max={MAX_W}
@@ -412,7 +418,7 @@ export function BuyFlow({ slug, claim, holdings, versionId, initialWeights, call
                 value={weights[i]}
                 aria-label={`${h.company} weight, percent`}
                 onChange={(e) => setWeights((c) => c.map((x, j) => (j === i ? Number(e.target.value) : x)))}
-              />
+              />}
             </li>
           );
         })}
@@ -421,18 +427,19 @@ export function BuyFlow({ slug, claim, holdings, versionId, initialWeights, call
       <p className={`by-hint${remainder !== 0 ? " by-hint--warn" : ""}`} role="status">
         {remainder === 0
           ? edited
-            ? "Totals 100%. Your allocation differs from the author's."
-            : "Totals 100%. This is the author's allocation."
+            ? `Totals 100%. Your allocation differs from ${authorName}’s.`
+            : "Totals 100%. Ready to review."
           : remainder > 0
             ? `${remainder}% still to allocate.`
             : `${-remainder}% over. Reduce one of the holdings.`}
         {edited && (
           <button className="by-reset" onClick={() => setWeights(authorWeights)}>
-            Reset to the author&rsquo;s weights
+            Reset to {authorName}’s weights
           </button>
         )}
       </p>
 
+      {callStatement && <details className="by-call-details"><summary>The timed call</summary><p>{callStatement}</p><p>Your investment starts at your own entry price. The deadline does not sell your holdings.</p></details>}
       <p className="by-est">
         Estimated cost {formatUsdc(costRaw)} on {formatUsdc(budgetRaw)}. Jupiter charges it; Thesis adds nothing.
       </p>

@@ -1,20 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Bookmark, Search } from "lucide-react";
 
 import { callForThesis, type CallRecord } from "@/lib/calls";
 import type { ThesisCard } from "@/server/content/queries";
 
 import { CallCard } from "./CallCard";
+import { useFollowing } from "@/lib/following";
 
-type Filter = "all" | "open" | "resolved" | "saved";
+type Filter = "all" | "resolved" | "saved";
 
 const FILTERS = [
-  ["all", "All calls"],
-  ["open", "Open"],
+  ["all", "Discover"],
+  ["saved", "Following"],
   ["resolved", "Resolved"],
-  ["saved", "Saved"],
 ] as const;
 
 /**
@@ -32,24 +32,13 @@ export function CallGrid({
 }) {
   const [filter, setFilter] = useState<Filter>("all");
   const [search, setSearch] = useState("");
-  const [saved, setSaved] = useState<string[]>([]);
-
-  useEffect(() => {
-    try {
-      const value = JSON.parse(localStorage.getItem("thesis.saved.v1") ?? "[]");
-      if (Array.isArray(value)) setSaved(value.filter((v) => typeof v === "string"));
-    } catch {
-      // Private windows and blocked site data throw here. A reader with no saved list is
-      // the same as a reader whose saved list cannot be read.
-    }
-  }, []);
+  const { slugs: saved } = useFollowing();
 
   const filtered = theses.filter((t) => {
     const call = callForThesis(calls, t);
     const matches =
       filter === "all" ||
       (filter === "saved" && saved.includes(t.slug)) ||
-      (filter === "open" && call?.status === "open") ||
       (filter === "resolved" && call && call.status !== "open");
 
     if (!matches) return false;
@@ -100,23 +89,30 @@ export function CallGrid({
       </p>
 
       {filtered.length ? (
+        <>
+        {filter === "saved" && <div className="cg-follow-intro"><h2>Your ideas, still unfolding.</h2><p>Evidence updates and call results for the theses you follow. Saved in this browser; check back here for changes.</p></div>}
         <div className="cg-grid">
           {filtered.map((t) => (
-            <CallCard key={t.slug} thesis={t} call={callForThesis(calls, t)} />
+            <CallCard key={t.slug} thesis={t} call={callForThesis(calls, t)} followingView={filter === "saved"} />
           ))}
         </div>
+        </>
       ) : (
         <div className="cg-empty">
           <h2>
-            {filter === "saved"
-              ? "Keep a call on your radar."
+            {search.trim()
+              ? "No ideas match that search."
+              : filter === "saved"
+              ? "Keep an idea close."
               : filter === "resolved"
                 ? "The first calls are still playing out."
                 : "No calls match yet."}
           </h2>
           <p>
-            {filter === "saved"
-              ? "Open a thesis and save it. Your saved calls stay in this browser."
+            {search.trim()
+              ? "Try a different idea, author, company or token."
+              : filter === "saved"
+              ? "Tap Follow thesis on any idea. Its evidence updates and call results will be easy to revisit here, in this browser."
               : "Browse all calls or try a different search."}
           </p>
           <button
@@ -127,7 +123,7 @@ export function CallGrid({
               setSearch("");
             }}
           >
-            See all calls
+            Discover theses
           </button>
         </div>
       )}

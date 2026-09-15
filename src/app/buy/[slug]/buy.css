@@ -4,11 +4,32 @@
 .by-back { display: inline-flex; align-items: center; gap: 7px; background: none; border: 0; padding: 0 0 18px; color: var(--ln-ink-3); font: inherit; font-size: 14px; cursor: pointer; min-height: 44px; }
 .by-back:hover { color: var(--ln-ink); }
 .by-panel { background: var(--ln-surface); border: 1px solid var(--ln-line); border-radius: var(--ln-radius); padding: clamp(20px, 4vw, 30px); }
-.by-h2 { font-size: clamp(22px, 3vw, 27px); font-weight: 600; letter-spacing: -.028em; line-height: 1.2; margin: 0; }
-.by-claim { color: var(--ln-ink-2); margin: 10px 0 24px; font-size: 15px; }
+/* Still worn by the review and progress screens, which have a heading and no claim. */
+.by-h2 { font-size: clamp(22px, 3vw, 27px); font-weight: 600; letter-spacing: -.028em; line-height: 1.2; margin: 0 !important; }
 
-.by-budget { display: flex; flex-direction: column; gap: 8px; margin-bottom: 6px; }
-.by-budget span { font-size: 13px; color: var(--ln-ink-3); }
+/* Three levels, deliberately far apart. They used to be 27px bold, 15px regular and 13px
+   regular stacked with no gaps at all — the claim and the field label were two pixels
+   apart in size, both grey, both regular weight, so nothing told a reader which was the
+   subject and which was an instruction.
+
+   `!important` because `.landing :is(p,h1,h2,h3,h4,ul,ol,figure) { margin: 0 }` is (0,2,1)
+   and silently flattened every margin in this file to zero. */
+.by-head { margin-bottom: 26px !important; }
+.by-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--ln-accent); margin: 0 !important;
+}
+.by-title {
+  font-size: clamp(21px, 2.6vw, 26px); font-weight: 600; letter-spacing: -.03em;
+  line-height: 1.18; color: var(--ln-ink); max-width: 24ch;
+  margin: 9px 0 0 !important;
+}
+
+.by-budget { display: flex; flex-direction: column; gap: 9px; margin-bottom: 6px; }
+.by-budget span {
+  font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ln-ink-3);
+}
 .by-budget input { font-family: var(--ln-mono); font-size: 22px; font-weight: 600; padding: 12px 14px; min-height: 52px; border: 1px solid var(--ln-line-strong); border-radius: 10px; background: var(--ln-surface); color: var(--ln-ink); width: 100%; }
 
 .by-weights { list-style: none; padding: 0; margin: 22px 0 0; display: flex; flex-direction: column; gap: 18px; }
@@ -65,3 +86,15 @@
 .by-call-context small { display: block; margin-top: 8px; color: var(--ln-ink-3); font-size: 11px; }
 @keyframes by-rotate { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .by-spin { animation: none; } }
+
+.by-allocation-head { display:flex; align-items:center; flex-wrap:wrap; justify-content:space-between; gap:4px 10px; margin-top:18px; font-size:12px; color:var(--ln-ink-3); }
+.by-customize { background:none; border:0; color:var(--ln-accent); font:inherit; font-size:12px; min-height:44px; padding:6px 0; cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+.by-weights--summary { gap:0; margin-top:0; }
+.by-weights--summary li { padding-block:12px; border-bottom:1px solid var(--ln-line); }
+.by-weight-top { align-items:center; }
+.by-weight-name { flex:1; }
+.by-weight-top .tl { display:inline-flex; align-items:center; width:27px; height:27px; flex-shrink:0; border-radius:6px; overflow:hidden; }
+.by-weight-top .tl img { width:100%; height:100%; object-fit:cover; }
+.by-call-details { border-top:1px solid var(--ln-line); margin-top:16px; font-size:12px; color:var(--ln-ink-2); }
+.by-call-details summary { min-height:44px; padding-block:14px; cursor:pointer; }
+.by-call-details p { margin-block:0 10px; line-height:1.6; }
