@@ -1,14 +1,18 @@
-import Image from "next/image";
-import Link from "next/link";
-import { BrandMark } from "@/components/landing/BrandMark";
 import { JoinForm } from "./JoinForm";
 
 /**
- * The front door, used by both `/` in waitlist mode and `/join`.
+ * The front door: one centred column on exactly one screen.
  *
- * One component rather than two pages that look alike, so the headline and the form cannot
- * drift apart. No nav into the catalogue, no footer links, nothing to read past: a
- * headline, a field, a button, and the artwork.
+ * Used by both `/` in waitlist mode and `/join`, so the headline and the form cannot drift
+ * apart. Nothing below the fold, because there is no fold — the page does not scroll.
+ *
+ * Three things on it: a label, the headline, the field. Everything else was removed on
+ * purpose; the artwork carries the brand, so a wordmark on top of it was saying the same
+ * thing twice.
+ *
+ * The reveal is a staggered rise, driven by a CSS custom property per element rather than
+ * a nth-child chain, so reordering the column cannot silently break the rhythm. Reduced
+ * motion gets the finished state with no animation at all.
  */
 export function WaitlistLanding({ source }: { source: string }) {
   return (
@@ -16,38 +20,31 @@ export function WaitlistLanding({ source }: { source: string }) {
       <a className="ln-skip" href="#main">
         Skip to content
       </a>
-      {/* The wordmark alone. A nav here would only offer the page you are already on. */}
-      <header className="ln-header jn-header">
-        <div className="ln-container">
-          <Link href="/" className="ln-wordmark">
-            <BrandMark />
-            thesis
-          </Link>
-        </div>
-      </header>
+
+      {/*
+        Art direction, not a responsive resize: a phone crops the landscape cut to a narrow
+        strip that throws away the forms at both edges and leaves the top half empty paper.
+        The portrait cut is composed for that shape. A <picture> element rather than two
+        <Image>s so the browser fetches exactly one of them.
+      */}
+      <picture className="jn-backdrop">
+        <source media="(max-aspect-ratio: 3 / 4)" srcSet="/brand/waitlist-backdrop-portrait.webp" />
+        <img src="/brand/waitlist-backdrop.webp" alt="" aria-hidden="true" fetchPriority="high" decoding="async" />
+      </picture>
 
       <main className="ln-container jn-main" id="main">
-        <p className="jn-eyebrow">Early access</p>
-        <h1 className="jn-h1">
+        <p className="jn-eyebrow jn-reveal" style={{ "--d": "0ms" } as React.CSSProperties}>
+          Early access
+        </p>
+
+        <h1 className="jn-h1 jn-reveal" style={{ "--d": "90ms" } as React.CSSProperties}>
           Buy what you <em>believe.</em>
         </h1>
-        <p className="jn-sub">
-          Ideas people are already arguing about, read as investments. Buying opens to more wallets soon.
-        </p>
-        <JoinForm source={source} />
-        <p className="jn-note">One email when it opens. Nothing else, ever.</p>
-      </main>
 
-      <div className="jn-art" aria-hidden="true">
-        <Image
-          src="/brand/conviction-workshop.webp"
-          alt=""
-          width={1536}
-          height={656}
-          priority
-          sizes="(max-width: 760px) 136vw, 100vw"
-        />
-      </div>
+        <div className="jn-form jn-reveal" style={{ "--d": "190ms" } as React.CSSProperties}>
+          <JoinForm source={source} />
+        </div>
+      </main>
     </div>
   );
 }

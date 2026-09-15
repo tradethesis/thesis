@@ -65,7 +65,7 @@ export function JoinForm({ source = "join" }: { source?: string }) {
   }
 
   return (
-    <form className="jn-form" onSubmit={submit} noValidate>
+    <form onSubmit={submit} noValidate>
       <div className="jn-row">
         <label className="ln-sr-only" htmlFor="jn-email">
           Email address
