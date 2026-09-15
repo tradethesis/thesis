@@ -181,7 +181,7 @@ export const FOOTER = {
     "Live execution is limited to a wallet allowlist while eligibility is resolved. Everyone else sees the same flow in a clearly labelled simulation that never asks for a signature and never touches mainnet.",
   ],
   links: [
-    { label: "Source on GitHub", href: "https://github.com/limon-wq/thesis", external: true },
+    { label: "Source on GitHub", href: "https://github.com/tradethesis/thesis", external: true },
     { label: "Jupiter, for routing and execution", href: "https://dev.jup.ag", external: true },
     { label: "Backed Finance, the issuer", href: "https://xstocks.com", external: true },
   ],
