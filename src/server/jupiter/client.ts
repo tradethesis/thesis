@@ -19,7 +19,7 @@ import { env } from "../env";
 
 const LITE_BASE = "https://lite-api.jup.ag";
 const KEYED_BASE = "https://api.jup.ag";
-const UA = "thesis-app/0.1 (+https://github.com/limon-wq)";
+const UA = "thesis-app/0.1 (+https://github.com/tradethesis)";
 
 export class JupiterError extends Error {
   constructor(
