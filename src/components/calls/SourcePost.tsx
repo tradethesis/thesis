@@ -24,21 +24,24 @@ export function SourcePost({ post, compact = false }: { post: Post; compact?: bo
   });
 
   if (compact) {
-    // The quotation is the subject of a thesis page and mere provenance on a card, so the
-    // card gets who it came from rather than what they said. What cannot be shortened away
-    // is the non-endorsement: quoting a person beside a basket implies they stand behind it
-    // unless it is said, in as many words, that they do not.
+    // The quotation earns its place back. It is the sharpest writing on the card — someone
+    // else's line, which is the whole premise — and a card that replaces it with our own
+    // paraphrase throws away the reason the thesis exists. Clamped, because source posts
+    // run to any length and one long one drags a row past all of its neighbours.
     return (
       <div className="source-post source-post--compact">
-        <AuthorMark handle={post.handle} author={post.author} />
-        <span className="source-post-who">
-          <a href={post.url} target="_blank" rel="noopener noreferrer">
-            {post.handle} on X
-            <ArrowUpRight size={11} aria-hidden="true" />
-            <span className="ln-sr-only"> (opens in a new tab)</span>
-          </a>
-          <span className="source-post-attribution">Our reading. No author endorsement.</span>
-        </span>
+        <blockquote cite={post.url}>{post.text}</blockquote>
+        <p className="source-post-credit">
+          <AuthorMark handle={post.handle} author={post.author} />
+          <span className="source-post-who">
+            <a href={post.url} target="_blank" rel="noopener noreferrer">
+              {post.handle} on X
+              <ArrowUpRight size={11} aria-hidden="true" />
+              <span className="ln-sr-only"> (opens in a new tab)</span>
+            </a>
+            <span className="source-post-attribution">Our reading. No author endorsement.</span>
+          </span>
+        </p>
       </div>
     );
   }

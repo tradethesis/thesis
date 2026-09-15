@@ -55,11 +55,11 @@ export const AUTHOR = {
 export const THESES: ThesisSeed[] = [
   {
     slug: "financial-activity-moves-onchain",
-    title: "Financial activity moves onchain",
-    claim: "Financial activity moves onchain",
+    title: "Three tolls on the same onchain traffic",
+    claim: "Three tolls on the same onchain traffic",
     category: "Finance",
     summary:
-      "Payments, trading and settlement keep moving onto public blockchains, and the businesses that route that activity earn a fee on each step.",
+      "The exchange large trades pass through, the issuer of the dollar they settle in, and the brokerage bringing retail money in. Each takes its cut in a different way, so this can be right through any one of them.",
     rationale:
       "This basket holds three of those businesses: the exchange large amounts pass through, the issuer of the dollar they settle in, and the brokerage that brings retail money in. Each earns in a different way, so the claim can be right through any one of them without needing all three to work.",
     counterargument:
@@ -103,11 +103,11 @@ export const THESES: ThesisSeed[] = [
 
   {
     slug: "digital-advertising-takes-a-bigger-share",
-    title: "Digital advertising takes a bigger share",
-    claim: "Digital advertising takes a bigger share",
+    title: "A dollar leaving TV has three places to land",
+    claim: "A dollar leaving TV has three places to land",
     category: "Consumer",
     summary:
-      "Advertising budgets keep shifting to places where the result can be measured, and three companies own most of the surfaces where that is true.",
+      "One sells attention, one sells intent at the moment of a search, one sells the shelf position beside the purchase. A budget leaving television can go to any of them, and guessing which is the part nobody is good at.",
     rationale:
       "The three hold different parts of the same shift. One sells attention, one sells intent at the moment of a search, and one sells the shelf position next to the purchase itself. A budget moving out of television can land on any of them.",
     counterargument:
@@ -150,11 +150,11 @@ export const THESES: ThesisSeed[] = [
 
   {
     slug: "ai-spending-keeps-growing",
-    title: "AI spending keeps growing",
-    claim: "AI spending keeps growing",
+    title: "The AI dollar gets paid three times",
+    claim: "The AI dollar gets paid three times",
     category: "Technology",
     summary:
-      "Companies keep increasing what they spend on building and running AI systems, and that money is collected at three different points on the way through.",
+      "The chip is bought once, the rent is charged monthly, the software is sold last. The same spending reaches all three, at different times and on very different margins.",
     rationale:
       "One company sells the hardware the spending buys. One rents it out and sells software on top. One sells the software that turns a model into a decision inside an organisation. The money passes all three, but it arrives at different times and with very different margins.",
     counterargument:

@@ -8,6 +8,7 @@ import { sourcePostFromEvidence } from "@/lib/source-post";
 /** Public, read-only detail. Render the published snapshot, never the editable seed. */
 export const getPublishedThesis = cache(async (slug: string) => {
   const [row] = await db.select({
+    thesisId: thesis.id,
     slug: thesis.slug,
     category: thesis.category,
     authorName: thesis.authorName,
@@ -30,6 +31,7 @@ export const getPublishedThesis = cache(async (slug: string) => {
   if (!row) return null;
 
   const holdings = await db.select({
+    mint: asset.mint,
     symbol: asset.symbol,
     company: asset.company,
     underlying: asset.underlying,

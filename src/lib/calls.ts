@@ -10,6 +10,10 @@ export type CallSnapshot = {
 export type CallRecord = {
   id: string;
   versionId: string;
+  /** The thesis this call belongs to, so it survives a later prose-only version. */
+  thesisId: string;
+  /** Canonical identity of the basket the call was struck on. See basketKey. */
+  basketKey: string;
   statement: string;
   rules: string;
   benchmark: string;
@@ -58,3 +62,33 @@ export function callTiming(call: CallRecord, now = Date.now()) {
   return { label: remaining < 86_400_000 ? "Ends in <1 day" : Math.ceil(remaining / 86_400_000) + " days left", phase: "open" };
 }
 export function signedPercent(value: number) { return (value > 0 ? "+" : "") + value.toFixed(2) + "%"; }
+
+
+/**
+ * Canonical identity of a basket: which mints, at which weights, in no particular order.
+ *
+ * Used to decide whether a call still describes the version of the thesis on screen. A
+ * call is struck against one version and its starting prices are immutable, so editing
+ * the prose of a thesis publishes a new version and would otherwise strand the call on
+ * the old one — the card would say "no call yet" for something that has been running for
+ * weeks. Re-striking it instead would reset the starting prices, which is worse.
+ *
+ * So a call follows its thesis for as long as the basket is unchanged. The moment the
+ * holdings or the weights move, the call is measuring something other than what the card
+ * shows, and it stops following rather than quietly mislabelling itself.
+ */
+export function basketKey(holdings: { mint: string; weightBps: number }[]): string {
+  return holdings
+    .map((h) => `${h.mint}:${h.weightBps}`)
+    .sort()
+    .join("|");
+}
+
+/** The call to show beside a thesis, or null when none still describes it. */
+export function callForThesis<T extends { thesisId: string; holdings: { mint: string; weightBps: number }[] }>(
+  calls: CallRecord[],
+  thesis: T,
+): CallRecord | null {
+  const key = basketKey(thesis.holdings);
+  return calls.find((c) => c.thesisId === thesis.thesisId && c.basketKey === key) ?? null;
+}

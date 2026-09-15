@@ -1,13 +1,13 @@
 import { and, eq } from "drizzle-orm";
 import { db } from "../db/client";
-import { thesisCall } from "../db/schema";
+import { thesisCall, thesisVersion } from "../db/schema";
 import { getPublishedThesis } from "../content/detail";
 import { listPublishedTheses } from "../content/queries";
 import { EQUITY_ASSETS, USDC_MINT, assetByMint } from "../assets/allowlist";
 import { liteQuote } from "../jupiter/client";
 import { rpc } from "../solana/rpc";
 import { allocate } from "@/lib/money/allocate";
-import { CALL_DURATION_DAYS, CALL_RULES, RESOLUTION_WINDOW_MS, resolutionState, scoreCall, type CallHolding, type CallRecord, type CallSnapshot } from "@/lib/calls";
+import { CALL_DURATION_DAYS, CALL_RULES, basketKey, RESOLUTION_WINDOW_MS, resolutionState, scoreCall, type CallHolding, type CallRecord, type CallSnapshot } from "@/lib/calls";
 
 const MODEL_BUDGET = 150_000_000n;
 const BENCHMARK = EQUITY_ASSETS.find(a => a.symbol === "SPYx")!;
@@ -98,10 +98,19 @@ export async function startEditorialCalls() {
 }
 
 export async function getCalls(): Promise<CallRecord[]> {
-  const rows = await db.select().from(thesisCall);
-  return rows.map(r => ({
-    id: r.id, versionId: r.versionId, statement: r.statement, rules: r.rules, benchmark: r.benchmark,
+  // Joined up to the thesis so a call can be matched to it rather than to the one version
+  // it was struck against. See callForThesis in src/lib/calls.ts for why.
+  const rows = await db
+    .select({ call: thesisCall, thesisId: thesisVersion.thesisId })
+    .from(thesisCall)
+    .innerJoin(thesisVersion, eq(thesisCall.versionId, thesisVersion.id));
+
+  return rows.map(({ call: r, thesisId }) => ({
+    id: r.id, versionId: r.versionId, thesisId,
+    basketKey: basketKey(r.holdings as { mint: string; weightBps: number }[]),
+    statement: r.statement, rules: r.rules, benchmark: r.benchmark,
     durationDays: r.durationDays, startsAt: r.startsAt.toISOString(), endsAt: r.endsAt.toISOString(),
     status: r.status as CallRecord["status"], start: r.startSnapshot, latest: r.latestSnapshot, lastError: r.lastError,
   }));
 }
+

@@ -8,6 +8,7 @@ import { BuyFlow } from "@/components/buy/BuyFlow";
 import { getPublishedThesis } from "@/server/content/detail";
 import { parseWeightQuery } from "@/lib/buy-input";
 import { getCalls } from "@/server/calls/service";
+import { callForThesis } from "@/lib/calls";
 import "../../landing.css";
 import "./buy.css";
 
@@ -27,7 +28,7 @@ export default async function BuyPage({ params, searchParams }: { params: Promis
   const changedVersion = Boolean(query.version && query.version !== t.versionId);
   const initialWeights = changedVersion ? null : parseWeightQuery(query.weights, t.holdings.map(h => h.symbol));
   const calls = await getCalls();
-  const call = calls.find(c => c.versionId === t.versionId);
+  const call = callForThesis(calls, t);
 
   return (
     <div className="landing">

@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Bookmark, Search } from "lucide-react";
 
-import type { CallRecord } from "@/lib/calls";
+import { callForThesis, type CallRecord } from "@/lib/calls";
 import type { ThesisCard } from "@/server/content/queries";
 
 import { CallCard } from "./CallCard";
@@ -44,10 +44,8 @@ export function CallGrid({
     }
   }, []);
 
-  const byVersion = useMemo(() => new Map(calls.map((c) => [c.versionId, c])), [calls]);
-
   const filtered = theses.filter((t) => {
-    const call = byVersion.get(t.versionId);
+    const call = callForThesis(calls, t);
     const matches =
       filter === "all" ||
       (filter === "saved" && saved.includes(t.slug)) ||
@@ -104,7 +102,7 @@ export function CallGrid({
       {filtered.length ? (
         <div className="cg-grid">
           {filtered.map((t) => (
-            <CallCard key={t.slug} thesis={t} call={byVersion.get(t.versionId) ?? null} />
+            <CallCard key={t.slug} thesis={t} call={callForThesis(calls, t)} />
           ))}
         </div>
       ) : (

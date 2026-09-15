@@ -10,6 +10,8 @@ import { sourcePostFromEvidence, type SourcePost } from "@/lib/source-post";
  */
 
 export type ThesisCardHolding = {
+  /** Needed to decide whether a running call still describes this basket. */
+  mint: string;
   symbol: string;
   company: string;
   role: string;
@@ -18,6 +20,8 @@ export type ThesisCardHolding = {
 
 export type ThesisCard = {
   versionId: string;
+  /** Stable across versions, unlike versionId. A call is matched on this. */
+  thesisId: string;
   /**
    * The post that prompted this thesis, read out of the published evidence snapshot.
    *
@@ -46,6 +50,7 @@ export type ThesisCard = {
 export async function listPublishedTheses(): Promise<ThesisCard[]> {
   const rows = await db
     .select({
+      thesisId: thesis.id,
       slug: thesis.slug,
       title: thesis.title,
       category: thesis.category,
@@ -70,6 +75,7 @@ export async function listPublishedTheses(): Promise<ThesisCard[]> {
   for (const row of rows) {
     const holdings = await db
       .select({
+        mint: asset.mint,
         symbol: asset.symbol,
         company: asset.company,
         role: thesisConstituent.exposureRole,
@@ -84,6 +90,7 @@ export async function listPublishedTheses(): Promise<ThesisCard[]> {
 
     cards.push({
       versionId: row.versionId,
+      thesisId: row.thesisId,
       sourcePost: sourcePostFromEvidence(row.evidence),
       authorHandle: row.authorHandle,
       slug: row.slug,

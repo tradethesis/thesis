@@ -8,6 +8,7 @@ import { AllocationPreview } from "@/components/landing/AllocationPreview";
 import { MobileBasketBar } from "@/components/landing/MobileBasketBar";
 import { SaveThesis } from "@/components/landing/SaveThesis";
 import { ThesisArtwork } from "@/components/landing/ThesisArtwork";
+import { callForThesis } from "@/lib/calls";
 import { RecordView } from "@/components/calls/RecordView";
 import { SourcePost } from "@/components/calls/SourcePost";
 import { getPublishedThesis, getUpdates, getVersionHistory } from "@/server/content/detail";
@@ -46,7 +47,7 @@ export default async function ThesisPage({ params }: Props) {
   const t = await getPublishedThesis(slug);
   if (!t) notFound();
   const [versions, updates, calls] = await Promise.all([getVersionHistory(slug), getUpdates(slug), getCalls()]);
-  const call = calls.find(c => c.versionId === t.versionId) ?? null;
+  const call = callForThesis(calls, t);
   const fmtDate = (d: Date) =>
     d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" });
   const previewHoldings = t.holdings.map(h => ({

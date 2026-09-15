@@ -10,10 +10,10 @@ export type CuratedEvidence = EvidenceLink & { sourcePost?: SourcePost };
 // The post author is the source of the question, never the author of this portfolio.
 export const CURATED_THESES: ThesisSeed[] = [{
   slug: "ai-liability-favors-big-cloud",
-  title: "When AI gets sued, big cloud wins",
-  claim: "When AI gets sued, big cloud wins",
+  title: "Nobody knows who is liable for AI. That is the moat.",
+  claim: "Nobody knows who is liable for AI. That is the moat.",
   category: "Technology",
-  summary: "The next AI moat might be a legal department. Companies worried about liability could buy from the vendors big enough to stand behind their products.",
+  summary: "Naval asked who is liable when AI causes harm. Nobody has answered, and unanswered liability is a reason to buy from whoever is large enough to absorb it.",
   rationale: "Naval asks who is liable when AI causes harm. Our interpretation: that uncertainty could push enterprise buyers toward Microsoft, Google and Amazon. Microsoft and Google have already offered conditional protection against some copyright claims; AWS sells tools to filter harmful model outputs. These are different responses to risk, not blanket protection against AI harm. The investment bet is that procurement favors established vendors and their paid platforms. That is an inference about future demand, not something Naval said or the sources prove.",
   counterargument: "The companies with the deepest pockets may become the biggest targets. Paying for claims and safeguards can cost more than the customers they attract. Copyright protection does not answer Naval's question about injury or death. And buying three huge companies is an imprecise way to trade one issue: advertising, retail, capital spending and valuation could overwhelm any benefit from enterprise trust.",
   changeMyMind: "At the next two quarterly earnings reviews, look for evidence that customers choose smaller AI vendors despite liability concerns, or that legal and safety costs outgrow the revenue attributed to enterprise AI. If neither side provides measurable evidence, keep the causal thesis unproven even if this basket beats the market.",
