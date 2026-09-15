@@ -38,6 +38,7 @@
 
 .ex-item {
   position: relative;
+  cursor: pointer;
   display: grid;
   gap: 0;
   background: var(--ln-surface);
@@ -103,11 +104,15 @@
   text-decoration: none;
 }
 
-/* The whole row is the target; the link keeps the accessible name. */
+/* The whole row is the target; the link keeps the accessible name.
+   z-index is deliberate: the holdings column comes later in the DOM and carries a
+   background, and without it the most button-like thing on the card ("Explore thesis")
+   sits above the hit area and swallows the click. */
 .ex-claim a::after {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 1;
 }
 
 .ex-summary {

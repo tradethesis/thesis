@@ -9,11 +9,26 @@ import { MobileBasketBar } from "@/components/landing/MobileBasketBar";
 import { SaveThesis } from "@/components/landing/SaveThesis";
 import { ThesisArtwork } from "@/components/landing/ThesisArtwork";
 import { getPublishedThesis, getUpdates, getVersionHistory } from "@/server/content/detail";
+import { listPublishedTheses } from "@/server/content/queries";
 import { bpsToPercentLabel } from "@/lib/money/allocate";
 import "../../landing.css";
 import "./thesis.css";
 
 export const revalidate = 60;
+
+/**
+ * Prerender every published thesis at build time.
+ *
+ * These pages are pure content — a claim, its holdings and its sources — so making the
+ * reader wait on a database round trip for them is a straight loss. Rendering on demand
+ * cost 2-4s per click, because the function runs next to the user and the database does
+ * not. Now the request touches no database at all, and a new version appears within the
+ * revalidate window above.
+ */
+export async function generateStaticParams() {
+  const theses = await listPublishedTheses();
+  return theses.map((t) => ({ slug: t.slug }));
+}
 type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
