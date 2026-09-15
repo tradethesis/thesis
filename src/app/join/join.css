@@ -1,64 +1,125 @@
 /*
  * The waitlist page.
  *
- * A headline, a field, a button, and the paper city holding the floor. The artwork is the
- * page's whole visual argument, so it gets the room: full bleed along the bottom, faded
- * into the paper at its top edge so it reads as ground rather than as a picture pasted on.
+ * One centred column on exactly one screen. No scroll at any size, which is the constraint
+ * that shapes everything else: the type scale is bounded by viewport height as well as
+ * width, and there is nothing below the fold because there is no fold.
  *
- * Laid out as a full-height column with the artwork as the last row, so the copy sits in
- * the upper third on a tall phone and stays centred on a short laptop, without either one
- * needing its own breakpoint.
+ * The backdrop is cover-cropped and was composed for it — quiet through the middle, forms
+ * reaching in from the edges — so the words never sit on top of anything busy, whether the
+ * screen is a tall phone or a wide laptop.
  */
 
 .jn-page {
+  position: relative;
   min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  place-items: center;
   background: var(--ln-bg);
-  overflow-x: hidden;
+  isolation: isolate;
 }
 
+.jn-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  display: block;
+}
+
+.jn-backdrop img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 62%;
+  display: block;
+}
+
+/*
+ * Phones get a separately composed portrait cut (see the <picture> in WaitlistLanding), so
+ * no zoom trickery is needed here. A phone is still far taller than that 3:4 source, so
+ * cover keeps the full height and crops the width to roughly 60 percent: favour the right,
+ * where the composition puts its strongest forms, rather than centring on empty paper.
+ */
+@media (max-aspect-ratio: 3 / 4) {
+  .jn-backdrop img { object-position: 70% 44%; }
+  .jn-backdrop::after {
+    background: radial-gradient(ellipse 88% 42% at 50% 42%, oklch(97% 0.008 85 / 0.93), transparent 78%);
+  }
+}
+
+/* Lift the centre a little so text stays clean over the paper, without washing out the
+   vermilion at the edges. */
+.jn-backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 62% 54% at 50% 46%, oklch(97% 0.008 85 / 0.88), transparent 72%);
+}
+
+/* ------------------------------------------------------------------ column */
+
 .jn-main {
+  position: relative;
+  z-index: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding-block: clamp(32px, 7vw, 72px) clamp(20px, 4vw, 40px);
+  align-items: center;
+  text-align: center;
+  gap: clamp(10px, 1.6vh, 18px);
+  padding-block: 24px;
 }
+
+.jn-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: clamp(19px, 2.4vh, 24px);
+  font-weight: 650;
+  letter-spacing: -0.045em;
+  color: var(--ln-ink);
+  text-decoration: none;
+}
+
+.jn-mark svg { width: 1.15em; height: 1.15em; color: var(--ln-brand); }
 
 .jn-eyebrow {
   color: var(--ln-brand);
-  font-size: 13px;
+  font-size: clamp(11px, 1.5vh, 13px);
   font-weight: 600;
-  letter-spacing: 0.01em;
-  margin: 0 0 16px;
+  letter-spacing: 0.02em;
+  margin: 0;
 }
 
+/* Bounded by height as well as width, because the page may not scroll. */
 .jn-h1 {
-  font-size: clamp(38px, 7.4vw, 76px);
-  line-height: 1.01;
-  letter-spacing: -0.04em;
+  font-size: clamp(34px, min(8.4vw, 8.4vh), 82px);
+  line-height: 1.02;
+  letter-spacing: -0.042em;
   font-weight: 620;
   margin: 0;
-  max-width: 14ch;
+  max-width: 13ch;
   text-wrap: balance;
 }
 
-.jn-h1 em {
-  font-style: normal;
-  color: var(--ln-brand);
-}
+.jn-h1 em { font-style: normal; color: var(--ln-brand); }
 
 .jn-sub {
-  margin: 18px 0 0;
-  font-size: clamp(16px, 2vw, 19px);
-  line-height: 1.55;
+  margin: 0;
+  font-size: clamp(14px, min(2vh, 2.2vw), 19px);
+  line-height: 1.5;
   color: var(--ln-ink-2);
-  max-width: 46ch;
+  max-width: 42ch;
+  text-wrap: balance;
 }
 
-/* ------------------------------------------------------------------- form */
+/* -------------------------------------------------------------------- form */
 
-.jn-form { margin-top: clamp(26px, 4vw, 38px); max-width: 480px; }
+.jn-form { width: min(460px, 100%); margin-top: clamp(4px, 1.2vh, 12px); }
 
 .jn-row {
   display: flex;
@@ -67,24 +128,26 @@
   border: 1px solid var(--ln-line-strong);
   border-radius: 14px;
   padding: 6px;
+  box-shadow: 0 10px 34px oklch(30% 0.04 40 / 0.07);
   transition: border-color 160ms ease-out, box-shadow 160ms ease-out;
 }
 
 .jn-row:focus-within {
   border-color: var(--ln-brand);
-  box-shadow: 0 0 0 4px oklch(64% 0.22 34 / 0.12);
+  box-shadow: 0 0 0 4px oklch(64% 0.22 34 / 0.12), 0 10px 34px oklch(30% 0.04 40 / 0.07);
 }
 
 .jn-row input {
   flex: 1;
   min-width: 0;
   font: inherit;
-  font-size: 16px; /* 16px or iOS zooms the page on focus */
-  padding: 12px 14px;
-  min-height: 52px;
+  font-size: 16px; /* below 16px iOS zooms the page on focus */
+  padding: 10px 14px;
+  min-height: 48px;
   border: 0;
   background: transparent;
   color: var(--ln-ink);
+  text-align: left;
 }
 
 .jn-row input::placeholder { color: var(--ln-ink-3); }
@@ -93,9 +156,10 @@
 .jn-go {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   flex-shrink: 0;
-  min-height: 52px;
+  min-height: 48px;
   padding: 0 22px;
   border: 0;
   border-radius: 10px;
@@ -114,67 +178,61 @@
 
 @media (max-width: 460px) {
   .jn-row { flex-direction: column; padding: 8px; }
-  .jn-go { justify-content: center; }
 }
 
-.jn-error {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin: 12px 0 0;
-  font-size: 14px;
-  color: var(--ln-brand);
-}
-
+.jn-error,
 .jn-done {
   display: flex;
   align-items: center;
-  gap: 9px;
-  margin: clamp(26px, 4vw, 38px) 0 0;
-  font-size: 17px;
-  font-weight: 550;
-  color: var(--ln-ink);
+  justify-content: center;
+  gap: 7px;
+  margin: 12px 0 0;
+  font-size: 14px;
 }
 
+.jn-error { color: var(--ln-brand); }
+.jn-done { font-size: clamp(15px, 2vh, 18px); font-weight: 550; color: var(--ln-ink); margin: 0; }
 .jn-done svg { color: var(--ln-confirmed); flex-shrink: 0; }
 
-.jn-note { margin: 16px 0 0; font-size: 13px; color: var(--ln-ink-3); }
+.jn-note { margin: 0; font-size: clamp(11px, 1.5vh, 13px); color: var(--ln-ink-3); }
 
-/* ---------------------------------------------------------------- artwork */
+/* ------------------------------------------------------------------ reveal */
 
-.jn-art {
-  position: relative;
-  width: 100%;
-  line-height: 0;
-  pointer-events: none;
-  /* Fade the top edge into the paper so the city sits on the page rather than on top of it. */
-  mask-image: linear-gradient(to bottom, transparent, black 22%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent, black 22%);
+.jn-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: jn-rise 620ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--d, 0ms);
 }
 
-.jn-art img {
-  width: 100%;
-  height: auto;
-  display: block;
-  mix-blend-mode: multiply;
+.jn-backdrop {
+  opacity: 0;
+  animation: jn-fade 900ms ease-out 80ms forwards;
 }
 
-/* On a narrow screen the city is mostly empty paper on the right, so lean it left and
-   let it run past the edge rather than shrinking it into nothing. */
-@media (max-width: 760px) {
-  .jn-art { margin-inline: -18%; width: 136%; }
+@keyframes jn-rise {
+  to { opacity: 1; transform: none; }
 }
 
+@keyframes jn-fade {
+  to { opacity: 1; }
+}
+
+.jn-spin { animation: jn-rotate 1s linear infinite; }
+@keyframes jn-rotate { to { transform: rotate(360deg); } }
+
+/*
+ * Reduced motion gets the finished state immediately. Not a shorter animation — none,
+ * because the point is that nothing moves.
+ */
 @media (prefers-reduced-motion: reduce) {
-  .jn-row { transition: none; }
-  .jn-go { transition: none; }
+  .jn-reveal,
+  .jn-backdrop {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .jn-row,
+  .jn-go,
+  .jn-spin { transition: none; animation: none; }
 }
-
-/* The waitlist header carries the wordmark and nothing else, so it needs no border or
-   height of its own. */
-.jn-header { border: 0; background: transparent; }
-.jn-header .ln-container { display: flex; align-items: center; min-height: 84px; }
-
-/* The wordmark is the only link on the page, so it clears the 44px target rather than
-   sitting at the 36px the header elsewhere gets away with. */
-.jn-header .ln-wordmark { min-height: 44px; display: inline-flex; align-items: center; }
