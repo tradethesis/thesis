@@ -101,15 +101,45 @@ BASE=http://localhost:3100 node scripts/browser-check.cjs
 `NEXT_DIST_DIR` matters: `next dev` and `next build` both write to `.next`, and a build run
 underneath a live dev server leaves it loading chunks that no longer exist.
 
-## Deployment — not done, and what it needs
+## Deployment
 
-The production database (Neon) **does not have the `thesis_call` table**. A production build
-fails on it, which is how this was found. Before any deploy of this work:
+Done on 15 September 2026 and verified against https://tradethesis.xyz.
 
-1. `DATABASE_URL=<neon> pnpm tsx scripts/calls.ts migrate`
-2. `DATABASE_URL=<neon> pnpm content:publish` — publishes the curated thesis
-3. `DATABASE_URL=<neon> pnpm tsx scripts/calls.ts start`
-4. Deploy. `vercel.json` refreshes calls daily at 03:15 UTC and reconciles at 03:00 UTC.
+The production database now has the core schema, its constraints and triggers, the
+`thesis_call` table and its guard, all four theses, and four open calls running to
+14 December. The production build failed before this because `thesis_call` did not exist
+there; that is how the gap was found.
 
-Neither the migration nor the cron has been exercised against production. Nothing in this
-document should be read as a claim that it has.
+The order that matters, because the build prerenders pages that read the database:
+
+```bash
+NEON=<unpooled connection string>
+DATABASE_URL=$NEON pnpm db:push --force
+psql "$NEON" -f src/server/db/constraints.sql
+DATABASE_URL=$NEON pnpm tsx scripts/calls.ts migrate
+DATABASE_URL=$NEON pnpm content:publish
+DATABASE_URL=$NEON pnpm tsx scripts/calls.ts start
+vercel deploy --prod
+```
+
+Use the **unpooled** connection string for migrations and seeding. Schema changes through
+pgbouncer in transaction pooling mode are unreliable.
+
+### Verified in production
+
+- All pages 200, ~1.0s time to first byte
+- The full buy flow driven end to end by `scripts/e2e-buy.ts` against the live API:
+  session, three live Jupiter quotes, exact budget split, settlement, the open-basket
+  rules, and a stranger getting 401
+- `scripts/browser-check.cjs` at 320, 390, 768 and 1440: four cards, the source post, the
+  filters, search by source author, no horizontal overflow
+
+### Not verified
+
+- **The crons have not fired yet.** `vercel.json` schedules reconciliation at 03:00 UTC and
+  a call refresh at 03:15 UTC. Neither has run once in production. Calls were started and
+  refreshed by hand.
+- **No live trade has executed.** `EXECUTION_MODE` is `simulation` in production. The wallet
+  allowlist is set, but nothing has been signed or broadcast.
+- **There is no automatic X ingestion.** Curated posts are added by hand and checked with
+  `scripts/verify-source-posts.ts`.
