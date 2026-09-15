@@ -2,7 +2,9 @@
 
 Final PDF: [Thesis-Pitch-Deck.pdf](../Thesis-Pitch-Deck.pdf)
 
-12 slides, 16:9 landscape. Approximately 2.3 MB. Embedded fonts, selectable text, clickable website/source/Telegram links, tagged PDF, no password or JavaScript. Prepared for manual upload to DocSend; not uploaded by the agent.
+12 slides, 16:9 landscape. Approximately 2.3 MB. Embedded fonts, selectable text, tagged PDF, no password or JavaScript. Prepared for manual upload to DocSend; not uploaded by the agent.
+
+The deck links only to tradethesis.xyz, the founder's Telegram, and the two third-party sources it cites (xStocks and Jupiter). There is no repository link: the deck previously offered "private repository access on request" while the repository was in fact public, so the claim was removed rather than corrected.
 
 Audience: investors and potential partners. Founder contact supplied by Kayle: builder, Telegram @kayle_build.
 
@@ -21,7 +23,7 @@ Audience: investors and potential partners. Founder contact supplied by Kayle: b
 11. Pilot milestones
 12. Founder contact and partnership ask
 
-The deck distinguishes working public research/allocation screens from planned integrated checkout. User acquisition targets, retention thresholds, subscription plans, and partner channels are hypotheses, not achieved traction. No fundraising amount, valuation, or fabricated credentials are included.
+Checkout is described as connected and running in a labelled simulation — real prices and a real basket, with no signature requested and nothing broadcast — with funded execution as the next gate. User acquisition targets, retention thresholds, subscription plans, and partner channels are hypotheses, not achieved traction. No fundraising amount, valuation, or fabricated credentials are included.
 
 ## Editable source
 
