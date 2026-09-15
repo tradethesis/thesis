@@ -50,6 +50,7 @@ export function validateSeed(seed: ThesisSeed, evidence: EvidenceLink[], allowUn
 
   for (const c of seed.constituents) {
     if (!c.role.trim()) throw new ContentError(`${seed.slug}/${c.symbol}: every holding needs a role`);
+    if (!c.why.trim()) throw new ContentError(`${seed.slug}/${c.symbol}: every holding needs a stated case`);
     if (!c.limitation.trim()) throw new ContentError(`${seed.slug}/${c.symbol}: every holding needs a limitation`);
   }
   if (!seed.counterargument.trim()) throw new ContentError(`${seed.slug}: needs a counterargument`);
@@ -161,6 +162,7 @@ export async function publishAll(options: { allowUnsourced?: boolean } = {}) {
         position: c.position,
         weightBps: c.weightBps,
         exposureRole: c.role,
+        why: c.why,
         limitation: c.limitation,
         weightRationale: c.position === 0 ? seed.weightRationale : null,
       });

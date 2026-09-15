@@ -14,7 +14,7 @@ Retain Geist Sans as the established family. Large, tight headlines on the homep
 
 ## Layout
 
-Content width 1200 px including responsive gutters. Homepage: a split hero with an interactive basket, short ownership facts, a compact worked example, the three-step journey, expandable practical details, and a vermilion closing composition. Explore: list-based thesis comparison with distinct abstract art, holdings and source counts. Thesis: readable research column with a sticky allocation preview on desktop, stacked on mobile.
+Content width 1200 px including responsive gutters. Homepage: a centered headline above a panoramic miniature paper city, with a working allocation preview on the right. The artwork extends to 1440 px; mobile places it above the preview. Follow with short ownership facts, a compact worked example, the three-step journey, expandable practical details, and a vermilion closing composition. Explore: list-based thesis comparison with distinct abstract art, holdings and source counts. Thesis: readable research column with a sticky allocation preview on desktop, stacked on mobile.
 
 ## Components
 
@@ -26,4 +26,8 @@ Short color, opacity and transform transitions, 160–220 ms with ease-out. No e
 
 ## Imagery
 
-Reuse the approved abstract vermilion banner. Use small code-native abstract compositions for thesis categories. No external image dependency or fabricated market charts.
+The conviction workshop is the homepage's visual world: tactile architectural paper models, research sheets, and vermilion ribbons connecting ideas to businesses. Use the original locally hosted conviction-workshop.webp; no reference-site artwork is copied. Reuse the approved abstract vermilion banner for the closing section. Use small code-native abstract compositions for thesis categories. No external image dependency or fabricated market charts.
+
+## Mobile reading
+
+Keep catalogue artwork short (88–112 px) so ideas and holdings appear sooner. Use 44 px slider targets with larger thumbs and readable amounts. On thesis detail, a bottom allocation shortcut respects device safe areas and hides whenever the editor intersects the viewport. Preserve an inline anchor as the no-JavaScript fallback. Reserve footer space so the shortcut never hides the last links.

@@ -123,6 +123,8 @@ export const thesisConstituent = pgTable(
     position: smallint("position").notNull(),
     weightBps: smallint("weight_bps").notNull(),
     exposureRole: text("exposure_role").notNull(),
+    /** Why this company benefits if the claim holds. PRD §6 requires it alongside the role. */
+    why: text("why").notNull().default(""),
     limitation: text("limitation").notNull(),
     weightRationale: text("weight_rationale"),
   },

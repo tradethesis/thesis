@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./landing.css";
+import "./workshop.css";
 import { SiteHeader } from "@/components/landing/SiteHeader";
 import { Hero } from "@/components/landing/Hero";
 import { WorkedExample } from "@/components/landing/WorkedExample";
@@ -26,7 +27,7 @@ export default function Home() {
       <a className="ln-skip" href="#main">
         Skip to content
       </a>
-      <SiteHeader />
+      <SiteHeader active="home" />
       <main id="main">
         <Hero />
         <WorkedExample />

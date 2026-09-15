@@ -15,7 +15,7 @@
 .ex-question {
   /* Scale comes from .ln-h2. Explore is a research surface, so it stays quieter than the
      homepage hero rather than competing with it. */
-  margin: 0 0 16px;
+  margin: 0 0 16px !important;
   max-width: 18ch;
 }
 
@@ -228,4 +228,17 @@
   .ex-item {
     transition: none;
   }
+}
+@media (max-width: 859px) {
+  .ex-art { height: 112px; min-height: 0; }
+  .ex-main { padding: 20px; }
+  .ex-holdings { padding: 16px 20px; gap: 10px; }
+  .ex-hold-role { font-size: 12px; }
+  .ex-open { margin-top: 4px; }
+}
+@media (max-width: 520px) {
+  .ex-head { padding-top: 28px; }
+  .ex-sub { font-size: 16px; }
+  .ex-art { height: 88px; }
+  .ex-question { font-size: 34px; }
 }

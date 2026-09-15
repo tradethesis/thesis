@@ -24,15 +24,15 @@ export default async function ExplorePage() {
       <a className="ln-skip" href="#main">
         Skip to content
       </a>
-      <SiteHeader />
+      <SiteHeader active="explore" />
 
       <main id="main">
         <section className="ln-container ex-head">
           <p className="ln-eyebrow">The catalogue</p>
           <h1 className="ln-h2 ex-question">What do you believe happens next?</h1>
           <p className="ex-sub">
-            Each of these is a claim about the world, written out in full, with the businesses that express it and the
-            strongest argument that it is wrong. Read one before you decide whether you agree.
+            An idea, the businesses behind it, and the strongest case against.
+            Read the argument. Decide what you believe.
           </p>
         </section>
 
@@ -98,11 +98,10 @@ export default async function ExplorePage() {
           </div>
         )}
 
-        <p className="ln-container ex-note">
-          No wallet is needed to read any of this. There are no returns anywhere on this page, because none of these
-          have a track record yet — tracking begins at publication. Every source is linked in full on the thesis
-          itself, including the ones that argue against it.
-        </p>
+        <div className="ln-container"><p className="ex-note">
+          Read every thesis without a wallet. Each includes sources for and against.
+          These theses have no established performance history; tracking begins at publication.
+        </p></div>
       </main>
 
       <SiteFooter />
