@@ -7,6 +7,7 @@ import { listPublishedTheses } from "@/server/content/queries";
 
 import "../landing.css";
 import "../calls.css";
+import "../buy/[slug]/buy.css";
 import "./app.css";
 
 export const metadata: Metadata = {

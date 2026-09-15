@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
 import type { CallRecord } from "@/lib/calls";
 import type { ThesisCard } from "@/server/content/queries";
+
+import { BuyModal } from "../buy/BuyModal";
 
 import { CallScore } from "./CallScore";
 import { SourcePost } from "./SourcePost";
@@ -56,11 +57,18 @@ export function CallCard({ thesis, call }: { thesis: ThesisCard; call: CallRecor
         </ul>
 
         <div className="cc-actions">
-          <Link href={`/buy/${thesis.slug}?version=${thesis.versionId}`} className="ln-btn ln-btn--ink">
-            Buy basket
-            <ArrowRight size={15} aria-hidden="true" />
-            <span className="ln-sr-only">: {thesis.claim}</span>
-          </Link>
+          <BuyModal
+            slug={thesis.slug}
+            claim={thesis.claim}
+            versionId={thesis.versionId}
+            callStatement={call?.statement}
+            holdings={thesis.holdings.map((h) => ({
+              symbol: h.symbol,
+              company: h.company,
+              role: h.role,
+              weightBps: h.weightBps,
+            }))}
+          />
           <Link href={href} className="ln-text-link">
             Read thesis
             <span className="ln-sr-only">: {thesis.claim}</span>

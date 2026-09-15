@@ -305,3 +305,77 @@
   .cc-actions .ln-btn { flex: none; }
   .cc-actions .ln-text-link { text-align: center; min-height: 24px; }
 }
+
+/* ─── Buy modal ───────────────────────────────────────────────────────────────
+ *
+ * The flow opens over the list rather than at its own URL. Sizing is capped by the
+ * viewport rather than by a fixed height, because the flow grows a lot between choosing
+ * an amount and watching three legs settle, and a panel that scrolls internally keeps
+ * the close control reachable throughout.
+ */
+.bm {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  max-width: min(680px, 100vw - 32px);
+  width: 100%;
+  max-height: min(88dvh, 100dvh - 32px);
+  margin: auto;
+  overflow: visible;
+  color: var(--ln-ink);
+}
+
+.bm::backdrop {
+  background: oklch(25% 0.012 140 / 0.42);
+  backdrop-filter: blur(2px);
+}
+
+.bm-panel {
+  position: relative;
+  max-height: min(88dvh, 100dvh - 32px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--ln-bg);
+  border: 1px solid var(--ln-line);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 24px 60px oklch(25% 0.012 140 / 0.18);
+}
+
+.bm-close {
+  position: sticky;
+  top: 0;
+  float: right;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: -6px -6px 0 8px;
+  border: 1px solid var(--ln-line);
+  border-radius: 9px;
+  background: var(--ln-surface);
+  color: var(--ln-ink-2);
+  cursor: pointer;
+  z-index: 1;
+}
+
+.bm-close:hover { color: var(--ln-ink); border-color: var(--ln-line-strong); }
+
+/* The flow was written for a page with its own container and back link. Inside the panel
+   it is already framed, so it drops its outer chrome. */
+.bm-panel .by-main { padding: 0; max-width: none; }
+
+@media (max-width: 560px) {
+  .bm { max-width: 100vw; max-height: 100dvh; }
+  .bm-panel {
+    max-height: 100dvh;
+    border-radius: 0;
+    border: 0;
+    padding: 18px 16px calc(18px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bm::backdrop { backdrop-filter: none; }
+}
