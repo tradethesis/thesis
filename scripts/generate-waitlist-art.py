@@ -1,9 +1,14 @@
-"""Generate the waitlist page backdrop.
+"""Generate the waitlist backdrop.
 
-Brief is shaped by the layout, not the other way round: the page is one centred column on
-a full viewport with no scroll, so the artwork has to stay quiet where the words are and
-do its work at the edges. It is cover-cropped, so it must survive both a tall phone and a
-wide laptop.
+Prompts follow the structure from the image-generation skill: subject, composition,
+lighting, colour, mood, technical, then an explicit negative list.
+
+The page is one centred column on a full viewport with no scroll, so the artwork has one
+job and one constraint: be beautiful at the edges, be quiet in the middle. The first
+attempt failed by being busy — a crowd of hard-edged wedges reading as clutter rather than
+craft. These go the other way: very few elements, large, calm, and lit.
+
+  python3 scripts/generate-waitlist-art.py <variant> [portrait]
 
 Reads the key from the existing local file. Never logs the key or the response body.
 """
@@ -13,44 +18,68 @@ from pathlib import Path
 OUT = Path("/Users/limon/thesis/output/waitlist-art")
 MODEL = os.environ.get("ART_MODEL", "google/gemini-3-pro-image")
 
-PROMPT = """Use case: ads-marketing. Create a finished abstract backdrop for the Thesis
-waitlist page at tradethesis.xyz. It sits behind one centred column of text, so the middle
-of the image must stay calm and almost empty.
+COMMON_NEGATIVE = """
+Do not include: any text, letters, numbers, wordmarks, logos or symbols; charts,
+candlesticks, arrows, coins, grids or icons; UI, frames, borders, watermarks; digital
+gradients, lens flare, glow, bloom, metallic or glossy plastic rendering; busy clutter,
+many small shapes, noisy repetition; drop shadows that look pasted on; 3D render clichés.
+Two colours only, warm ivory paper and a single rich vermilion, with natural paper
+variation.
+"""
 
-Warm ivory paper ground, approximately #F5F1E8, with a subtle tactile paper grain. From the
-outer edges, large sculptural cut-paper forms in rich vermilion, approximately #F04B32, reach
-inward and stop well short of the centre: broad folded ribbons and clean angular planes,
-entering from the corners and the lower edge, cropped by the frame so the composition reads
-as a close view of something larger. A few slender ivory and pale sand planes layer beneath
-them, with precise seams and soft contact shadows, suggesting separate convictions arranged
-into one structure.
+CENTRE_RULE = """
+Composition: the centre of the frame — the middle 50 percent of the width and 50 percent of
+the height — must stay calm, open paper. Text sits there. Everything of interest lives in
+the outer band and is cropped by the edges, so the image reads as a close view of something
+larger.
+"""
 
-The centre, roughly the middle 45 percent of the width and the middle 50 percent of the
-height, is quiet open paper with at most a faint deckled edge or a single hairline. Nothing
-busy there.
+VARIANTS = {
+    # Restraint. One gesture, beautifully lit, enormous negative space.
+    "drape": f"""A single sheet of heavy vermilion paper, one long soft fold curving in from
+the lower right corner and lifting slightly away from the surface, casting a soft true
+shadow. Beneath and around it, a wide expanse of warm ivory cotton paper with a deckled
+torn edge running gently across the lower left.
 
-Weight the composition toward the bottom third so the lower edge feels grounded and the top
-stays airy. Elegant asymmetry, generous negative space, crisp edges, shallow paper relief.
-Contemporary art-book jacket, not a corporate diagram.
+{CENTRE_RULE}
 
-ABSOLUTELY NO TEXT, letters, numbers, wordmarks or logos. No charts, candlesticks, arrows,
-coins, grids, icons, gradients, glows, metallic rendering, heavy drop shadows, frames, UI, or
-watermark. Two main colours only, vermilion and warm ivory, with natural paper variation.
+Lighting: soft directional studio light from the upper left, raking low across the paper so
+the fold has a gentle gradient from lit to shadowed and the paper grain is visible. Real
+contact shadows, soft-edged, short.
 
-Landscape 3:2. It will be centre-cropped to both tall portrait and wide landscape, so keep
-everything essential away from all four edges. Artwork only."""
+Colour: warm ivory approximately #F5F1E8 and a single rich vermilion approximately #E8452A.
+Mood: quiet, expensive, considered. A fine-art paper study photographed from directly above.
+Style: overhead photograph of real paper, shallow relief, museum-quality print.
 
-# A phone crops a 3:2 image to a narrow vertical strip, which throws away the forms at the
-# left and right edges and leaves the top half as empty paper. Same composition, recomposed
-# for the shape it will actually be seen in.
-PORTRAIT = PROMPT.replace(
-    "Landscape 3:2. It will be centre-cropped to both tall portrait and wide landscape, so keep\neverything essential away from all four edges. Artwork only.",
-    "Tall portrait 3:4, composed for a phone screen. The quiet open centre becomes a tall calm\n"
-    "band through the upper middle where the text sits. Bring the vermilion forms in from the\n"
-    "left and right edges at mid height and from the bottom, so the lower third is rich and the\n"
-    "top stays airy but not empty: let one slim vermilion plane reach down from the top corner.\n"
-    "Artwork only.",
-).replace("Weight the composition toward the bottom third", "Weight the composition toward the lower half")
+Technical: landscape 3:2. It will be centre-cropped, so keep the fold clear of all four
+edges. {COMMON_NEGATIVE}""",
+
+    # Architecture. Two planes, one seam, strong diagonal.
+    "seam": f"""Two large planes of paper meeting along one clean diagonal seam that runs
+from the lower left toward the upper right: warm ivory on the upper left, deep vermilion on
+the lower right, the vermilion sheet lying very slightly above so a fine shadow line
+separates them. One narrow sliver of pale sand paper tucked beneath the seam near the lower
+left, visible only as a thin edge.
+
+{CENTRE_RULE}
+Keep the seam out of the exact centre; let it pass through the lower third.
+
+Lighting: soft even daylight from the upper left, raking enough to show the thickness of
+each sheet and a crisp shadow along the seam. No harsh highlights.
+
+Colour: warm ivory approximately #F5F1E8, rich vermilion approximately #E8452A, one pale
+sand accent. Mood: calm, architectural, confident. Restraint over decoration.
+Style: overhead photograph of real cut paper, shallow relief, editorial art direction.
+
+Technical: landscape 3:2. Centre-cropped later, so nothing essential near the edges.
+{COMMON_NEGATIVE}""",
+}
+
+PORTRAIT_NOTE = """
+Recompose for a tall portrait 3:4 frame seen on a phone: the calm open area becomes a tall
+band through the upper middle where text sits, and the vermilion gesture occupies the lower
+half and reaches up one side. Keep the top airy but not empty.
+"""
 
 
 def key() -> str:
@@ -65,8 +94,15 @@ def key() -> str:
 
 
 def main() -> None:
-    which = sys.argv[1] if len(sys.argv) > 1 else "landscape"
-    prompt = PORTRAIT if which == "portrait" else PROMPT
+    variant = sys.argv[1] if len(sys.argv) > 1 else "drape"
+    portrait = len(sys.argv) > 2 and sys.argv[2] == "portrait"
+    if variant not in VARIANTS:
+        raise SystemExit(f"unknown variant {variant!r}; have {', '.join(VARIANTS)}")
+
+    prompt = VARIANTS[variant]
+    if portrait:
+        prompt = prompt.replace("Technical: landscape 3:2.", f"{PORTRAIT_NOTE}\nTechnical: portrait 3:4.")
+
     body = json.dumps({
         "model": MODEL,
         "messages": [{"role": "user", "content": prompt}],
@@ -86,12 +122,11 @@ def main() -> None:
         print("no image returned; finish_reason:", payload.get("choices", [{}])[0].get("finish_reason"))
         sys.exit(1)
 
-    url = images[0]["image_url"]["url"]
-    raw = base64.b64decode(url.split(",", 1)[1])
+    raw = base64.b64decode(images[0]["image_url"]["url"].split(",", 1)[1])
     OUT.mkdir(parents=True, exist_ok=True)
-    path = OUT / ("waitlist-backdrop-portrait.png" if which == "portrait" else "waitlist-backdrop.png")
-    path.write_bytes(raw)
-    print(f"  wrote {path}  {len(raw):,} bytes")
+    name = f"{variant}{'-portrait' if portrait else ''}.png"
+    (OUT / name).write_bytes(raw)
+    print(f"  wrote {OUT / name}  {len(raw):,} bytes")
 
 
 if __name__ == "__main__":

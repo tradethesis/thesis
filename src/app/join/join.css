@@ -33,18 +33,18 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 62%;
+  object-position: center 46%;
   display: block;
 }
 
 /*
- * Phones get a separately composed portrait cut (see the <picture> in WaitlistLanding), so
- * no zoom trickery is needed here. A phone is still far taller than that 3:4 source, so
- * cover keeps the full height and crops the width to roughly 60 percent: favour the right,
- * where the composition puts its strongest forms, rather than centring on empty paper.
+ * Phones get a separately composed portrait cut (see the <picture> in WaitlistLanding). A
+ * phone is still far taller than that 3:4 source, so cover keeps the full height and crops
+ * the width to roughly 60 percent: favour the left, where this composition keeps its open
+ * paper, and let the curl hold the lower right.
  */
 @media (max-aspect-ratio: 3 / 4) {
-  .jn-backdrop img { object-position: 70% 44%; }
+  .jn-backdrop img { object-position: 38% 38%; }
   .jn-backdrop::after {
     background: radial-gradient(ellipse 88% 42% at 50% 42%, oklch(97% 0.008 85 / 0.93), transparent 78%);
   }

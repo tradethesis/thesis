@@ -45,3 +45,5 @@ next-env.d.ts
 
 # isolated production build output
 /.next-build
+.agents/
+skills-lock.json
