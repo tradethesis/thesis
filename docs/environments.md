@@ -46,23 +46,40 @@ Use the **unpooled** string. Schema changes through pgbouncer in transaction poo
 are unreliable, and `db:push --force` drops the `remaining_raw` generated column every time,
 which is why `constraints.sql` runs immediately after it.
 
+## Two traps, both of which have already bitten
+
+**`vercel env rm NAME preview` can delete the production value too.** The Neon integration
+created `DATABASE_URL` with the scope *Production, Preview*. Removing the preview scope
+deleted the whole record, production included, and the next production deploy failed at
+`Failed to collect page data for /api/cron/calls` — a build-time env read with nothing
+behind it. Beta had built fine minutes earlier on the same commit, which is what gave it
+away. Add a preview-scoped value rather than removing and re-adding, and check
+`vercel env ls production` afterwards.
+
+**Never run two builds or two servers over the same output directory.** It produced HTML
+referencing a `webpack-` chunk the build never wrote, so every asset 404'd, React never
+hydrated, and every click silently did nothing. That looks exactly like a broken filter
+button. `scripts/browser-check.cjs` now asserts no `/_next/` asset 404'd and that React
+attached, before it clicks anything.
+
 ## Two things beta still needs
 
-1. **DNS.** Namecheap → `tradethesis.xyz` → Advanced DNS → add
-   `A  beta  76.76.21.21`. Until then `vercel alias set` cannot issue a certificate, and the
-   beta URL is the raw `thesis-<hash>-sigmamain.vercel.app`.
-2. **A decision on deployment protection.** Preview deployments are behind Vercel
-   Authentication by default, so only someone signed in to the Vercel team can open them.
-   That is right for internal work and wrong for sharing a link with a tester. It is a
-   project setting in the Vercel dashboard (Settings → Deployment Protection), not
-   something the CLI changes.
+Both are done. DNS points `beta` at `76.76.21.21`, the certificate is issued, and the alias
+is live.
 
-Until protection is decided, beta is reachable only to the Vercel team, and nothing about it
-has been verified end to end through the browser.
+Worth knowing: the **custom domain bypasses deployment protection while the raw preview URL
+does not**. `beta.tradethesis.xyz` serves the app; `thesis-<hash>-sigmamain.vercel.app`
+still returns 401 behind Vercel Authentication. Point test runs at the domain, not the
+preview URL.
+
+If a machine queried `beta.tradethesis.xyz` before its DNS record existed, its resolver may
+hold a cached NXDOMAIN — `dig` will answer while `curl` and `ping` cannot. Pass
+`HOST_RESOLVE="beta.tradethesis.xyz=76.76.21.21"` to the browser check to work around it,
+or wait for the cache to expire.
 
 ## Current state
 
 - Beta database: provisioned, 4 theses, 13 assets, 4 open calls, 0 signups
 - Production database: 4 theses, 4 open calls, 0 signups
-- Beta deployment: built and deployed, behind SSO, not verified through the browser
+- Beta deployment: live at beta.tradethesis.xyz, browser checks pass at 320/390/768/1440
 - Production: verified — pages, buy flow, browser checks at four widths
