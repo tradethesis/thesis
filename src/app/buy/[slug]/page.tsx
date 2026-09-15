@@ -43,7 +43,7 @@ export default async function BuyPage({ params, searchParams }: { params: Promis
           versionId={t.versionId}
           initialWeights={initialWeights ?? undefined}
           callStatement={call?.statement}
-          initialNotice={changedVersion ? "This thesis has a new version. Review the current holdings and weights below." : query.weights && !initialWeights ? "That allocation link was invalid. The creator’s weights are shown below." : undefined}
+          initialNotice={changedVersion ? "This thesis has a new version. Review the current holdings and weights below." : query.weights && !initialWeights ? "That allocation link was invalid. The author’s weights are shown below." : undefined}
           claim={t.claim}
           holdings={t.holdings.map((h) => ({
             symbol: h.symbol,
