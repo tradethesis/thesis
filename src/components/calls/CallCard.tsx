@@ -15,9 +15,17 @@ export function CallCard({ thesis, call, followingView = false }: { thesis: Thes
     <div className="cc-overview">
       <div className="cc-idea">
         <div className="cc-meta"><span className="cc-category">{thesis.category}</span><span>Basket by {thesis.authorName}</span></div>
+        {/*
+          The post leads on the theses that have one. It is the reason the thesis exists,
+          and someone else's sentence is what makes a reader stop — our claim is the answer
+          to it, and an answer reads better after the question. The label below keeps the
+          two apart, which is the whole obligation here: the quote is theirs, the read is
+          ours, and nobody should have to work out which is which.
+        */}
+        {thesis.sourcePost && <SourcePost post={thesis.sourcePost} compact />}
+        {thesis.sourcePost && <p className="cc-read-label">Thesis&rsquo;s read</p>}
         <h2 className="cc-claim"><Link href={href}>{thesis.claim}</Link></h2>
         <p className="cc-connection">{thesis.summary}</p>
-        {thesis.sourcePost && <SourcePost post={thesis.sourcePost} compact />}
         <div className="cc-social"><FollowThesis slug={thesis.slug} title={thesis.claim} /><ShareThesis slug={thesis.slug} title={thesis.claim} /></div>
       </div>
       <div className="cc-basket">

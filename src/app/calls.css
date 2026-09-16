@@ -104,12 +104,47 @@
 .source-post blockquote { margin:12px 0; white-space:pre-line; font-size:16px; line-height:1.6; }
 .source-post-credit { font-size:12px; color:var(--ln-ink-3); }
 .source-post-attribution { font-size:11px; color:var(--ln-ink-3); margin-top:12px; line-height:1.5; }
-.source-post--compact { padding:14px 0 0; margin:16px 0 0; background:none; border:0; border-top:1px solid var(--ln-line); border-radius:0; }
-.source-post--compact blockquote { display:block; margin:0; font-size:13px; line-height:1.6; color:var(--ln-ink-2); }
-.source-post--compact .source-post-credit { display:flex; align-items:center; gap:8px; margin-top:10px; }
-.source-post-who { display:flex; flex-wrap:wrap; align-items:center; gap:5px 10px; }
-.landing .cc .source-post-who a { display:inline-flex; gap:3px; align-items:center; color:var(--ln-ink-2); font-size:11px; }
-.source-post--compact .source-post-attribution { margin:0; font-size:10px; }
+/* The post leads the card, so it is a quoted card of its own rather than a footnote
+   under the claim: bordered, on the sunken surface, with the accent rule down its left
+   edge that the full variant uses on the thesis page. */
+.source-post--compact {
+  padding:14px 16px; margin:0; background:var(--ln-surface-sunken);
+  border:1px solid var(--ln-line); border-left:3px solid var(--ln-brand); border-radius:10px;
+}
+.source-post--compact blockquote {
+  display:block; margin:11px 0 0; white-space:pre-line;
+  font-size:16px; line-height:1.5; letter-spacing:-.011em; color:var(--ln-ink);
+}
+.source-post--compact .source-post-credit { display:flex; align-items:center; gap:9px; margin:0; }
+.source-post-who { display:flex; flex-wrap:wrap; align-items:baseline; gap:2px 7px; }
+.source-post-who strong { font-size:13px; font-weight:600; color:var(--ln-ink); }
+.source-post-who time { font-size:11px; color:var(--ln-ink-3); }
+.landing .cc .source-post-who a { display:inline-flex; gap:3px; align-items:center; color:var(--ln-ink-3); font-size:12px; }
+.landing .cc .source-post-who a:hover { color:var(--ln-accent); }
+
+.source-post-metrics {
+  display:flex; flex-wrap:wrap; align-items:center; gap:6px 14px;
+  margin:12px 0 0 !important; font-size:12px; color:var(--ln-ink-3);
+}
+.source-post-metrics span { display:inline-flex; align-items:center; gap:5px; font-variant-numeric:tabular-nums; }
+.source-post-metrics svg { color:var(--ln-ink-3); flex-shrink:0; }
+.source-post-metrics small { margin-left:auto; font-size:10.5px; }
+
+.source-post--compact .source-post-attribution {
+  margin:11px 0 0; padding-top:10px; border-top:1px solid var(--ln-line);
+  font-size:10.5px; color:var(--ln-ink-3);
+}
+
+/* Only the sourced cards get the label, and there the claim sits right under it;
+   an editorial card's claim still needs its air below the category row. */
+.cc-read-label + .cc-claim { margin-top:9px !important; }
+
+/* Names the turn from their words to ours. */
+.cc-read-label {
+  margin:18px 0 0 !important;
+  font-size:10.5px; font-weight:600; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--ln-accent);
+}
 .am { display:inline-flex; align-items:center; justify-content:center; width:25px; height:25px; border-radius:50%; font-size:11px; font-weight:550; flex-shrink:0; color:var(--ln-on-accent); }
 .bm { border:0; padding:0; background:transparent; max-width:min(560px,100vw - 32px); width:100%; max-height:calc(100dvh - 40px); margin:auto; overflow:visible; color:var(--ln-ink); }
 .bm::backdrop { background:oklch(25% .012 140 / .42); }

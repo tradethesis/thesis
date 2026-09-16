@@ -1,3 +1,11 @@
+-- Run by `pnpm db:push`, which chains it after drizzle-kit.
+--
+-- That chaining is not convenience, it is repair. Everything in this file is invisible to
+-- drizzle-kit, so a bare `drizzle-kit push --force` reads these indexes and columns as
+-- drift and drops them — including intent_one_open_per_wallet, the index that is the only
+-- thing stopping a wallet opening a second basket while the first is still settling.
+-- Never run drizzle-kit directly against a database that matters.
+
 -- Guarantees that belong in the database, not in a code path someone might forget at 2 a.m.
 -- Applied by scripts/apply-constraints.sh after every drizzle-kit push.
 

@@ -5,6 +5,7 @@ import {
   date,
   doublePrecision,
   index,
+  integer,
   jsonb,
   numeric,
   pgTable,
@@ -453,6 +454,31 @@ export const event = pgTable("event", {
  * PRD §13 keeps wallet identities out of third-party analytics, and the same reasoning
  * applies to an email nobody agreed to be profiled by.
  */
+/* ------------------------------------------------- source post engagement */
+
+/**
+ * How a quoted post is doing on X, kept beside the published snapshot rather than inside it.
+ *
+ * A thesis version is immutable and its evidence snapshot pins the post's text, author and
+ * verification time — that is the promise, and it must not move. Engagement is the opposite
+ * kind of fact: it changes hourly and says nothing about the argument. Putting it in the
+ * snapshot would mean publishing a new version of a thesis every time somebody liked a
+ * tweet, which would make the version history meaningless.
+ *
+ * So it lives here, keyed by the post, refreshed in place, and always rendered with
+ * capturedAt — a number without its timestamp is a number that quietly ages into a lie.
+ */
+export const sourcePostMetrics = pgTable("source_post_metrics", {
+  /** The canonical x.com status URL, matching what the evidence snapshot stores. */
+  postUrl: text("post_url").primaryKey(),
+  likes: integer("likes").notNull(),
+  reposts: integer("reposts").notNull(),
+  replies: integer("replies").notNull(),
+  views: integer("views").notNull(),
+  /** When this was read from the mirror. Never rendered without it. */
+  capturedAt: timestamp("captured_at", { withTimezone: true }).notNull(),
+});
+
 export const waitlistSignup = pgTable(
   "waitlist_signup",
   {

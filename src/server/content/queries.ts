@@ -2,6 +2,7 @@ import { asc, desc, eq, and, isNotNull, inArray, or, isNull } from "drizzle-orm"
 import { db } from "../db/client";
 import { asset, thesis, thesisConstituent, thesisVersion, thesisUpdate } from "../db/schema";
 import type { EvidenceLink } from "./evidence";
+import { loadSourceMetrics, withMetrics } from "./source-metrics";
 import { sourcePostFromEvidence, type SourcePost } from "@/lib/source-post";
 
 /**
@@ -78,6 +79,9 @@ export async function listPublishedTheses(): Promise<ThesisCard[]> {
 
   if (!rows.length) return [];
 
+  // One query for every post on the page rather than one per card.
+  const metrics = await loadSourceMetrics(rows.map((r) => sourcePostFromEvidence(r.evidence)));
+
   const updates = await db.select({ thesisId: thesisUpdate.thesisId, title: thesisUpdate.title, body: thesisUpdate.body, authoredAt: thesisUpdate.authoredAt })
     .from(thesisUpdate).leftJoin(thesisVersion, eq(thesisUpdate.versionId, thesisVersion.id))
     .where(and(inArray(thesisUpdate.thesisId, rows.map(r => r.thesisId)), or(isNull(thesisUpdate.versionId), isNotNull(thesisVersion.publishedAt))))
@@ -105,7 +109,7 @@ export async function listPublishedTheses(): Promise<ThesisCard[]> {
     cards.push({
       versionId: row.versionId,
       thesisId: row.thesisId,
-      sourcePost: sourcePostFromEvidence(row.evidence),
+      sourcePost: withMetrics(sourcePostFromEvidence(row.evidence), metrics),
       authorHandle: row.authorHandle,
       slug: row.slug,
       title: row.title,

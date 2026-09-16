@@ -14,11 +14,13 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "db:push": "drizzle-kit push",
+    "db:push": "drizzle-kit push && pnpm db:constraints",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx src/server/db/seed.ts",
     "assets:verify": "tsx src/server/assets/verify.ts",
-    "content:publish": "tsx src/server/content/seed.ts"
+    "content:publish": "tsx src/server/content/seed.ts",
+    "db:constraints": "psql \"$DATABASE_URL\" -v ON_ERROR_STOP=1 -f src/server/db/constraints.sql",
+    "content:metrics": "tsx scripts/capture-source-metrics.ts"
   },
   "dependencies": {
     "@solana/web3.js": "1.98.4",
