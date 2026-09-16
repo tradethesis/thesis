@@ -145,7 +145,14 @@
   font-size:10.5px; font-weight:600; letter-spacing:.07em; text-transform:uppercase;
   color:var(--ln-accent);
 }
-.am { display:inline-flex; align-items:center; justify-content:center; width:25px; height:25px; border-radius:50%; font-size:11px; font-weight:550; flex-shrink:0; color:var(--ln-on-accent); }
+/* The monogram is the background and the photograph sits on top of it, so an author
+   with no avatar file gets a coloured initial rather than a broken image. */
+.am {
+  position:relative; display:inline-flex; align-items:center; justify-content:center;
+  width:32px; height:32px; border-radius:50%; flex-shrink:0; overflow:hidden;
+  font-size:13px; font-weight:600; color:var(--ln-on-accent);
+}
+.am img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
 .bm { border:0; padding:0; background:transparent; max-width:min(560px,100vw - 32px); width:100%; max-height:calc(100dvh - 40px); margin:auto; overflow:visible; color:var(--ln-ink); }
 .bm::backdrop { background:oklch(25% .012 140 / .42); }
 .bm-panel { position:relative; max-height:calc(100dvh - 40px); overflow-y:auto; overscroll-behavior:contain; background:var(--ln-surface); border:1px solid var(--ln-line); border-radius:16px; padding:26px; box-shadow:0 24px 60px oklch(25% .012 140 / .18); }
@@ -182,4 +189,87 @@
 @media(max-width:560px) {
  .bm { max-width:100vw; max-height:100dvh; margin:auto 0 0; }
  .bm-panel { max-height:94dvh; padding:24px 20px calc(22px + env(safe-area-inset-bottom,0px)); border-radius:18px 18px 0 0; border-bottom:0; }
+}
+
+
+/* ─── Motion ──────────────────────────────────────────────────────────────────
+ *
+ * The built-in CSS easings are too weak to read as deliberate, so everything here
+ * uses one strong ease-out. Nothing runs longer than 300ms except the scoreboard
+ * bars, which are the one thing on the page worth watching arrive.
+ *
+ * What is deliberately NOT animated: the engagement numbers. Counting them up
+ * would make a figure captured on a date look like a live ticker, which is the
+ * one impression this product cannot afford to give.
+ */
+:root { --cc-ease: cubic-bezier(0.23, 1, 0.32, 1); }
+
+/* Cards arrive staggered rather than all at once. Decorative, so it never blocks
+   interaction — the cards are clickable from the first frame. */
+@keyframes cc-rise { to { opacity:1; transform:none; } }
+.cg-grid > .cc {
+  opacity:0; transform:translateY(10px);
+  animation:cc-rise 420ms var(--cc-ease) forwards;
+}
+.cg-grid > .cc:nth-child(2) { animation-delay:60ms; }
+.cg-grid > .cc:nth-child(3) { animation-delay:120ms; }
+.cg-grid > .cc:nth-child(4) { animation-delay:180ms; }
+.cg-grid > .cc:nth-child(n+5) { animation-delay:240ms; }
+
+.cc { transition:border-color 200ms ease, box-shadow 200ms ease; }
+@media (hover:hover) and (pointer:fine) {
+  .cc:hover { border-color:var(--ln-line-strong); box-shadow:0 2px 16px oklch(25% 0.012 140 / 0.05); }
+}
+
+/* The quote is the hook, so it lifts very slightly under the cursor — enough to read
+   as touchable, not enough to bounce. */
+.source-post--compact { transition:transform 220ms var(--cc-ease), box-shadow 220ms ease; }
+@media (hover:hover) and (pointer:fine) {
+  .cc:hover .source-post--compact { transform:translateY(-1px); box-shadow:0 3px 14px oklch(25% 0.012 140 / 0.06); }
+}
+
+/* The call detail unfolds rather than appearing. <details> gives no transition on its
+   own, so the panel animates its own arrival — a grid row from 0fr to 1fr, which is the
+   only way to animate to an unknown content height without measuring it in JavaScript. */
+/* A keyframe on the open state, not a transition. A closed <details> does not render
+   its content at all, so there is no "from" for a transition to start at — the panel
+   only exists once it is already open, and can only animate its own arrival. */
+@keyframes brief-open { from { opacity:0; transform:translateY(-5px); } }
+.call-brief[open] .call-brief-detail { animation:brief-open 240ms var(--cc-ease); }
+.call-brief summary { cursor:pointer; }
+.call-brief summary svg:last-child { transition:transform 240ms var(--cc-ease); }
+.call-brief[open] summary svg:last-child { transform:rotate(180deg); }
+
+/* Every pressable thing answers the press. */
+.landing .ln-btn, .cc-actions a, .cg-filters button, .bm-close, .cc-social button {
+  transition:transform 160ms var(--cc-ease), background-color 200ms ease, color 200ms ease, border-color 200ms ease;
+}
+.landing .ln-btn:active, .cc-actions a:active, .cg-filters button:active,
+.bm-close:active, .cc-social button:active { transform:scale(0.97); }
+
+/* The modal. transform-origin stays centred: it is not anchored to its trigger, and a
+   modal that grows out of a button in the corner of a list reads as a mistake.
+   allow-discrete lets display participate so the exit is visible at all. */
+.bm, .bm::backdrop { transition:opacity 200ms ease, overlay 200ms allow-discrete, display 200ms allow-discrete; }
+.bm { transition-property:opacity, transform, overlay, display; }
+.bm[open] { opacity:1; transform:scale(1); }
+.bm[open]::backdrop { opacity:1; }
+.bm:not([open]) { opacity:0; transform:scale(0.97); }
+@starting-style {
+  .bm[open] { opacity:0; transform:scale(0.97); }
+  .bm[open]::backdrop { opacity:0; }
+}
+
+/* Reduced motion keeps what aids comprehension — the fade, the colour — and drops
+   every movement. Cards must still end up visible, so the entrance resolves instantly
+   rather than being removed. */
+@media (prefers-reduced-motion:reduce) {
+  .cg-grid > .cc { opacity:1; transform:none; animation:none; }
+  .call-brief[open] .call-brief-detail { animation:none; }
+  .call-brief summary svg:last-child { transition:none; }
+  .cc:hover, .cc:hover .source-post--compact { transform:none; box-shadow:none; }
+  .landing .ln-btn:active, .cc-actions a:active, .cg-filters button:active,
+  .bm-close:active, .cc-social button:active { transform:none; }
+  .bm, .bm::backdrop { transition:opacity 120ms ease; }
+  .bm:not([open]) { transform:none; }
 }

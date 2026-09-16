@@ -8,8 +8,16 @@
  * engagement changes hourly and says nothing about the argument, so storing it there would
  * mean publishing a new version of a thesis every time somebody liked a tweet.
  *
+ * Also saves the author's avatar to public/authors/<handle>.webp. Downloaded and committed
+ * rather than hotlinked: hotlinking would put a request to X on every card render and leak
+ * each reader's address to it, and the file would vanish the day they change the URL.
+ *
  * Safe to run on a schedule. It only ever replaces a row keyed by the post URL.
  */
+import { execFileSync } from "node:child_process";
+import { mkdirSync, writeFileSync, rmSync } from "node:fs";
+import { join } from "node:path";
+
 import { CURATED_EVIDENCE } from "../src/server/content/curated";
 import { sourcePostSchema } from "../src/lib/source-post";
 import { db } from "../src/server/db/client";
@@ -36,7 +44,7 @@ async function main() {
       const body = (await res.json()) as {
         tweet?: {
           likes?: number; retweets?: number; replies?: number; views?: number;
-          author?: { screen_name?: string };
+          author?: { screen_name?: string; avatar_url?: string };
         };
       };
       const t = body.tweet;
@@ -64,6 +72,22 @@ async function main() {
           target: sourcePostMetrics.postUrl,
           set: { ...metrics, capturedAt: new Date(capturedAt) },
         });
+
+      // The same handle check above guards this: an avatar is a face beside a quotation,
+      // and attaching the wrong one is a worse error than attaching the wrong number.
+      if (t.author?.avatar_url) {
+        const handle = post.handle.replace(/^@/, "").toLowerCase();
+        const dir = join(process.cwd(), "public", "authors");
+        mkdirSync(dir, { recursive: true });
+        // _400x400 is the same asset the mirror points at, at twice the size.
+        const img = await fetch(t.author.avatar_url.replace("_200x200", "_400x400"));
+        if (img.ok) {
+          const tmp = join(dir, `${handle}.tmp`);
+          writeFileSync(tmp, Buffer.from(await img.arrayBuffer()));
+          execFileSync("cwebp", ["-quiet", "-resize", "96", "96", "-q", "86", tmp, "-o", join(dir, `${handle}.webp`)]);
+          rmSync(tmp, { force: true });
+        }
+      }
 
       console.log(
         `  ${slug}  ${post.handle}  ${metrics.likes} likes · ${metrics.reposts} reposts · ` +
