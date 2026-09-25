@@ -1,34 +1,31 @@
 # Thesis investor & partner deck
 
-Final PDF: [Thesis-Pitch-Deck.pdf](../Thesis-Pitch-Deck.pdf)
+Updated 23 September 2026 for the thesis + stock gift direction.
 
-12 slides, 16:9 landscape. Approximately 2.3 MB. Embedded fonts, selectable text, tagged PDF, no password or JavaScript. Prepared for manual upload to DocSend; not uploaded by the agent.
+- PDF: `../Thesis-Pitch-Deck.pdf` — 12 landscape slides, suitable for uploading to DocSend.
+- Standalone HTML: `deck.html` — fonts and images embedded.
+- Narrative: `PITCH.md`.
+- Product continuation prompt: `../docs/claude-gifting-revamp.md`.
+- Builder: `build_deck.py`; browser renderer and bounds checks: `render_deck.cjs`.
 
-The deck links only to tradethesis.xyz, the founder's Telegram, and the two third-party sources it cites (xStocks and Jupiter). There is no repository link: the deck previously offered "private repository access on request" while the repository was in fact public, so the claim was removed rather than corrected.
+The screenshots show the actual local **unfunded** gift preview. They do not imply a live deployment, completed X OAuth verification, escrow, gift funding, or token delivery. The deck labels the intended claim journey and outstanding work. No traction, revenue, exclusive partnerships, or fundraising amount is claimed. Technical materials are offered on request; no repository URL is included.
 
-Audience: investors and potential partners. Founder contact supplied by Kayle: builder, Telegram @kayle_build.
+## Rebuild
 
-## Content
+```sh
+python3 pitch/build_deck.py
+node pitch/render_deck.cjs
+```
 
-1. Buy what you believe
-2. The problem
-3. The thesis product unit
-4. A concrete three-business example
-5. Real mobile product screens
-6. Why Solana
-7. Differentiation
-8. First 50 users plan
-9. Proposed business model
-10. Current build and next release
-11. Pilot milestones
-12. Founder contact and partnership ask
+Run from the repository root. The renderer requires Playwright and Chromium. Set `PLAYWRIGHT_MODULE` if Playwright is installed elsewhere. Output screenshots and extracted slide text are written to `output/pitch-review/`. Chromium may require local execution permission in a restricted environment.
 
-Checkout is described as connected and running in a labelled simulation — real prices and a real basket, with no signature requested and nothing broadcast — with funded execution as the next gate. User acquisition targets, retention thresholds, subscription plans, and partner channels are hypotheses, not achieved traction. No fundraising amount, valuation, or fabricated credentials are included.
+Current screenshot inputs: `assets/gift-packs.png`, `gift-collection.png`, `gift-recipient.png`, `gift-reveal.png`. These are local product captures, not mockups of funded behavior. Earlier terminal screenshot assets are retained but are not included in this deck.
 
-## Editable source
+## Sources and claim boundaries
 
-`build_deck.py` contains the slide content and design. Run `python3 pitch/build_deck.py` from the repository root to regenerate the self-contained `deck.html`. Fonts and screenshots are embedded into that HTML; it can be opened locally and printed to PDF.
+- [Kraken xStocks](https://www.kraken.com/xstocks): tokenized stock exposure, underlying backing, shareholder-rights and availability distinctions.
+- [xStocks product legal overview](https://docs.xstocks.fi/docs/product-legal-overview): structure and distribution constraints. Market eligibility must be checked before a pilot; the deck makes no universal-access claim.
+- [Jupiter order and execute](https://developers.jup.ag/docs/swap/order-and-execute): available execution infrastructure; not proof that Thesis gift execution is live.
+- [Stockpile digital stock gifting announcement, 2022](https://www.newsfilecorp.com/release/148851): historical precedent for stock gifts. This is not a claim about its current product availability.
 
-For exact export, Chromium/Playwright prints at 1280 × 720 CSS px, with background graphics, no page margins, CSS page size, and no browser headers/footers. The resulting PDF is 960 × 540 points per page.
-
-Original artwork and real mobile screenshots are in `assets/`. Preview renders and validation results are under the ignored `output/pitch-review/` folder. The repository is described as private, with access available on request through Telegram. No direct repository URL is embedded in the deck. Source links to xStocks and Jupiter appear on the Solana slide. Deck prepared September 15, 2026.
+All acquisition, retention, pricing and defensibility statements are product hypotheses. The 20-sender pilot is a proposed experiment, not existing traction.

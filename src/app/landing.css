@@ -1,32 +1,53 @@
 /* Shared public brand and research system. See DESIGN.md. */
+/* Tokens stay in this file. globals.css compiles to a chunk that no route actually
+   links, so anything defined there resolves to nothing — moving them out cost the
+   whole palette and dropped every page into Times until it was put back. */
 :root {
-  --ln-bg: oklch(97% 0.012 80);
-  --ln-surface: oklch(99% 0.006 80);
-  --ln-surface-2: oklch(94.5% 0.015 80);
-  --ln-surface-sunken: oklch(95.2% 0.013 80);
-  --ln-ink: oklch(25% 0.012 140);
-  --ln-ink-2: oklch(43% 0.013 110);
-  --ln-ink-3: oklch(49% 0.015 100);
-  --ln-line: oklch(87% 0.016 80);
-  --ln-line-strong: oklch(76% 0.021 80);
-  --ln-brand: oklch(64% 0.22 34);
-  --ln-accent: oklch(48% 0.175 33);
-  --ln-accent-hover: oklch(42% 0.155 33);
-  --ln-accent-soft: oklch(93% 0.035 48);
-  --ln-on-accent: oklch(99% 0.006 80);
-  --ln-confirmed: oklch(40% 0.085 156);
-  --ln-pending: oklch(43% 0.09 70);
-  --ln-focus: oklch(44% 0.17 34);
-  --ln-mono: var(--font-geist-mono), ui-monospace, monospace;
-  --ln-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  /* Dark by default.
+     Chosen rather than flipped. Every step was picked against the dark ground and checked
+     for contrast there: inverting a light ramp gives you muddy mid-greys and an accent
+     that vanishes, because lightness and perceived contrast do not move together.
+
+     Three rules the set follows:
+       - Surfaces get lighter as they come forward. The page is the darkest thing on it,
+         a card sits above the page, a raised control above that. On light it was the
+         reverse, and keeping the reverse here is what makes a dark theme read as inverted
+         rather than designed.
+       - Ink never reaches pure white. #fff on near-black buzzes; 92% is the ceiling.
+       - The accent gets lighter and less saturated, not darker. A 48% vermilion that
+         carried a headline on white is illegible on a 16% ground. */
+  --ln-bg: oklch(16.5% 0.008 260);
+  --ln-surface: oklch(21% 0.009 260);
+  --ln-surface-2: oklch(25.5% 0.01 260);
+  --ln-surface-sunken: oklch(13.5% 0.008 260);
+  --ln-ink: oklch(94% 0.004 260);
+  --ln-ink-2: oklch(78% 0.006 260);
+  --ln-ink-3: oklch(63% 0.008 260);
+  --ln-line: oklch(30% 0.01 260);
+  --ln-line-strong: oklch(38% 0.012 260);
+  --ln-brand: oklch(70% 0.19 34);
+  --ln-accent: oklch(72% 0.17 36);
+  --ln-accent-hover: oklch(79% 0.15 38);
+  --ln-accent-soft: oklch(30% 0.07 34);
+  --ln-on-accent: oklch(14% 0.01 40);
+  --ln-confirmed: oklch(76% 0.15 155);
+  --ln-pending: oklch(76% 0.13 75);
+  --ln-focus: oklch(78% 0.16 36);
+  --ln-mono: var(--font-geist-mono, ui-monospace), ui-monospace, monospace;
+  /* The fallback sits inside the var(). Written as `var(--x), ui-sans-serif, …` the
+     whole declaration is invalid whenever --font-geist-sans is missing, and an invalid
+     font-family resolves to the initial value — a serif. Geist failing to load should
+     cost the brand face, not drop the entire site into Times. */
+  --ln-sans: var(--font-geist-sans, ui-sans-serif), ui-sans-serif, system-ui, sans-serif;
   --ln-radius: 18px;
   --ln-radius-sm: 10px;
   --ln-maxw: 1200px;
   --ln-gutter: clamp(20px, 4vw, 48px);
   --ln-section-y: clamp(64px, 7.5vw, 108px);
 }
+
 body:has(.landing) { background: var(--ln-bg); }
-.landing { color-scheme: light; background: var(--ln-bg); color: var(--ln-ink); font-family: var(--ln-sans); font-size: 16px; line-height: 1.6; min-height: 100dvh; -webkit-font-smoothing: antialiased; }
+.landing { color-scheme: dark; background: var(--ln-bg); color: var(--ln-ink); font-family: var(--ln-sans); font-size: 16px; line-height: 1.6; min-height: 100dvh; -webkit-font-smoothing: antialiased; }
 .landing *, .landing *::before, .landing *::after { box-sizing: border-box; }
 .landing :is(p,h1,h2,h3,h4,ul,ol,figure) { margin: 0; }
 .landing :is(ul,ol) { padding: 0; list-style: none; }

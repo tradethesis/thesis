@@ -84,7 +84,21 @@ describe("validateAllocation", () => {
   });
 
   it("rejects the wrong number of constituents", () => {
-    expect(() => validateAllocation(legs(3400, 3300, 3300).slice(0, 2))).toThrow(/expected 3/);
+    expect(() => validateAllocation([])).toThrow(/expected 1-3/);
+    const four = [...legs(2500, 2500, 2500), { assetId: "D", positionIndex: 3, bps: 2500 }];
+    expect(() => validateAllocation(four)).toThrow(/expected 1-3/);
+  });
+
+  it("takes one or two constituents, with bounds that fit how many there are", () => {
+    const one = (bps: number) => [{ assetId: "A", positionIndex: 0, bps }];
+    const two = (a: number, b: number) => legs(a, b, 0).slice(0, 2);
+    expect(() => validateAllocation(one(10_000))).not.toThrow();
+    expect(() => validateAllocation(one(7000))).toThrow();
+    expect(() => validateAllocation(two(9000, 1000))).not.toThrow();
+    expect(() => validateAllocation(two(9500, 500))).toThrow(/outside/);
+    expect(() => validateAllocation(legs(8000, 1000, 1000))).toThrow(/outside 1000-7000/);
+    const split = allocate(1_000_000n, two(6000, 4000));
+    expect(split.map((l) => l.amountRaw)).toEqual([600_000n, 400_000n]);
   });
 
   it("rejects duplicate constituent positions", () => {

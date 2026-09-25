@@ -1,0 +1,142 @@
+/* The shell — palette, type stack, nav, page measure — arrives from the layout, which imports
+   shell.css. This line is belt and braces: it keeps the file readable on its own and costs
+   nothing, because the import resolves to the same chunk. */
+@import "../shell.css";
+
+/*
+ * Writing a thesis.
+ *
+ * Four fields and a button. The page is short because the form is short, and the form is short
+ * because the server drafts the rest — a thirty-field page is a page nobody finishes.
+ *
+ * It used to carry three `:has(.app-shell)` rules that hid the rails and the market map. Both the
+ * rails and `.app-shell` are gone, so the rules matched nothing and were removed.
+ */
+
+.cr {
+  display: grid;
+  gap: 18px;
+  max-width: 560px;
+  margin-inline: auto;
+  padding-bottom: 48px;
+}
+
+/* ------------------------------------------------------------------ fields */
+
+.cr-field { display: grid; gap: 6px; }
+.cr-label { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
+.cr-hint { color: var(--ln-ink-3); font-size: 12px; line-height: 1.45; }
+
+.cr :is(input[type="text"], textarea, select) {
+  width: 100%;
+  min-height: 40px;
+  padding: 9px 11px;
+  border: 1px solid var(--ln-line);
+  border-radius: 9px;
+  background: var(--ln-surface-sunken);
+  color: var(--ln-ink);
+  font: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  /* Only the border. `all` would animate the height as a textarea grows. */
+  transition: border-color 160ms var(--app-ease);
+}
+.cr textarea { resize: vertical; }
+.cr :is(input, textarea, select)::placeholder { color: var(--ln-ink-3); }
+.cr :is(input, textarea, select):hover:not(:disabled) { border-color: var(--ln-line-strong); }
+.cr :is(input, textarea, select):disabled { opacity: 0.55; }
+
+.cr-field.is-bad :is(input, textarea, select) { border-color: var(--ln-accent); }
+
+.cr-claim-row { display: grid; grid-template-columns: minmax(0, 1fr) 132px; gap: 8px; }
+@media (max-width: 560px) { .cr-claim-row { grid-template-columns: minmax(0, 1fr); } }
+
+.cr-problem {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  color: var(--ln-accent);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.cr-problem svg { flex: none; margin-top: 1px; }
+
+/* ------------------------------------------------------------------ the gate */
+
+.cr-gate {
+  display: grid;
+  gap: 12px;
+  padding: 13px 15px;
+  border: 1px solid var(--ln-line);
+  border-radius: 12px;
+  background: var(--ln-surface);
+}
+.cr-gate p { margin: 0; font-size: 13.5px; line-height: 1.55; color: var(--ln-ink-2); }
+.cr-gate-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* ------------------------------------------------------------------ the basket */
+
+.cr-basket { display: grid; gap: 8px; }
+.cr-basket-head { display: flex; align-items: baseline; justify-content: space-between; }
+.cr-total strong { font-size: 15px; letter-spacing: -0.02em; }
+.cr-total.is-ok strong { color: var(--ln-confirmed); }
+.cr-total.is-off strong { color: var(--ln-pending); }
+
+/* One row per holding: what it is, how much, and the number. Three rows and the basket is
+   done — the reasons for each are drafted from the argument rather than typed three times. */
+.cr-pick {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 120px 38px;
+  gap: 10px;
+  align-items: center;
+}
+.cr-pick input[type="range"] { width: 100%; accent-color: var(--ln-accent); }
+.cr-pct { text-align: right; font-size: 13px; font-weight: 600; }
+
+/* ------------------------------------------------------------------ submit */
+
+.cr-submit { display: grid; gap: 10px; justify-items: start; }
+.cr-submit .ln-btn { display: inline-flex; align-items: center; gap: 7px; }
+.cr-quiet { margin: 0; color: var(--ln-ink-3); font-size: 12px; line-height: 1.55; max-width: 58ch; }
+
+.cr-spin { animation: cr-spin 900ms linear infinite; }
+@keyframes cr-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .cr-spin { animation: none; } }
+
+/* ------------------------------------------------------------------ done */
+
+.cr-done {
+  display: grid;
+  gap: 11px;
+  justify-items: start;
+  max-width: 560px;
+  margin-top: 8px;
+  padding: 22px;
+  border: 1px solid var(--ln-line);
+  border-radius: 14px;
+  background: var(--ln-surface);
+}
+.cr-done h2 { margin: 0; font-size: 20px; line-height: 1.2; letter-spacing: -0.025em; }
+.cr-done p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ln-ink-2); }
+.cr-done a { color: var(--ln-accent); }
+.cr-live { color: var(--ln-confirmed) !important; font-weight: 600; }
+.cr-live strong { color: var(--ln-ink); }
+.cr-done-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.cr-done-actions .ln-btn { display: inline-flex; align-items: center; gap: 5px; }
+.cr-done-actions a { color: inherit; }
+
+@media (max-width: 560px) {
+  .cr-pick { grid-template-columns: minmax(0, 1fr) 70px 34px; gap: 8px; }
+}
+
+
+/*
+ * Thumb-sized inputs.
+ *
+ * `.cr-pick input[type="range"]` had no height at all, so its hit area was the native ~16px.
+ * buy.css and landing.css both give the identical control 44px; this matches them.
+ */
+@media (max-width: 1023.98px) {
+  .cr :is(input[type="text"], textarea, select) { min-height: 44px; }
+  .cr-pick input[type="range"] { height: 44px; }
+}

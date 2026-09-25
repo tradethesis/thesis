@@ -1,0 +1,238 @@
+/* The app's palette, type stack and every shared component style. Pulled in here, by the layout,
+   so that every route under /app gets it once and by construction. */
+@import "./app.css";
+
+/*
+ * The workspace shell: the frame every page under /app sits in.
+ *
+ * This file is imported by `src/app/app/layout.tsx`, not by any page. That is the whole point. It
+ * used to live in terminal.css, which only `/app` imports — so `/app/create`, `/app/my-theses` and
+ * `/app/leaderboard` rendered the nav with none of its styles: six stacked links above the
+ * heading, a wallet menu that pushed the page down, and no fixed bottom bar. Worse, arriving by
+ * soft navigation *from* `/app` left terminal.css in the document, so the same URL had two
+ * different broken states depending on how you reached it.
+ *
+ * A layout's stylesheet is part of every route's tree beneath it, so it cannot be deduped away
+ * from one of them — which is the failure DESIGN.md records for files that several *pages* share.
+ * The next route added under /app gets the shell without anybody remembering to ask for it.
+ */
+
+.tm-shell {
+  --tm-bg: oklch(15% 0.004 260);
+  --tm-panel: oklch(18.5% 0.004 260);
+  --tm-panel-2: oklch(21.5% 0.005 260);
+  --tm-rule: oklch(27% 0.005 260);
+  --tm-rule-soft: oklch(23% 0.005 260);
+  --tm-ink: oklch(93% 0.005 85);
+  --tm-ink-2: oklch(76% 0.005 85);
+  --tm-ink-3: oklch(58% 0.006 260);
+  --tm-up: oklch(72% 0.14 155);
+  --tm-down: oklch(68% 0.16 28);
+  --tm-nav-h: 52px;
+  /* The fixed bottom bar's height. Anything that computes a viewport-height box below 1024 has to
+     subtract it, so it lives beside the nav height rather than as a magic number. */
+  --tm-bar-h: 53px;
+
+  min-height: 100dvh;
+  background: var(--tm-bg);
+  color: var(--tm-ink);
+}
+
+/* Matching (0,3,1) and arriving later, rather than escalating past it. landing.css paints every
+   link vermilion at that specificity; escalating is what produced four separate three-class
+   workarounds in app.css. */
+.tm-shell a:not(.ln-btn):not(.ln-wordmark) { color: inherit; }
+.tm-shell a:not(.ln-btn):not(.ln-wordmark):hover { color: var(--ln-accent); }
+
+.tm-shell :focus-visible { outline: 2px solid var(--ln-focus); outline-offset: 2px; border-radius: 4px; }
+.is-up { color: var(--tm-up); }
+.is-down { color: var(--tm-down); }
+
+/* ------------------------------------------------------------------- nav */
+
+.tm-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  height: var(--tm-nav-h);
+  border-bottom: 1px solid var(--tm-rule);
+  background: color-mix(in oklch, var(--tm-bg) 88%, transparent);
+  backdrop-filter: blur(8px);
+}
+.tm-nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  height: 100%;
+  padding-inline: 16px;
+}
+/* 44px even though the mark is 21px: it is a link, and a link in a header bar is exactly the
+   thing a thumb misses. */
+.tm-mark { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-weight: 600; letter-spacing: -0.02em; }
+.tm-mark .ln-brand-mark { width: 21px; height: 21px; color: var(--ln-brand); }
+
+.tm-nav-links { display: none; gap: 4px; }
+.tm-nav-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding-inline: 11px;
+  border-radius: 8px;
+  color: var(--tm-ink-2);
+  font-size: 13.5px;
+  text-decoration: none;
+}
+.tm-nav-links a:hover { background: var(--tm-panel-2); color: var(--tm-ink); }
+.tm-nav-links a[aria-current="page"] { background: var(--tm-panel-2); color: var(--tm-ink); }
+
+.tm-wallet { position: relative; margin-left: auto; }
+.tm-wallet summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding-inline: 11px;
+  border: 1px solid var(--tm-rule);
+  border-radius: 8px;
+  color: var(--tm-ink-2);
+  font-size: 12.5px;
+  cursor: pointer;
+  list-style: none;
+}
+.tm-wallet summary::-webkit-details-marker { display: none; }
+.tm-wallet-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--tm-up); }
+.tm-wallet-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  display: grid;
+  min-width: 176px;
+  padding: 5px;
+  border: 1px solid var(--tm-rule);
+  border-radius: 10px;
+  background: var(--tm-panel-2);
+  box-shadow: 0 12px 32px oklch(0% 0 0 / 0.42);
+}
+.tm-wallet-menu :is(a, button) {
+  min-height: 36px;
+  padding-inline: 10px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: var(--tm-ink-2);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.tm-wallet-menu :is(a, button):hover { background: var(--tm-panel); color: var(--tm-ink); }
+
+.tm-nav-bottom {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 30;
+  display: grid;
+  grid-auto-flow: column;
+  border-top: 1px solid var(--tm-rule);
+  background: var(--tm-bg);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tm-nav-bottom a {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  min-height: 52px;
+  padding-block: 7px;
+  color: var(--tm-ink-3);
+  font-size: 10.5px;
+  text-decoration: none;
+}
+.tm-nav-bottom a[aria-current="page"] { color: var(--ln-accent); }
+
+
+/*
+ * Where the navigation lives at each width.
+ *
+ * These sat in terminal.css with the grid, which meant the bottom bar stayed fixed at desktop on
+ * every route except the terminal — the nav and the rules that hide it were in different files.
+ * They belong with the thing they govern.
+ */
+@media (min-width: 1024px) {
+  .tm-nav-links { display: flex; }
+  .tm-nav-bottom { display: none; }
+}
+
+/*
+ * The reading measure, which the old `.app-main` used to provide.
+ *
+ * Stripping the shell took `padding-inline`, centring and the bottom clearance with it, so content
+ * sat flush against both screen edges with the fixed nav bar over the last control. The terminal
+ * opts out of the measure — a workspace is not a column of prose — but keeps the clearance.
+ */
+.tm-page {
+  max-width: 720px;
+  margin-inline: auto;
+  padding-inline: 16px;
+  padding-bottom: calc(var(--tm-bar-h) + env(safe-area-inset-bottom, 0px) + 28px);
+}
+@media (min-width: 1024px) {
+  /* No bottom bar up here, so nothing to clear. */
+  .tm-page { padding-bottom: 40px; }
+}
+.tm-page:has(.tm) {
+  max-width: none;
+  padding-inline: 0;
+  /* And no bottom padding. The terminal's grid is already a full viewport tall above 1024, so
+     forty pixels underneath it makes the whole document forty pixels taller than the screen — a
+     dead black band below three columns that each scroll internally. Below 1024 the grid is not
+     full height and the page needs the clearance, which is why this is scoped. */
+  padding-bottom: 0;
+}
+@media (max-width: 1023.98px) {
+  .tm-page:has(.tm) {
+    padding-bottom: calc(var(--tm-bar-h) + env(safe-area-inset-bottom, 0px) + 28px);
+  }
+}
+
+/*
+ * The terminal is a fixed-height workspace, and its three columns scroll inside themselves. The
+ * page behind them must not scroll as well.
+ *
+ * Stated rather than left to emerge: with the columns sized by the grid and nothing in the flow
+ * taller than the viewport, the document still reported a few hundred pixels of scroll, which
+ * showed up as a dead black band under the columns once an argument was expanded. Saying "this
+ * screen is exactly one viewport tall" is both the intent and the fix, and it cannot drift.
+ *
+ * Only above 1024. Below it the terminal is one column at a time and the page is meant to scroll.
+ */
+@media (min-width: 1024px) {
+  /* On the document, not on the shell. The grid contributes a few hundred pixels to the
+     document's scrollHeight that no element in the flow accounts for — bisecting by hiding
+     subtrees pins it on `.tm-grid`, whose own rect is exactly one viewport. Constraining the
+     shell does not help, because the thing scrolling is the document. */
+  html:has(.tm),
+  body:has(.tm) {
+    height: 100%;
+    overflow: hidden;
+  }
+  .tm-shell:has(.tm) {
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tm-shell * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+/* Controls that are comfortable with a cursor are not comfortable with a thumb. Everything the
+   shell itself renders clears 44px below the tablet breakpoint; each page raises its own. */
+@media (max-width: 1023.98px) {
+  .tm-nav-links a,
+  .tm-wallet summary,
+  .tm-wallet-menu :is(a, button) { min-height: 44px; }
+}

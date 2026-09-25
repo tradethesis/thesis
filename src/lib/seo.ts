@@ -16,12 +16,10 @@
 
 export const SITE_NAME = "Thesis";
 export const SITE_URL = "https://tradethesis.xyz";
-export const SITE_TAGLINE = "Buy what you believe.";
+export const SITE_TAGLINE = "The coolest gift on the internet.";
 
 /** The one-sentence answer to "what is this". Used as the meta description on the front door. */
-export const SITE_DESCRIPTION =
-  "Thesis turns a belief about the world into an editable basket of tokenized stocks, " +
-  "bought with USDC from your own Solana wallet.";
+export const SITE_DESCRIPTION = "Give a friend a pack of stocks. From $1, sent to their X handle.";
 
 /**
  * The longer answer, for the places that have room: Open Graph, and the AI crawlers
@@ -29,10 +27,8 @@ export const SITE_DESCRIPTION =
  * summary that overclaims is worse than no summary.
  */
 export const SITE_DESCRIPTION_LONG =
-  "Read a claim about the world, see the tokenized stocks that express it and why, " +
-  "change the weights, and buy the basket with USDC from your own Solana wallet. " +
-  "Every holding carries a stated job, a stated weakness, and the strongest argument " +
-  "against the claim. There is no basket token and no pooled fund — you hold the assets.";
+  "Give a friend a pack of stocks — Nvidia, Apple, Amazon and more — from $1, sent to their X handle. " +
+  "They rip it open; no crypto wallet needed. These are tokenized stocks: they track the share price and can lose value.";
 
 /**
  * True only on the production deployment.

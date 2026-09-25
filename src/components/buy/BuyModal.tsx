@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, X } from "lucide-react";
 
 import { BuyFlow } from "./BuyFlow";
+import { lockScroll, unlockScroll } from "@/lib/scroll-lock";
 
 type Holding = { symbol: string; company: string; role: string; weightBps: number };
 
@@ -29,6 +30,8 @@ export function BuyModal({
   holdings,
   callStatement,
   authorName,
+  className,
+  children,
 }: {
   slug: string;
   claim: string;
@@ -36,9 +39,15 @@ export function BuyModal({
   holdings: Holding[];
   callStatement?: string;
   authorName: string;
+  /** Overrides the trigger's look. The feed makes the whole basket tile the trigger. */
+  className?: string;
+  children?: React.ReactNode;
 }) {
   const ref = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
+  // Whether this instance currently holds the scroll lock. The lock is refcounted
+  // globally, so unmounting while somebody else's dialog is open must not release it.
+  const locked = useRef(false);
 
   const close = useCallback(() => {
     ref.current?.close();
@@ -49,12 +58,18 @@ export function BuyModal({
     if (!el) return;
     const onClose = () => {
       setOpen(false);
-      document.body.style.overflow = "";
+      if (locked.current) {
+        locked.current = false;
+        unlockScroll();
+      }
     };
     el.addEventListener("close", onClose);
     return () => {
       el.removeEventListener("close", onClose);
-      document.body.style.overflow = "";
+      if (locked.current) {
+        locked.current = false;
+        unlockScroll();
+      }
     };
   }, []);
 
@@ -62,7 +77,7 @@ export function BuyModal({
     <>
       <a
         href={`/buy/${slug}?version=${versionId}`}
-        className="ln-btn ln-btn--ink"
+        className={className ?? "ln-btn ln-btn--ink"}
         onClick={(e) => {
           // Let the browser do its normal thing for anything that is not a plain left
           // click — new tab, new window, download — rather than swallowing it.
@@ -70,13 +85,18 @@ export function BuyModal({
           if (!ref.current?.showModal) return;
           e.preventDefault();
           setOpen(true);
-          document.body.style.overflow = "hidden";
+          locked.current = true;
+          lockScroll();
           ref.current.showModal();
         }}
       >
-        Buy basket
-        <ArrowRight size={15} aria-hidden="true" />
-        <span className="ln-sr-only">: {claim}</span>
+        {children ?? (
+          <>
+            Buy basket
+            <ArrowRight size={15} aria-hidden="true" />
+          </>
+        )}
+        <span className="ln-sr-only">{children ? `Buy this basket: ${claim}` : `: ${claim}`}</span>
       </a>
 
       <dialog

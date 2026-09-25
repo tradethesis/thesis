@@ -36,16 +36,36 @@ export class AllocationError extends Error {
   }
 }
 
-/** PRD §5/§7: exactly three constituents, whole percentages, 10% floor and 70% ceiling. */
+/**
+ * PRD §5/§7, widened 23 September 2026 for packs people build themselves: one to three
+ * constituents, whole percentages. The weight bounds depend on how many there are, so that no
+ * holding is a rounding error and none crowds the others out:
+ *
+ *   1 holding    100%
+ *   2 holdings   10–90% each
+ *   3 holdings   10–70% each      (the curated shape, LEG_COUNT, unchanged)
+ *
+ * The database enforces the same table (constraints.sql, basket_version_shape).
+ */
 export const LEG_COUNT = 3;
+export const MIN_LEGS = 1;
+export const MAX_LEGS = 3;
 export const MIN_WEIGHT_BPS = 1000;
 export const MAX_WEIGHT_BPS = 7000;
 export const TOTAL_BPS = 10_000;
 
+/** The allowed weight range for each of `n` constituents. */
+export function weightBoundsBps(n: number): { min: number; max: number } {
+  if (n === 1) return { min: TOTAL_BPS, max: TOTAL_BPS };
+  if (n === 2) return { min: MIN_WEIGHT_BPS, max: TOTAL_BPS - MIN_WEIGHT_BPS };
+  return { min: MIN_WEIGHT_BPS, max: MAX_WEIGHT_BPS };
+}
+
 export function validateAllocation(legs: WeightedLeg[]): void {
-  if (legs.length !== LEG_COUNT) {
-    throw new AllocationError("wrong_leg_count", `expected ${LEG_COUNT} constituents, got ${legs.length}`);
+  if (legs.length < MIN_LEGS || legs.length > MAX_LEGS) {
+    throw new AllocationError("wrong_leg_count", `expected ${MIN_LEGS}-${MAX_LEGS} constituents, got ${legs.length}`);
   }
+  const bounds = weightBoundsBps(legs.length);
 
   const seen = new Set<number>();
   let sum = 0;
@@ -60,10 +80,10 @@ export function validateAllocation(legs: WeightedLeg[]): void {
         `weight for ${leg.assetId} is not a whole percent: ${leg.bps} bps`,
       );
     }
-    if (leg.bps < MIN_WEIGHT_BPS || leg.bps > MAX_WEIGHT_BPS) {
+    if (leg.bps < bounds.min || leg.bps > bounds.max) {
       throw new AllocationError(
         "bps_out_of_range",
-        `weight for ${leg.assetId} is ${leg.bps} bps, outside ${MIN_WEIGHT_BPS}-${MAX_WEIGHT_BPS}`,
+        `weight for ${leg.assetId} is ${leg.bps} bps, outside ${bounds.min}-${bounds.max}`,
       );
     }
     if (seen.has(leg.positionIndex)) {

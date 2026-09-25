@@ -1,0 +1,514 @@
+/* The basket chart, shared with the terminal. Must precede every rule in this file. */
+@import "./chart.css";
+
+/*
+ * The match terminal at /.
+ *
+ * ## What is borrowed from the reference, and what is not
+ *
+ * Structure, from the Laya Snake demo (laya_coreml/snake/ui.py): one window frame, hairline rules
+ * between bands, a left object and a right column, rows built as marker + label + track + value,
+ * all-caps monospace keys, and a live decision panel beside the thing being decided about.
+ *
+ * Its palette is **not** borrowed. Thesis is vermilion — `--ln-brand: oklch(70% 0.19 34)` — and the
+ * mint this page first shipped in was the reference's colour wearing our layout. Every accent here
+ * is now the brand, and green appears in exactly one place: a rising line on a performance chart,
+ * where it means "up" and not "selected".
+ *
+ * The reference's real substance is that its right-hand column is a live readout of a model
+ * deciding — probabilities per option, inference cost, updating each step. `.hm-dec` is that, with
+ * figures the provider actually returned: its model id, its own token usage, a measured round trip,
+ * and its own distribution over same/opposite/unclear per basket. Nothing on it is decorative, and
+ * nothing counts up to look busy.
+ *
+ * Deliberately not borrowed: CRT curvature, scanlines, flicker, glow.
+ */
+
+.hm {
+  --bg: #0a0d0f;
+  --fg: #eceae7;
+  --muted: #8a8681;
+  --dim: #23282b;
+  --panel: #101416;
+  --panel-2: #151a1d;
+
+  /* The brand, and the two states that are not it. */
+  --brand: oklch(70% 0.19 34);
+  --brand-soft: oklch(70% 0.19 34 / 0.16);
+  --amber: oklch(80% 0.13 72);
+  --up: oklch(74% 0.15 155);
+
+  --mono: var(--ln-mono, ui-monospace, "SF Mono", SFMono-Regular, Menlo, monospace);
+
+  /* Tokens the shared chart reads. It was written against .tm-shell, which this page has no reason
+     to carry, so the names are supplied here — in this page's palette, not the terminal's. */
+  --tm-panel: #0e1214;
+  --tm-panel-2: var(--panel-2);
+  --tm-rule: var(--dim);
+  --tm-rule-soft: #1b2023;
+  --tm-ink: var(--fg);
+  --tm-ink-2: #b4afa9;
+  --tm-ink-3: var(--muted);
+  --ln-accent: var(--brand);
+  --ln-mono: var(--mono);
+
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--fg);
+  font-feature-settings: "tnum" 1;
+}
+
+/*
+ * Full bleed, edge to edge.
+ *
+ * An earlier pass framed this in a rounded card with traffic lights, on the strength of the
+ * reference screenshot — but those dots are macOS drawing a window around a terminal that fills
+ * it. Copying them puts a picture of a browser inside a browser and shrinks the one thing the
+ * layout is for, which is room. The frame is now the viewport, and the structure is carried by
+ * hairlines between bands, as the reference carries it.
+ */
+.hm-win {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: linear-gradient(180deg, #0c1012, var(--bg) 260px);
+}
+
+.hm-rule { height: 1px; background: var(--dim); }
+
+/* A key: the all-caps monospace label the reference puts above every readout. */
+.hm-k {
+  display: block;
+  margin: 0 0 9px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hm-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ header */
+
+.hm-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 18px; padding: 16px clamp(16px, 3vw, 40px);
+}
+.hm-mark {
+  display: inline-flex; align-items: center; gap: 9px;
+  color: var(--fg); text-decoration: none;
+  font-size: 15px; font-weight: 600; letter-spacing: -0.02em;
+}
+.hm-mark .ln-brand-mark { width: 22px; height: 22px; color: var(--brand); }
+.hm-mark-sub {
+  font-family: var(--mono); font-size: 11px; font-weight: 400; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted);
+}
+.hm-head-nav { display: flex; align-items: center; gap: 22px; }
+.hm-head-count { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--muted); }
+.hm-head-nav a {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em;
+  color: var(--muted); text-decoration: none;
+}
+.hm-head-nav a:hover { color: var(--brand); }
+
+/* ------------------------------------------------------------- the prompt */
+
+.hm-search { padding: 34px clamp(16px, 3vw, 40px) 26px; }
+.hm-h1 {
+  margin: 0 auto 22px;
+  max-width: 820px;
+  font-size: clamp(27px, 4.2vw, 40px);
+  line-height: 1.08; letter-spacing: -0.045em; font-weight: 600;
+  text-align: center;
+}
+
+/*
+ * One pill, with the action inside it.
+ *
+ * The first version was a bordered textarea with a separate button beside it, which reads as a form
+ * from 2010. This is a single surface: the field has no chrome of its own, the submit sits inside on
+ * the right as a circle, and the whole thing lifts on focus.
+ */
+.hm-bar {
+  position: relative;
+  display: flex; align-items: flex-end; gap: 10px;
+  max-width: 820px; margin-inline: auto;
+  padding: 12px 12px 12px 20px;
+  border: 1px solid var(--dim);
+  border-radius: 18px;
+  background: var(--panel);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 8px 28px rgb(0 0 0 / 0.35);
+  transition: border-color 180ms var(--app-ease, ease), box-shadow 180ms var(--app-ease, ease);
+}
+/*
+ * Focus is the border, and only the border.
+ *
+ * It used to be a 3px halo around the pill *and* the textarea's own outline inside it, which drew
+ * two rounded boxes with the bar's padding between them — read as a stray gap above the field
+ * rather than as focus. One surface, one indicator.
+ */
+.hm-bar:focus-within {
+  border-color: oklch(70% 0.19 34 / 0.65);
+  box-shadow: 0 10px 32px rgb(0 0 0 / 0.4);
+}
+.hm-bar.is-busy { border-color: oklch(70% 0.19 34 / 0.35); }
+
+.hm-field {
+  flex: 1; min-width: 0;
+  /* One line to start, growing to roughly eight. A pasted post is multiline and should not be read
+     through a slot; past that it would push results off the screen. */
+  /* As tall as the send button beside it, with the line centred in it. It used to be 28px pinned to
+     the bottom of a 44px row, which left 16px of empty space above the text. */
+  min-height: 44px; max-height: 190px;
+  padding: 9px 0 10px;
+  border: 0; background: none; color: var(--fg);
+  font: inherit; font-size: 16px; line-height: 1.55;
+  resize: none;
+  field-sizing: content;
+}
+.hm-field::placeholder { color: var(--muted); }
+.hm-field:focus { outline: none; }
+
+.hm-send {
+  flex: none;
+  display: inline-grid; place-items: center;
+  width: 44px; height: 44px;
+  border: 0; border-radius: 50%;
+  background: var(--brand); color: #180703;
+  cursor: pointer;
+  transition: transform 160ms var(--app-ease, ease), filter 160ms var(--app-ease, ease);
+}
+.hm-send:hover:not(:disabled) { filter: brightness(1.08); }
+.hm-send:active:not(:disabled) { transform: scale(0.94); }
+/* Dimmed while a search is outstanding, but still pressable: a second press supersedes the first. */
+.hm-bar.is-busy .hm-send { background: oklch(70% 0.19 34 / 0.75); }
+/* BorderBeam wraps the bar in its own element, so the measure and centring move out to it. */
+.hm-beam { display: block; max-width: 820px; margin-inline: auto; border-radius: 18px; }
+.hm-beam .hm-bar { max-width: none; margin-inline: 0; }
+.hm-send > canvas { display: block; }
+
+.hm-cap {
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+  max-width: 820px; margin: 12px auto 0;
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.03em; color: var(--muted);
+}
+.hm-cap-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--brand); }
+.hm-cap kbd {
+  padding: 1px 5px; border: 1px solid var(--dim); border-radius: 4px;
+  font: inherit; font-size: 10.5px; color: var(--fg);
+}
+
+.hm-answered {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 9px;
+  max-width: 820px; margin: 18px auto 0; padding-top: 14px;
+  border-top: 1px solid var(--dim);
+}
+.hm-answered .hm-k { margin: 0; }
+.hm-answered-text { font-size: 13px; color: var(--fg); opacity: 0.85; }
+.hm-answered-stale { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); }
+
+/* ------------------------------------------------------------------ work */
+
+.hm-work { flex: 1; padding: 26px clamp(16px, 3vw, 40px) 36px; }
+
+.hm-empty { max-width: 820px; margin-inline: auto; }
+.hm-examples { display: grid; gap: 8px; margin: 0 0 22px; padding: 0; list-style: none; }
+.hm-examples button {
+  display: block; width: 100%; text-align: left;
+  padding: 13px 15px;
+  border: 1px solid var(--dim); border-radius: 11px;
+  background: var(--panel); color: inherit; cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+.hm-examples button:hover { border-color: oklch(70% 0.19 34 / 0.45); background: var(--panel-2); }
+.hm-ex-label {
+  display: block; margin-bottom: 4px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--brand);
+}
+.hm-ex-idea { display: block; font-size: 14px; line-height: 1.5; color: var(--fg); opacity: 0.9; }
+.hm-empty-note { margin: 0; max-width: 62ch; font-size: 13.5px; line-height: 1.65; color: var(--muted); }
+
+.hm-working { margin: 0 0 14px; font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.06em; color: var(--brand); }
+.hm-problem { margin: 16px 0 0; max-width: 62ch; display: grid; gap: 10px; justify-items: start; font-size: 14px; line-height: 1.6; }
+.hm-problem-sub { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+.hm-flag {
+  margin: 0 0 18px; padding: 11px 13px;
+  border: 1px solid var(--dim); border-left: 2px solid var(--amber); border-radius: 0 8px 8px 0;
+  background: var(--panel);
+  font-size: 13px; line-height: 1.6;
+}
+
+.hm-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 0 18px;
+  border: 1px solid transparent; border-radius: 10px;
+  font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.03em;
+  text-decoration: none; cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+.hm-btn--go { background: var(--brand); color: #180703; font-weight: 600; }
+.hm-btn--go:hover { filter: brightness(1.08); }
+.hm-btn--quiet { border-color: var(--dim); background: transparent; color: var(--fg); }
+.hm-btn--quiet:hover { border-color: var(--brand); color: var(--brand); }
+/* Everything focusable gets a ring except the prompt field, whose pill shows focus for it. */
+.hm :is(button, a, summary):focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+.hm-field:focus, .hm-field:focus-visible { outline: none; }
+
+/* --------------------------------------------------- the decision panel */
+
+.hm-live { margin-bottom: 26px; }
+
+.hm-dec {
+  border: 1px solid var(--dim); border-radius: 12px;
+  background: var(--panel);
+  overflow: hidden;
+}
+.hm-dec-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 15px; border-bottom: 1px solid var(--dim);
+}
+.hm-dec-head .hm-k { margin: 0; }
+.hm-dec-state {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em; color: var(--muted);
+}
+.hm-dec-state.is-live { color: var(--brand); }
+/* One pulse, on the word, while real work is outstanding. It stops the moment it stops being true. */
+.hm-dec-state.is-live::before {
+  content: "● "; animation: hm-pulse 1.4s ease-in-out infinite;
+}
+@keyframes hm-pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+
+.hm-dec-rows { margin: 0; padding: 6px 0; list-style: none; }
+.hm-dec-row {
+  /* The name gets what it needs and no more: the distribution is the row's subject, so it holds the
+     middle rather than being pushed against the numbers on the right. */
+  display: grid; grid-template-columns: minmax(0, 15rem) minmax(0, 1fr) 68px 44px;
+  align-items: center; gap: 12px;
+  padding: 7px 15px;
+  font-family: var(--mono); font-size: 11.5px;
+  color: var(--muted);
+  opacity: 0.45;
+  transition: opacity 260ms ease, color 260ms ease;
+}
+.hm-dec-row.is-done { opacity: 1; color: var(--fg); }
+.hm-dec-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; letter-spacing: 0.02em; }
+
+/* The provider's own distribution over same / opposite / unclear, drawn as returned. */
+.hm-dec-dist { display: flex; height: 5px; gap: 1px; border-radius: 3px; overflow: hidden; }
+.hm-dec-seg { display: block; min-width: 1px; transition: flex-grow 320ms cubic-bezier(0.23, 1, 0.32, 1); }
+/*
+ * Three segments, told apart by texture rather than by hue.
+ *
+ * The palette is one colour on purpose, so two adjacent oranges read as one bar. `same` is solid
+ * brand, `opposite` is the same family struck through with hatching, and `unclear` is flat and
+ * dim. That also means the row does not depend on colour vision: solid, striped and empty are
+ * three different things in greyscale, and the word beside the bar says which is which anyway.
+ */
+.hm-dec-seg--same { background: var(--brand); }
+.hm-dec-seg--opp {
+  /* Darker base, finer stripe. At the first values the hatch was almost as bright as the solid, so
+     a basket pointing the other way read as a full bar — the opposite of the point. */
+  background-color: oklch(38% 0.09 28);
+  background-image: repeating-linear-gradient(
+    115deg,
+    oklch(62% 0.14 30 / 0.9) 0 1.5px,
+    transparent 1.5px 5px
+  );
+}
+.hm-dec-seg--unc { background: #2b3033; }
+
+.hm-dec-choice { font-size: 10px; letter-spacing: 0.1em; text-align: right; }
+.hm-dec-choice--same { color: var(--brand); }
+.hm-dec-choice--opposite { color: oklch(66% 0.2 22); }
+.hm-dec-choice--unclear { color: var(--muted); }
+.hm-dec-num { text-align: right; color: var(--fg); }
+
+/* A dotted placeholder where a judgement has not landed. It never animates toward a value, because
+   there is no value yet — the reference's hatched track, for the same reason. */
+.hm-dec-wait { grid-column: 2 / -1; height: 5px; }
+.hm-dec-wait i {
+  display: block; height: 100%; border-radius: 3px;
+  background-image: radial-gradient(var(--dim) 1px, transparent 1px);
+  background-size: 4px 4px;
+}
+
+.hm-tel {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px; margin: 0;
+  border-top: 1px solid var(--dim); background: var(--dim);
+}
+.hm-tel > div { display: flex; justify-content: space-between; gap: 10px; padding: 10px 15px; background: var(--panel); }
+.hm-tel dt { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.hm-tel dd { margin: 0; font-family: var(--mono); font-size: 11.5px; color: var(--fg); }
+
+/* ------------------------------------------------------------------ split */
+
+.hm-split { display: grid; gap: 28px; }
+@media (min-width: 900px) {
+  .hm-split { grid-template-columns: 65fr 35fr; gap: 36px; align-items: start; }
+  .hm-right { border-left: 1px solid var(--dim); padding-left: 28px; }
+}
+
+/* --------------------------------------------------------- selected basket */
+
+.hm-basket-name { margin: 0 0 8px; font-size: 25px; line-height: 1.15; letter-spacing: -0.03em; }
+.hm-basket-case { margin: 0 0 26px; max-width: 60ch; font-size: 15px; line-height: 1.65; opacity: 0.86; }
+
+/*
+ * The allocation, as the reference draws a score: a key above, a large figure below.
+ * These are reviewed weights read from the basket, which is why they are worth the size.
+ */
+.hm-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin-bottom: 26px; background: var(--dim); border: 1px solid var(--dim); border-radius: 12px; overflow: hidden; }
+.hm-stat { padding: 14px 16px; background: var(--panel); display: grid; gap: 6px; }
+.hm-stat-k { display: flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--muted); }
+.hm-stat-v {
+  font-family: var(--mono); font-size: clamp(30px, 4.4vw, 42px); font-weight: 600;
+  line-height: 1; letter-spacing: -0.04em; color: var(--brand);
+  font-variant-numeric: tabular-nums;
+}
+.hm-stat-v::after {
+  content: "%";
+  margin-left: 2px;
+  font-size: 0.42em; letter-spacing: 0; vertical-align: 0.9em; color: var(--muted);
+}
+.hm-stat-k .tl { flex: none; }
+.hm-stat-co { font-size: 11.5px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.hm-chart { margin-bottom: 26px; }
+.hm-vs { text-transform: none; letter-spacing: 0.04em; }
+.hm-unavailable {
+  margin: 0; padding: 16px; border: 1px dashed var(--dim); border-radius: 10px;
+  font-size: 13px; line-height: 1.6; color: var(--muted);
+}
+
+.hm-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.hm-blocked { margin: 12px 0 0; font-size: 13px; line-height: 1.6; color: var(--amber); }
+
+/* --------------------------------------------------------- compare, phone */
+
+.hm-compare > summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  min-height: 48px; padding: 0 2px; cursor: pointer;
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--fg); list-style: none;
+}
+.hm-compare > summary::-webkit-details-marker { display: none; }
+.hm-compare > summary::after { content: "+"; font-size: 15px; color: var(--muted); }
+.hm-compare[open] > summary::after { content: "−"; }
+.hm-compare-count {
+  margin-left: auto; margin-right: 6px; padding: 1px 7px;
+  border: 1px solid var(--dim); border-radius: 20px; font-size: 10.5px; color: var(--brand);
+}
+.hm-compare-head { margin-top: 12px; }
+@media (min-width: 900px) {
+  .hm-compare > summary { display: none; }
+  .hm-compare-head { margin-top: 0; }
+}
+
+/* ------------------------------------------------------------- match rows */
+
+.hm-matches { display: grid; gap: 4px; margin: 0 0 24px; padding: 0; list-style: none; }
+.hm-match {
+  display: grid; gap: 8px; width: 100%;
+  padding: 11px 12px;
+  border: 1px solid transparent; border-radius: 10px;
+  background: transparent; color: inherit; text-align: left; cursor: pointer;
+  transition: background-color 150ms ease, border-color 150ms ease;
+}
+.hm-match:hover { background: var(--panel); }
+.hm-match.is-on { background: var(--panel); border-color: var(--dim); }
+
+.hm-match-top { display: grid; grid-template-columns: 12px 1fr auto; align-items: baseline; gap: 8px; }
+.hm-match-mark { font-family: var(--mono); font-size: 14px; color: var(--brand); }
+.hm-match-name { font-size: 14px; letter-spacing: -0.01em; color: var(--fg); }
+.hm-match:not(.is-on) .hm-match-name { color: var(--muted); }
+
+/* Strength is a word first. Colour is a second signal on top of it, never the only one. */
+.hm-match-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; }
+.hm-match-label--strong { color: var(--brand); }
+.hm-match-label--partial { color: var(--amber); }
+.hm-match-label--weak { color: var(--muted); }
+
+.hm-match-bar { display: block; padding-left: 20px; }
+.hm-track {
+  display: block; height: 5px; border-radius: 3px; overflow: hidden;
+  /* The reference's hatched track: texture where there is no value, so an empty bar reads as empty
+     rather than as broken. */
+  background-image: radial-gradient(var(--dim) 1px, transparent 1px);
+  background-size: 4px 4px;
+  background-color: #14181a;
+}
+.hm-fill {
+  display: block; height: 100%; width: 100%;
+  transform-origin: left center; border-radius: 3px;
+  transition: transform 420ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.hm-fill--strong { background: var(--brand); }
+.hm-fill--partial { background: var(--amber); }
+.hm-fill--weak { background: #46504f; }
+
+.hm-match-flag {
+  padding-left: 20px;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: oklch(66% 0.2 22);
+}
+
+/* ----------------------------------------------------------- explanations */
+
+.hm-why { display: grid; gap: 6px; }
+.hm-why .hm-k { margin: 12px 0 2px; }
+.hm-why-text { margin: 0; font-size: 13.5px; line-height: 1.65; opacity: 0.88; }
+.hm-source { display: grid; gap: 4px; margin: 14px 0 0; }
+.hm-source a { font-family: var(--mono); font-size: 12px; color: var(--brand); text-decoration: none; }
+.hm-source a:hover { text-decoration: underline; }
+
+.hm-disclose {
+  justify-self: start; margin-top: 16px; min-height: 44px; padding: 0;
+  border: 0; background: none; color: var(--muted); cursor: pointer;
+  font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.06em;
+  text-decoration: underline; text-underline-offset: 4px;
+}
+.hm-disclose:hover { color: var(--fg); }
+.hm-about { display: grid; gap: 10px; margin-top: 4px; padding: 13px; border: 1px solid var(--dim); border-radius: 10px; background: var(--panel); }
+.hm-about p { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--muted); }
+.hm-about strong { color: var(--fg); }
+.hm-scores { display: grid; gap: 5px; margin: 2px 0; }
+.hm-scores > div { display: flex; justify-content: space-between; gap: 12px; }
+.hm-scores dt { font-size: 12px; color: var(--fg); opacity: 0.8; }
+.hm-scores dd { margin: 0; font-family: var(--mono); font-size: 12px; color: var(--brand); }
+.hm-about-warn { color: var(--amber) !important; }
+
+/* ------------------------------------------------------------------ footer */
+
+.hm-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 14px clamp(16px, 3vw, 40px);
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.06em; color: var(--muted);
+}
+
+/* ------------------------------------------------------------------ phone */
+
+@media (max-width: 899.98px) {
+  .hm-mark-sub, .hm-head-count { display: none; }
+  .hm-right { margin-top: 8px; padding-top: 20px; border-top: 1px solid var(--dim); }
+  .hm-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .hm-stat { padding: 11px 10px; }
+  .hm-stat-co { display: none; }
+  .hm-dec-row { grid-template-columns: minmax(0, 1fr) 72px 52px 40px; gap: 8px; font-size: 10.5px; }
+  .hm-actions .hm-btn { flex: 1 1 auto; }
+  .hm-foot { flex-direction: column; gap: 4px; text-align: center; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hm *, .hm *::before { transition-duration: 1ms !important; animation: none !important; }
+}
+.hm-problem-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+
+/* Phones: header links get a thumb-sized target without changing how they look. */
+@media (max-width: 600px) { .hm-head-nav a { display: inline-flex; align-items: center; min-height: 44px; } }

@@ -85,7 +85,19 @@ export async function rpc<T>(method: string, params: unknown[] = [], options: Rp
     } catch (error) {
       lastError = error;
       const transient = error instanceof RpcError ? error.transient : true;
-      if (!transient || attempt === retries) break;
+      if (attempt === retries) break;
+
+      if (!transient) {
+        // A dead key, a revoked plan, a refused method: asking the same endpoint again will
+        // not change the answer. This used to break out of the loop, which meant the
+        // fallback was never reached for the one failure it exists to cover — a primary
+        // returning 403 forever made every read fail even though a working read-only
+        // endpoint was configured. Skip the remaining primary attempts and use it.
+        if (!allowFallback) break;
+        attempt = retries - 1;
+        continue;
+      }
+
       await new Promise((resolve) => setTimeout(resolve, Math.min(2_000, 150 * 2 ** attempt)));
     }
   }

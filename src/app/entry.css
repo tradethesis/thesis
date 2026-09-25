@@ -1,0 +1,157 @@
+/*
+ * The entry screen.
+ *
+ * One viewport, one action. The illustration fills it; the panel sits on top with enough scrim
+ * behind it that the text is readable over any part of the drawing, including on a phone where
+ * the composition crops to its middle.
+ *
+ * Motion rules, in order of importance:
+ *   - transform and opacity only, so nothing lands on the main thread
+ *   - slow enough (18–60s) to read as light moving through a room rather than as animation
+ *   - paused when the document is hidden, via a class the page sets on visibilitychange
+ *   - replaced entirely by a still composition under prefers-reduced-motion
+ *   - the whole scene is pointer-events: none, so it can never intercept a click or a focus ring
+ */
+
+.ent {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: 24px 16px calc(24px + env(safe-area-inset-bottom));
+  overflow: hidden;
+  background: oklch(13% 0.004 260);
+  color: oklch(93% 0.005 85);
+}
+
+.ent-scene {
+  position: absolute;
+  inset: 0;
+  /* Decoration cannot take a click or a tab stop. */
+  pointer-events: none;
+  user-select: none;
+}
+/*
+ * The photograph fills the viewport and is cropped, never letterboxed. `object-position` sits a
+ * little above centre because the interest in this frame is the rail across its lower third: on a
+ * tall phone that keeps the figures in shot instead of scrolling them off the bottom.
+ */
+.ent-art {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: 50% 42%;
+}
+
+/*
+ * Readability over the picture — and only that.
+ *
+ * An earlier version of this file ran a radial at 0.96 alpha across 76%x40% of the frame. Sampled
+ * off the deployed page, the whole scene then spanned luminance 3 to 25 of 255. That is not a
+ * scrim, it is a lid, and it is why the illustration it covered may as well not have existed.
+ *
+ * This art needs far less. Its upper two thirds are already near-black, which is where the
+ * wordmark, the headline and the button sit, so the radial is gentle and exists mainly to hold the
+ * small print steady over the rail. The bottom wash keeps the footer links off the warm glow.
+ */
+.ent-scrim {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(44% 30% at 50% 46%, oklch(8% 0.004 260 / 0.62), oklch(8% 0.004 260 / 0.34) 58%, transparent 100%),
+    linear-gradient(
+      to bottom,
+      oklch(10% 0.004 260 / 0.30) 0%,
+      oklch(10% 0.004 260 / 0.06) 34%,
+      oklch(10% 0.004 260 / 0.18) 64%,
+      oklch(9% 0.004 260 / 0.58) 100%
+    );
+}
+
+.ent-panel {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  width: min(420px, 100%);
+  text-align: center;
+}
+
+.ent-mark { display: inline-flex; align-items: center; gap: 9px; margin: 0; font-size: 15px; font-weight: 600; letter-spacing: -0.02em; }
+.ent-mark .ln-brand-mark { width: 24px; height: 24px; color: var(--ln-brand); }
+
+.ent-line {
+  margin: 0;
+  font-size: clamp(30px, 7vw, 42px);
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+  font-weight: 600;
+}
+
+.ent-cta { min-width: 220px; margin-top: 4px; }
+
+.ent-alt {
+  min-height: 40px;
+  padding: 0 6px;
+  border: 0;
+  background: none;
+  color: oklch(74% 0.006 85);
+  font: inherit;
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.ent-alt:hover { color: oklch(93% 0.005 85); }
+.ent-alt:disabled { opacity: 0.5; cursor: default; }
+
+.ent-status { margin: 8px 0; font-size: 13.5px; color: oklch(72% 0.006 85); }
+.ent-note { margin: 2px 0 0; font-size: 11.5px; line-height: 1.6; color: oklch(62% 0.008 262); max-width: 36ch; }
+.ent-note a { color: var(--ln-accent); }
+
+.ent-error { margin: 4px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--ln-accent); }
+.ent-error button { border: 0; background: none; color: inherit; font: inherit; text-decoration: underline; cursor: pointer; padding: 0; }
+
+.ent-foot {
+  position: absolute;
+  inset: auto 0 calc(16px + env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  font-size: 11.5px;
+}
+/* 56% measured 4.1:1 against the warm glow the photograph puts along the bottom edge — under the
+   4.5:1 these need at 11.5px. The drawn scene they were tuned against was almost black down here. */
+.ent-foot :is(a) { color: oklch(70% 0.008 262); text-decoration: none; }
+.ent-foot :is(a):hover { color: oklch(84% 0.005 85); }
+
+/* ----------------------------------------------------------------- motion */
+
+/*
+ * One movement, and it is barely a movement.
+ *
+ * A still photograph behind a single button does not need animating; what it needs is to not feel
+ * like a screenshot. Ninety seconds to travel two percent of the frame reads as the room being
+ * alive without ever drawing the eye away from the one thing there is to do here.
+ *
+ * Transform only, so it runs off the main thread. The old scene animated seven separate groups;
+ * this is one compositor layer.
+ */
+.ent-art { animation: ent-drift 90s ease-in-out infinite alternate; will-change: transform; }
+
+@keyframes ent-drift {
+  from { transform: scale(1.06) translate3d(-0.8%, 0.5%, 0); }
+  to { transform: scale(1.06) translate3d(0.8%, -0.5%, 0); }
+}
+
+/* A hidden tab already stops rAF, but CSS animations keep their clock running and burn power for
+   a room nobody is looking at. The page sets this class on visibilitychange. */
+.ent-still .ent-art { animation-play-state: paused !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ent-art { animation: none !important; transform: scale(1.06); }
+}
+
+/* Phones: footer links are tap targets, not just text. */
+@media (max-width: 600px) { .ent-foot a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; } }

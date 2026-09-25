@@ -5,7 +5,17 @@ export const sourcePostSchema = z.object({
   url: z.string().url().regex(/^https:\/\/x\.com\/[A-Za-z0-9_]+\/status\/\d+$/),
   author: z.string().min(1),
   handle: z.string().regex(/^@[A-Za-z0-9_]+$/),
-  text: z.string().min(1).max(500),
+  /**
+   * The post as published, in full.
+   *
+   * The cap was 500, which is shorter than a great many real posts — a 958-character
+   * one stored cleanly and was then silently rejected at read time, so the card lost
+   * its author, its quote and its avatar and looked like an unsourced editorial claim.
+   * The stored snapshot must be the whole text: shortening someone's words in the
+   * record is misquoting them. Display shortening is excerptPost's job, and it is
+   * reversible because the full text is still here.
+   */
+  text: z.string().min(1).max(4000),
   postedAt: z.string().datetime(),
   verifiedAt: z.string().datetime(),
   /**

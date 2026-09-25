@@ -162,3 +162,29 @@ describe("exhaustive sweep", () => {
     ]);
   });
 });
+
+describe("a basket part way through a run", () => {
+  it("is executing once a leg has finished, even with nothing signed", () => {
+    // Simulation never signs. Reading this as "draft" sent the progress screen back to
+    // the amount slider between legs, mid-run.
+    expect(deriveIntentStatus(["confirmed", "quoted", "quoted"], { anySigned: false, cancelledByUser: false })).toBe(
+      "executing",
+    );
+  });
+
+  it("stays executing when a leg failed and others are still to go", () => {
+    expect(deriveIntentStatus(["failed", "quoted"], { anySigned: false, cancelledByUser: false })).toBe("executing");
+  });
+
+  it("still reads as ready before anything has happened", () => {
+    expect(deriveIntentStatus(["quoted", "quoted"], { anySigned: false, cancelledByUser: false })).toBe("ready");
+  });
+
+  it("lets a user cancellation win over a part-finished run", () => {
+    expect(deriveIntentStatus(["confirmed", "quoted"], { anySigned: false, cancelledByUser: true })).toBe("cancelled");
+  });
+
+  it("never lets a cancellation win while a leg may still be on chain", () => {
+    expect(deriveIntentStatus(["submitted", "quoted"], { anySigned: false, cancelledByUser: true })).toBe("executing");
+  });
+});

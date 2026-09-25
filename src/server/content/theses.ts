@@ -54,6 +54,62 @@ export const AUTHOR = {
 
 export const THESES: ThesisSeed[] = [
   {
+    slug: "bitcoin-on-solana-is-a-choice-of-counterparty",
+    title: "Holding bitcoin here means picking a counterparty",
+    claim: "Holding bitcoin here means picking a counterparty",
+    category: "Crypto",
+    summary: "None of these is bitcoin. Each is a different institution standing between you and it, and they fail in different ways — which is the actual decision being made.",
+    rationale: "A wrapped token is exposure created through a custodian, a bridge, or a balance sheet, and the wrapper is the risk actually being taken. Read from the mint accounts themselves: Coinbase holds a freeze authority over cbBTC and can freeze it in any wallet; the Portal mint authority can issue more WBTC, so a bridge failure is a failure of the token independent of bitcoin; MicroStrategy is an operating company with debt, so it is the only holding here that can fall while bitcoin rises. Spreading across all three is a bet that no single one of those failures takes the whole position.",
+    counterargument: "Diversifying the wrapper does not diversify the asset — all three fall together when bitcoin does, which is the risk that dominates. The spread only pays in the narrow case of one issuer failing on its own, and it buys that protection with three sets of fees, three liquidity profiles, and an equity leg whose leverage can lose money in a flat market.",
+    changeMyMind: "A wrapper failing with holders made whole quickly would show the counterparty layer matters less than this assumes.",
+    horizonLabel: "Review in 12 months",
+    reviewDate: "2027-09-18",
+    weightRationale: "Weighted toward the regulated custodian and away from the bridge, because the named historical failures in this category have been bridge and minting failures rather than custodial ones.",
+    constituents: [
+      { symbol: "cbBTC", position: 0, weightBps: 4500, role: "Custodial claim", why: "Reserves held by a New York chartered custodian under NYDFS oversight, with a stated redemption path — the most conventional institution of the three.", limitation: "Coinbase holds a live freeze authority over this mint and can freeze the token in any wallet. It is a claim on a company's custody, not bitcoin." },
+      { symbol: "WBTC", position: 1, weightBps: 2000, role: "Bridge claim", why: "Held deliberately small: it is the leg whose failure mode — bridge and minting logic — is the one this category has actually suffered.", limitation: "A bridge mint authority can issue more. Cross-chain logic can fail while bitcoin itself is fine, and depegs happen when exit liquidity thins." },
+      { symbol: "MSTRx", position: 2, weightBps: 3500, role: "No wrapper at all", why: "Bitcoin exposure through a listed company instead of a token, so it carries none of the wrapper risks the other two do.", limitation: "It carries corporate risk instead: debt, dilution and management decisions. It can fall while bitcoin rises, which neither of the others can." },
+    ],
+  },
+  {
+    slug: "the-toll-booths-outlast-the-traffic",
+    title: "The toll booths outlast the traffic",
+    claim: "The toll booths outlast the traffic",
+    category: "Crypto",
+    summary: "Whoever charges per transaction earns whether the trade was clever or stupid. The chain takes a fee, the router takes a fee, the pool takes a fee — and none of them need the trader to be right.",
+    rationale: "This is a bet on activity rather than on direction. Solana's network revenue is the sum of base fees, priority fees and tips, and it is collected on every transaction regardless of outcome; the router and the pool sit on the same flow and charge again. Holding the chain, the aggregator and an automated market maker is an attempt to own the toll at three points along one road.",
+    counterargument: "Fees are the most competitive thing in this industry and the direction of travel is downward: record transaction volume has already coincided with flat-to-falling network revenue, which is fee compression doing exactly what it does. Routing has no switching cost, a cheaper aggregator takes the flow in a week, and the fee rules themselves are governed and can be changed by vote. Owning three tolls on one road is also three ways to be wrong about the same road.",
+    changeMyMind: "Another quarter of rising transactions with falling network revenue would show the tolls are being competed away faster than the traffic grows.",
+    horizonLabel: "Review in 12 months",
+    reviewDate: "2027-09-18",
+    weightRationale: "Weighted to the chain, because it is the only one of the three that cannot be routed around.",
+    constituents: [
+      { symbol: "SOL", position: 0, weightBps: 5000, role: "The road", why: "Every transaction pays it, and unlike the other two it cannot be switched away from without leaving entirely. No mint or freeze authority, so there is nothing to disclose beyond market risk.", limitation: "Its fee rules are set by governance and are under active discussion, so the toll is not fixed. Most of its price behaviour has nothing to do with fee revenue." },
+      { symbol: "JUP", position: 1, weightBps: 3000, role: "The router", why: "Sits in front of the pools and sees the order flow before they do, which is the most defensible position on the road if habits are sticky.", limitation: "Routing has close to zero switching cost. The position is defensible only for as long as it is the best price, and the token's link to routing revenue is indirect." },
+      { symbol: "RAY", position: 2, weightBps: 2000, role: "The pool", why: "Where the trade is actually filled, and among the largest venues by volume on this chain.", limitation: "The most commoditised leg: liquidity moves to whichever venue pays for it, and the fee it earns is the first thing a competitor undercuts." },
+    ],
+  },
+
+  {
+    slug: "breadth-beats-picking-the-buildout",
+    title: "If the buildout is right, breadth beats picking",
+    claim: "If the buildout is right, breadth beats picking",
+    category: "Technology",
+    summary: "The spending is spread across a dozen names and nobody knows which of them converts it into profit. Owning the index captures the theme without requiring that guess, and a gold sleeve pays only if the theme fails.",
+    rationale: "Every other basket in this catalogue picks three companies out of the buildout and argues for them. This one argues the picking is the weak step. The capex is measurable and large; which participant earns a return on it is not, and the index already holds all of them at their market weight. The gold sleeve is not a view on gold — it is there because a barbell only means something if one end pays when the other does not, and the failure mode of this trade is a broad repricing that an equity index cannot hedge against itself.",
+    counterargument: "A barbell can be the worst of both: not concentrated enough to matter if the theme works, not hedged enough to help if it does not. Gold and equities have spent long stretches falling together, so the sleeve may simply be a drag. And if only two or three firms convert the spending into profit, the index dilutes exactly the exposure worth having.",
+    changeMyMind: "A clear divergence inside the index — a handful of names carrying the return while the rest fall — would make picking the right step after all.",
+    horizonLabel: "Review in 12 months",
+    reviewDate: "2027-09-17",
+    weightRationale: "Weighted toward the concentrated index, since the claim is that the theme is real; the broad index and the hedge are there to be wrong in different directions.",
+    constituents: [
+      { symbol: "QQQx", position: 0, weightBps: 5000, role: "The theme, undiluted", why: "Holds every large participant in the buildout at market weight, which is the exposure without the guess about which one wins.", limitation: "Concentrated in the same handful of mega-caps, so it is less diversified than it looks and carries the whole theme's drawdown." },
+      { symbol: "SPYx", position: 1, weightBps: 3000, role: "The wider market", why: "Dilutes toward the rest of the economy, which is where the money goes if the buildout disappoints but the expansion does not.", limitation: "Substantially overlaps the first holding, so it adds less independence than its weight suggests." },
+      { symbol: "GLDx", position: 2, weightBps: 2000, role: "Paid if the theme is wrong", why: "The only holding here with no exposure to corporate earnings, which is the point: the barbell needs an end that does not depend on the argument being right.", limitation: "Gold and equities fall together often enough that this is a weak hedge, and it earns nothing while it waits." },
+    ],
+  },
+
+  {
     slug: "financial-activity-moves-onchain",
     title: "Three tolls on the same onchain traffic",
     claim: "Three tolls on the same onchain traffic",

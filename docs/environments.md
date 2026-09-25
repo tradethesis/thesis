@@ -5,7 +5,7 @@ production is what tradethesis.xyz serves.
 
 | | Production | Beta |
 | --- | --- | --- |
-| URL | https://tradethesis.xyz | `beta.tradethesis.xyz` (DNS pending) |
+| URL | https://tradethesis.xyz | https://beta.tradethesis.xyz |
 | Vercel target | `--prod` | preview |
 | Database | Neon `neondb` | Neon `thesis_beta`, same project |
 | Env file | `.env.production.local` | `.env.beta.local` |
@@ -33,14 +33,32 @@ unless someone changes that.
 
 ```bash
 BETA="$(grep '^DATABASE_URL_UNPOOLED=' .env.beta.local | cut -d= -f2-)"
-DATABASE_URL="$BETA" pnpm db:push --force
-psql "$BETA" -f src/server/db/constraints.sql
+DATABASE_URL="$BETA" pnpm db:push        # chains constraints.sql, then db:verify
 psql "$BETA" -c "CREATE UNIQUE INDEX IF NOT EXISTS waitlist_email_key ON waitlist_signup (email);"
 DATABASE_URL="$BETA" pnpm tsx scripts/calls.ts migrate
-DATABASE_URL="$BETA" pnpm db:seed
+DATABASE_URL="$BETA" pnpm db:seed        # assets first — content:publish resolves symbols against it
 DATABASE_URL="$BETA" pnpm content:publish
 DATABASE_URL="$BETA" pnpm tsx scripts/calls.ts start
+DATABASE_URL="$BETA" pnpm tsx scripts/calls.ts refresh     # one reading, so charts are not empty
+DATABASE_URL="$BETA" pnpm tsx scripts/seed-basket-arguments.ts --apply
 ```
+
+`content:publish` creates each basket as it publishes, using the names in
+`src/server/content/baskets.ts`. `scripts/backfill-baskets.ts` is only for a database that already
+holds published theses with no basket — it skips anything already attached and is safe to re-run.
+
+Order matters twice, and both were found the hard way provisioning beta on 21 September 2026:
+
+- **`db:seed` before `content:publish`.** Publishing resolves every symbol against the asset table
+  and fails with `cbBTC is not in the asset table` if the assets are not there yet.
+- **`calls.ts start` after the baskets exist.** Striking a call points its basket version at the
+  series; run it first and the baskets render "Tracking begins at publication" beside a call that
+  is already running. `db:verify` does not catch this — check
+  `SELECT count(*) FILTER (WHERE call_id IS NOT NULL) FROM basket_version WHERE state = 'live'`.
+
+`pnpm db:push` no longer needs `--force`, and `db:verify` now runs at the end of it: every trigger
+and index in `constraints.sql` is invisible to drizzle-kit, so a bare push drops them, and the ones
+whose loss is silent produce a basket displaying returns it never earned.
 
 Use the **unpooled** string. Schema changes through pgbouncer in transaction pooling mode
 are unreliable, and `db:push --force` drops the `remaining_raw` generated column every time,

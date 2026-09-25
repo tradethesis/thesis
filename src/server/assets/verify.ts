@@ -1,4 +1,4 @@
-import { ALLOWLIST, TOKEN_2022_PROGRAM, USDC_MINT, type AllowlistEntry } from "./allowlist";
+import { ALLOWLIST, USDC_MINT, type AllowlistEntry } from "./allowlist";
 import { getParsedMint } from "../solana/rpc";
 import { createOrder, searchTokens } from "../jupiter/client";
 
@@ -78,8 +78,11 @@ export async function checkMint(asset: AllowlistEntry, probeRoutes: boolean): Pr
   if (mint.decimals !== asset.decimals) {
     problems.push(`decimals are ${mint.decimals}, allowlist says ${asset.decimals}`);
   }
-  if (asset.tokenProgram === TOKEN_2022_PROGRAM && !asset.mint.startsWith("Xs")) {
-    problems.push("equity token mint does not start with Xs");
+  // Each issuer declares its own vanity prefix. The prefix proves nothing by itself —
+  // these are ground, so a lookalike is cheap — but it catches a mint pasted into the
+  // wrong issuer's block, which is the mistake that actually happens.
+  if (asset.mintPrefix && !asset.mint.startsWith(asset.mintPrefix)) {
+    problems.push(`mint does not start with ${asset.mintPrefix}, which ${asset.issuer} uses`);
   }
   if (check.onChain.accountStateFrozenByDefault) {
     problems.push("defaultAccountState is frozen: a new buyer's token account would be unusable");

@@ -1,0 +1,122 @@
+/*
+ * Taking a side.
+ *
+ * Extracted from app.css on 21 September 2026 because conviction now renders on two surfaces with
+ * different stylesheets: inside each expanded argument in the terminal, and on the public thesis
+ * page at /t/<slug>. That second one is the important one — conviction is free and needs no wallet,
+ * so it has to work somewhere a signed-out visitor can reach, and the terminal is behind a gate.
+ *
+ * It lived only in app.css, which /t/<slug> does not import, so the buttons rendered unstyled at
+ * 40px and failed the 44px target rule. Both files import this one.
+ */
+
+.tas { margin-top: 12px; }
+.tas-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 10px; }
+.tas-buttons { display: flex; gap: 7px; }
+.tas-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding-inline: 14px;
+  border: 1px solid var(--ln-line-strong);
+  border-radius: 999px;
+  background: var(--ln-surface);
+  color: var(--ln-ink-2);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 550;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background-color 180ms var(--app-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    border-color 180ms var(--app-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    color 180ms var(--app-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    transform 140ms var(--app-ease, cubic-bezier(0.23, 1, 0.32, 1));
+}
+.tas-btn svg { flex-shrink: 0; }
+.tas-btn:hover:not(:disabled) { background: var(--ln-surface-2); color: var(--ln-ink); }
+.tas-btn:active:not(:disabled) { transform: scale(0.97); }
+.tas-btn:disabled { opacity: 0.55; cursor: default; }
+.tas-split { margin: 0 0 0 auto; color: var(--ln-ink-3); font-size: 11.5px; white-space: nowrap; }
+.tas-split strong { color: var(--ln-ink-2); font-weight: 550; font-variant-numeric: tabular-nums; }
+.tas-verdict { margin: 8px 0 0; color: var(--ln-ink-3); font-size: 11.5px; line-height: 1.45; }
+.tas-verdict strong { font-size: 12.5px; font-weight: 600; }
+/* These stayed behind in app.css, which /t/<slug> does not import — so the verdict rendered with
+   no colour on the one page conviction has to work without a wallet. */
+.tas-verdict.is-ahead strong { color: var(--ln-confirmed); }
+.tas-verdict.is-behind strong { color: var(--ln-accent); }
+.tas-verdict.is-level strong { color: var(--ln-ink-2); }
+.tas-error { margin: 8px 0 0; color: var(--ln-accent); font-size: 11.5px; }
+/* This block was lifted out of its @media wrapper when these rules moved here from app.css, so the
+   stacked phone treatment applied at every width and `.tas-split { margin-left: 0 }` silently beat
+   the `margin: 0 0 0 auto` above. Below 380px the two pills and the split cannot share a line
+   without truncating a label, and a clipped "Doubting" is worse than a wrapped one. */
+@media (max-width: 380px) {
+  .tas-buttons { flex: 1 1 100%; }
+  .tas-btn { flex: 1; }
+  .tas-split { margin-left: 0; }
+  .tas-btn:active { transform: none; }
+}
+.tas-against {
+  margin: 0 0 9px !important;
+  padding-left: 9px;
+  border-left: 2px solid var(--ln-line-strong);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ln-ink-2);
+}
+.tas-compact { display: flex; align-items: center; gap: 1px; }
+.tas-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 44px;
+  min-height: 44px;
+  padding-inline: 9px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--ln-ink-3);
+  font: inherit;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background-color 160ms var(--app-ease, cubic-bezier(0.23, 1, 0.32, 1)), color 160ms var(--app-ease, cubic-bezier(0.23, 1, 0.32, 1)), transform 140ms var(--app-ease, cubic-bezier(0.23, 1, 0.32, 1));
+}
+.tas-icon:hover:not(:disabled) { background: var(--ln-surface-2); color: var(--ln-ink); }
+.tas-icon:active:not(:disabled) { transform: scale(0.94); }
+.tas-icon:disabled { opacity: 0.5; cursor: default; }
+.tas-compact .tas-error { font-size: 11px; color: var(--ln-accent); }
+.tas-icon, .fc-menu-btn {
+  transition:
+    box-shadow 180ms var(--sk-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    background 180ms var(--sk-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    color 180ms var(--sk-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    transform 160ms var(--sk-ease, cubic-bezier(0.23, 1, 0.32, 1));
+}
+.tas-icon:hover:not(:disabled), .fc-menu-btn:hover {
+  background:
+    linear-gradient(180deg, var(--sk-bg-top, oklch(24% 0.01 260)), var(--sk-bg-bottom, oklch(19.5% 0.009 260))) padding-box,
+    linear-gradient(180deg, var(--sk-edge-top, oklch(100% 0 0 / 0.14)), var(--sk-edge-bottom, oklch(0% 0 0 / 0.5))) border-box;
+  box-shadow: 0 3px 7px var(--sk-shadow, oklch(0% 0 0 / 0.42)), inset 0 1px 0 var(--sk-highlight, oklch(100% 0 0 / 0.1));
+}
+.tas-icon:active:not(:disabled), .fc-menu-btn:active {
+  transform: translateY(1px) scale(0.97);
+  box-shadow: inset 0 3px 7px oklch(0% 0 0 / 0.7), inset 0 -1px 0 var(--sk-highlight, oklch(100% 0 0 / 0.1));
+}
+
+/* Held sides are filled, not merely outlined — at a glance you can see what you called
+   without reading the label, and the two sides never wear the same colour. */
+.tas-btn[aria-pressed="true"] {
+  background: color-mix(in oklab, var(--ln-confirmed) 12%, var(--ln-surface));
+  border-color: color-mix(in oklab, var(--ln-confirmed) 45%, var(--ln-line-strong));
+  color: var(--ln-confirmed);
+}
+.tas-btn--doubt[aria-pressed="true"] {
+  background: var(--ln-accent-soft);
+  border-color: color-mix(in oklab, var(--ln-accent) 40%, var(--ln-line-strong));
+  color: var(--ln-accent);
+}

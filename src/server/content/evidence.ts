@@ -30,6 +30,18 @@ export type EvidenceLink = {
 };
 
 export const EVIDENCE: Record<string, EvidenceLink[]> = {
+  "bitcoin-on-solana-is-a-choice-of-counterparty": [
+    { url: "https://www.coinbase.com/cbbtc", title: "Coinbase cbBTC", source: "Coinbase", publishedAt: null, relevance: "Coinbase states cbBTC is backed 1:1 by bitcoin held in its custody, with reserves at Coinbase Custody Trust under NYDFS oversight and a redemption path for customers. Establishes what the custodial leg is; it does not establish that a claim on a custodian is equivalent to the asset.", kind: "primary" },
+    { url: "https://cryptoadventure.com/wrapped-bitcoin-risks-custody-bridges-and-redemptions/", title: "Wrapped bitcoin risks: custody, bridges and redemptions", source: "Crypto Adventure", publishedAt: null, relevance: "Catalogues custodian, bridge, redemption, depeg and jurisdiction risk, and names a concrete failure: Osmosis paused Alloyed BTC after a Nomic double-spend affected 39.84 nBTC, roughly 36% of backing. The case that a wrapper is a distinct risk from bitcoin, and the reason the bridge leg is held smallest.", kind: "secondary", supportsCounterargument: true },
+  ],
+  "the-toll-booths-outlast-the-traffic": [
+    { url: "https://blockworks.com/analytics/solana/solana-financials", title: "Solana financials: REV, operator payments, token holder income", source: "Blockworks", publishedAt: null, relevance: "Defines Real Economic Value as in-protocol fees plus out-of-protocol tips, broken into vote, base and priority fees and Jito tips. The measurement the basket reasons from. Blockworks notes token holder returns differ between stakers and non-stakers, so holding the token is not the same as receiving the fees.", kind: "primary" },
+    { url: "https://cryptodaily.co.uk/2026/07/solana-validator-fees-base-fee-rule", title: "Solana's base-fee rule and what it changes", source: "Crypto Daily", publishedAt: "2026-07-01", relevance: "Describes a resource-based base fee under discussion as SIMD-547, replacing the flat per-signature charge. Explicitly not enacted and with no firm vote date. The direct case against the thesis: the toll is set by governance and can be changed, so fee revenue is not a fixed property of the road.", kind: "secondary", supportsCounterargument: true },
+  ],
+  "breadth-beats-picking-the-buildout": [
+    { url: "https://epoch.ai/data-insights/hyperscaler-capex-trend", title: "Hyperscaler capex has quadrupled since GPT-4's release", source: "Epoch AI", publishedAt: null, relevance: "Establishes that the spending is large and broadly distributed across Alphabet, Amazon, Meta, Microsoft and Oracle — which is the premise for holding the index rather than picking among them. Epoch notes its own limits: finance leases may be understated, operating leases are excluded, and the share that is specifically AI is not disclosed.", kind: "primary" },
+    { url: "https://epoch.ai/data-insights/hyperscaler-capex-vs-cash-flow", title: "Hyperscaler capex on track to overtake operating cash flow", source: "Epoch AI", publishedAt: null, relevance: "Projects aggregate capex overtaking operating cash flow around Q3 2026. This is the case for the hedge sleeve and against the equity legs at once: spending that outruns cash generation is how a broad repricing starts, and an index cannot hedge itself. Epoch calls these simple extrapolations and does not model whether the returns justify the spending.", kind: "primary", supportsCounterargument: true },
+  ],
   "financial-activity-moves-onchain": [
     {
       url: "https://www.sec.gov/Archives/edgar/data/1876042/000187604226000246/augustepr-circle_q22026f.htm",

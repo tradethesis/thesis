@@ -1,0 +1,912 @@
+/* A gift opened on a phone in daylight: warm paper, tactile packs, readable ink. */
+.gift-site{--g-paper:oklch(97% .014 85);--g-surface:oklch(99% .008 85);--g-ink:oklch(25% .014 70);--g-muted:oklch(49% .018 70);--g-line:oklch(86% .022 80);--g-brand:oklch(70% .19 34);--g-brand-display:oklch(62% .19 36);--g-brand-ink:oklch(56% .18 38);--g-danger:oklch(52% .2 27);background:var(--g-paper);color:var(--g-ink);font-family:var(--font-geist-sans),Arial,sans-serif;min-height:100svh;-webkit-font-smoothing:antialiased}
+.gift-site *{box-sizing:border-box}.gift-site a{color:inherit;text-decoration:none}.gift-site button,.gift-site input,.gift-site textarea,.gift-site select{font:inherit}.gift-site button,.gift-site a,.gift-site summary{-webkit-tap-highlight-color:transparent}.gift-site button{cursor:pointer}.gift-site button:disabled{cursor:not-allowed;opacity:.5}.gift-site :is(a,button,input,textarea,select,summary):focus-visible{outline:2px solid var(--g-brand-ink);outline-offset:5px}.gift-site :is(h1,h2,h3,p){margin:0}.gift-site h1,.gift-site h2,.gift-site h3{text-wrap:balance}.gift-site h1{font-size:78px;line-height:1.025;letter-spacing:-5px;font-weight:550}.gift-site h1 em{font-style:normal;color:var(--g-brand-display)}.gift-site h2{font-size:36px;line-height:1.12;letter-spacing:-1.6px;font-weight:550}.gift-site h3{font-size:23px;line-height:1.2;letter-spacing:-.7px;font-weight:550}.gift-sr-only,.gift-site .ln-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.gift-skip{position:fixed;top:-100px;left:15px;z-index:100;padding:15px;background:var(--g-surface)}.gift-skip:focus{top:15px}.gift-header{height:94px;max-width:1320px;margin:auto;padding:0 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--g-line)}.gift-wordmark{display:inline-flex;align-items:center;gap:7px;font-size:29px;font-weight:620;letter-spacing:-1.5px}.gift-wordmark svg{width:31px;height:31px;color:var(--g-brand)}.gift-wordmark>span{font-size:12px;font-weight:450;letter-spacing:0;border-left:1px solid var(--g-line);padding-left:12px;margin-left:8px;color:var(--g-muted)}.gift-header nav{display:flex;gap:30px;align-items:center;font-size:13px}.gift-header nav>a{min-height:44px;display:inline-flex;align-items:center;gap:5px}.gift-button{border:1px solid transparent;border-radius:7px;background:var(--g-ink);color:var(--g-surface)!important;padding:17px 23px;display:inline-flex;gap:22px;align-items:center;justify-content:center;font-size:14px;font-weight:550;min-height:50px;transition:background-color .18s ease,transform .16s cubic-bezier(.23,1,.32,1)}@media (hover: hover) { .gift-button:hover{background:oklch(35% .025 65)} }.gift-button:active:not(:disabled){transform:scale(.97)}.gift-button--small{padding:11px 17px;min-height:42px;font-size:12px;gap:15px}.gift-button--wide{width:100%;margin-top:23px;justify-content:space-between}.gift-button--outline{background:transparent;color:var(--g-ink)!important;border-color:var(--g-line)}@media (hover: hover) { .gift-button--outline:hover{background:oklch(92% .015 85)} }.gift-text-link{display:inline-flex;gap:8px;align-items:center;font-size:13px;font-weight:500;min-height:44px;padding:6px 0;background:none;border:0}@media (hover: hover) { .gift-text-link:hover{text-decoration:underline;text-underline-offset:4px} }.gift-eyebrow{font-size:10px;font-weight:550;letter-spacing:.12em;line-height:1.6;display:flex;gap:8px;align-items:center}.gift-eyebrow>span{width:5px;height:5px;border-radius:50%;background:var(--g-brand)}.gift-hero{max-width:1320px;padding:75px 48px 72px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;min-height:660px}.gift-hero-copy{position:relative;z-index:2}.gift-hero h1{margin-top:22px}.gift-hero-description{font-size:17px;line-height:1.6;letter-spacing:-.2px;color:var(--g-muted);margin-top:27px!important}.gift-hero-actions{display:flex;gap:28px;align-items:center;margin-top:28px}.gift-preview-label{display:flex;align-items:center;gap:7px;font-size:10px;color:var(--g-muted);margin-top:22px!important}.gift-preview-dot{width:6px;height:6px;border-radius:50%;background:oklch(55% .1 70);flex-shrink:0}.gift-hero-stage{height:500px;position:relative;isolation:isolate}.gift-stage-main{position:absolute;width:274px;top:35px;left:70px;transform:rotate(-9deg);z-index:2}.gift-stage-back{position:absolute;width:242px;right:5px;top:88px;transform:rotate(12deg);z-index:1}.gift-orbit-label{position:absolute;top:0;right:16px;font-size:10px;line-height:1.5;letter-spacing:.09em;transform:rotate(5deg);color:var(--g-muted)}.gift-stage-caption{position:absolute;bottom:6px;left:65px;font-size:11px;color:var(--g-muted)}.gift-sticker{position:absolute;right:16px;bottom:44px;display:flex;align-items:center;gap:12px;padding:18px 21px;background:oklch(93% .055 90);color:oklch(38% .06 65);font-size:12px;line-height:1.6;border:1px solid oklch(84% .06 90);box-shadow:0 5px 14px #3626170a;transform:rotate(7deg);z-index:3}.gift-sticker strong{font-weight:550}.gift-strip{display:flex;align-items:center;justify-content:center;gap:75px;padding:23px 24px;border-top:1px solid var(--g-line);border-bottom:1px solid var(--g-line);font-size:12px;color:var(--g-muted)}.gift-strip>span{display:flex;align-items:center;gap:9px}.gift-x-mark{font-size:19px;line-height:1}.gift-pack{--pack-bg:oklch(39% .12 273);--pack-ink:oklch(96% .023 90);position:relative;color:var(--pack-ink);background:var(--pack-bg);box-shadow:2px 14px 22px #211f261c,0 2px 3px #20181824;width:100%;isolation:isolate}.gift-pack--blue{--pack-bg:oklch(39% .12 273);--pack-ink:oklch(96% .028 88)}.gift-pack--green{--pack-bg:oklch(43% .063 155);--pack-ink:oklch(93% .068 100)}.gift-pack--red{--pack-bg:oklch(55% .16 37);--pack-ink:oklch(97% .023 80)}.gift-pack::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(103deg,transparent 10%,#fff1 12%,transparent 15%,transparent 47%,#fff1 48%,#0001 51%,transparent 54%,#fff1 90%,transparent 93%);border:1px solid #ffffff20;z-index:2}.gift-pack-body{padding:20px 22px 17px}.gift-pack-top{display:flex;justify-content:space-between;align-items:center;font-size:8px;letter-spacing:.06em}.gift-pack-top>span:first-child{display:flex;align-items:center;font-size:18px;font-weight:550;gap:4px;letter-spacing:-.6px}.gift-pack-top svg{width:19px;height:19px}.gift-pack-title{font-size:32px;font-weight:500;line-height:1.04;letter-spacing:-1.4px;margin-top:27px;max-width:190px}.gift-pack-title>span{display:block;font-size:10px;line-height:1.5;letter-spacing:0;font-weight:400;margin-top:12px;opacity:.8}.gift-art{display:block;width:100%;height:194px;margin:7px 0 0}.gift-pack-bottom{display:flex;align-items:center;justify-content:space-between;font-size:6.7px;letter-spacing:.08em;border-top:1px solid #ffffff40;padding-top:12px;gap:10px}.gift-pack-seal{height:17px;background:repeating-linear-gradient(90deg,#ffffff12 0px,#ffffff12 1px,#00000015 1px,#00000015 3px);clip-path:polygon(0 10%,3% 0,6% 10%,9% 0,12% 10%,15% 0,18% 10%,21% 0,24% 10%,27% 0,30% 10%,33% 0,36% 10%,39% 0,42% 10%,45% 0,48% 10%,51% 0,54% 10%,57% 0,60% 10%,63% 0,66% 10%,69% 0,72% 10%,75% 0,78% 10%,81% 0,84% 10%,87% 0,90% 10%,93% 0,96% 10%,100% 0,100% 100%,0 100%)}.gift-pack-seal--bottom{transform:rotate(180deg)}.gift-collection,.gift-how,.gift-questions{max-width:1320px;padding:72px 48px;margin:auto;scroll-margin-top:25px}.gift-section-head{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:37px}.gift-section-head h2{margin-top:12px}.gift-section-head>p{color:var(--g-muted);font-size:14px;line-height:1.5}.gift-pack-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}.gift-choice-art{display:flex;justify-content:center;align-items:center;width:100%;height:374px;position:relative;border:0;border-radius:5px;background:oklch(93% .016 265);overflow:hidden}.gift-choice--green .gift-choice-art{background:oklch(92% .024 140)}.gift-choice--red .gift-choice-art{background:oklch(93% .028 47)}.gift-choice-art>.gift-pack{width:214px;transform:rotate(-5deg) scale(.87);transition:transform .24s cubic-bezier(.22,1,.36,1)}.gift-choice--green .gift-choice-art>.gift-pack{transform:rotate(4deg) scale(.87)}.gift-choice--red .gift-choice-art>.gift-pack{transform:rotate(-3deg) scale(.87)}@media (hover: hover) { .gift-choice-art:hover>.gift-pack{transform:rotate(0) scale(.92)} }.gift-choice-art .gift-pack-title{font-size:29px;margin-top:24px}.gift-choice-art .gift-art{height:160px}.gift-choice-art .gift-pack-body{padding:16px}.gift-choice-arrow{position:absolute;right:17px;bottom:17px;width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:var(--g-surface);color:var(--g-ink)}.gift-choice-info{padding:23px 0}.gift-choice-info>p{font-size:13px;color:var(--g-muted);margin-top:9px;line-height:1.5}.gift-logo-row{display:flex;gap:5px;align-items:center;margin-top:18px}.gift-site .tl{position:relative;display:inline-flex;flex-shrink:0;width:26px;height:26px;align-items:center;justify-content:center;overflow:hidden;border-radius:50%;background:oklch(93% .014 85)}.gift-site .tl img{width:100%;height:100%;object-fit:cover}.gift-site .tl-letters{font-size:11px}.gift-logo-row>span:last-child{font-size:10px;margin-left:5px;letter-spacing:.025em;color:var(--g-muted)}.gift-choice-info>.gift-text-link{margin-top:12px}.gift-compose{display:grid;grid-template-columns:1fr 1fr;gap:70px;max-width:1224px;margin:0 auto;background:oklch(94.5% .021 83);border:1px solid var(--g-line);border-radius:9px;padding:48px 56px;scroll-margin-top:25px}.gift-compose-visual{position:relative;display:flex;align-items:center;flex-direction:column;padding-top:8px}.gift-compose-visual>.gift-eyebrow{align-self:flex-start;color:var(--g-muted)}.gift-compose-pack{width:230px;transform:rotate(-5deg);margin:42px 0 14px}.gift-note-preview{width:100%;max-width:340px;background:var(--g-surface);padding:25px 28px;box-shadow:0 3px 12px #20181007;transform:rotate(2deg);border:1px solid var(--g-line);margin-top:5px;position:relative}.gift-note-preview::before{content:"";position:absolute;width:75px;height:22px;background:oklch(87% .044 85/.5);top:-12px;left:calc(50% - 38px);transform:rotate(-4deg)}.gift-note-preview>span{font-size:11px;color:var(--g-muted);overflow-wrap:anywhere}.gift-note-preview>p{font-size:20px;line-height:1.4;letter-spacing:-.5px;margin:14px 0 18px;white-space:pre-wrap;overflow-wrap:anywhere}.gift-step{display:flex;gap:15px;align-items:center;font-size:8px;letter-spacing:.07em;color:var(--g-muted);margin-bottom:31px}.gift-step>.active{color:var(--g-brand-ink)}.gift-compose h2{font-size:39px;letter-spacing:-1.9px;overflow-wrap:anywhere}.gift-form-intro{font-size:14px;line-height:1.6;color:var(--g-muted);margin-top:17px!important}.gift-field{display:block;font-size:12px;font-weight:550;margin-top:22px}.gift-field :is(input,select,textarea),.gift-field>select{display:block;width:100%;background:var(--g-surface);border:1px solid var(--g-line);border-radius:5px;color:var(--g-ink);padding:12px 13px;min-height:45px;font-size:14px;font-weight:400;margin-top:8px}.gift-field select{padding-right:30px}.gift-field textarea{resize:vertical;min-height:93px;line-height:1.5}.gift-field input::placeholder,.gift-field textarea::placeholder{color:oklch(58% .017 70)}.gift-field>span{float:right;color:var(--g-muted);font-weight:400}.gift-amounts{border:0;padding:0;margin:22px 0 0}.gift-amounts legend{font-size:12px;font-weight:550;width:100%}.gift-amounts legend>span{float:right;font-size:11px;font-weight:400;color:var(--g-muted)}.gift-amounts>div{display:flex;gap:7px;margin-top:9px}.gift-amounts button{padding:11px 12px;min-height:44px;flex:1;border:1px solid var(--g-line);background:var(--g-surface);border-radius:5px;font-size:13px}.gift-amounts button[aria-pressed="true"]{background:var(--g-ink);color:var(--g-surface);border-color:var(--g-ink)}.gift-custom-amount{display:flex;align-items:center;background:var(--g-surface);border:1px solid var(--g-line);border-radius:5px;width:85px;padding-left:10px;gap:3px;font-size:13px}.gift-custom-amount input{min-width:0;width:100%;background:transparent;border:0;padding:10px 3px;font-size:13px}.gift-custom-amount input::-webkit-inner-spin-button{-webkit-appearance:none}.gift-fields-two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.gift-handle-input{display:flex;align-items:center;border:1px solid var(--g-line);border-radius:5px;background:var(--g-surface);margin-top:8px;padding-left:12px}.gift-handle-input>span{color:var(--g-muted);font-weight:400;font-size:14px}.gift-handle-input input{margin:0;border:0;background:none;padding-left:4px;min-width:0}.gift-field-help{font-size:10px;line-height:1.5;color:var(--g-muted);margin-top:9px!important}.gift-message{position:relative}.gift-message small{font-size:9px;font-weight:400;color:var(--g-muted);position:absolute;right:10px;bottom:6px}.gift-message textarea{padding-bottom:22px}.gift-form-foot{text-align:center}.gift-restored{font-size:11px;line-height:1.6;color:var(--g-muted);margin-top:15px!important}.gift-restored button{background:none;border:0;text-decoration:underline;font-size:11px;margin-left:6px}.gift-error{font-size:13px;color:var(--g-danger);margin-top:15px!important}.gift-review-heading{display:flex;align-items:center;justify-content:space-between;margin-top:27px;border-top:1px solid var(--g-line);padding-top:22px;gap:20px;font-size:16px}.gift-review-heading>strong{font-size:29px;font-weight:550;text-align:right;line-height:1.2}.gift-review-heading small{display:block;font-size:9px;font-weight:400;color:var(--g-muted)}.gift-allocation{list-style:none;padding:0;margin:18px 0 0}.gift-allocation>li{display:flex;align-items:center;gap:11px;border-bottom:1px solid var(--g-line);padding:17px 0}.gift-allocation li>div{min-width:0;flex:1}.gift-allocation strong{font-size:13px;font-weight:550}.gift-allocation li>div>span{display:block;color:var(--g-muted);font-size:10px;margin-top:4px}.gift-allocation b{font-size:13px;font-weight:500}.gift-review-actions{display:flex;justify-content:space-between;gap:15px;margin-top:8px}.gift-coming{display:flex;gap:12px;margin-top:25px;padding:18px;background:oklch(90% .03 80);border-radius:5px}.gift-coming>svg{flex-shrink:0;margin-top:2px}.gift-coming strong{font-size:12px;font-weight:550}.gift-coming p{font-size:11px;line-height:1.6;color:var(--g-muted);margin-top:6px}.gift-pill{display:inline-flex;padding:9px 13px;border:1px solid var(--g-line);border-radius:100px;font-size:10px;color:var(--g-muted)}.gift-how{padding-top:84px}.gift-how ol{display:grid;grid-template-columns:repeat(3,1fr);gap:44px;padding:0;margin:0;list-style:none}.gift-how li{border-top:1px solid var(--g-line);padding-top:25px}.gift-how li>span{font-size:11px;color:var(--g-brand-ink)}.gift-how h3{font-size:21px;margin-top:23px}.gift-how li>p{font-size:14px;line-height:1.7;color:var(--g-muted);max-width:34ch;margin-top:12px}.gift-questions{display:grid;grid-template-columns:.85fr 1.15fr;gap:85px;padding-top:15px;padding-bottom:85px}.gift-questions h2{font-size:29px;max-width:250px}.gift-questions details{border-bottom:1px solid var(--g-line)}.gift-questions summary{font-size:14px;padding:19px 20px 19px 0;cursor:pointer;line-height:1.5}.gift-questions details:first-child summary{padding-top:0}.gift-questions details p{font-size:13px;line-height:1.7;color:var(--g-muted);padding-bottom:22px}.gift-footer{max-width:1320px;padding:35px 48px 45px;margin:auto;border-top:1px solid var(--g-line);display:grid;grid-template-columns:1fr 1fr auto;gap:45px}.gift-footer .gift-wordmark{font-size:23px}.gift-footer .gift-wordmark svg{width:25px;height:25px}.gift-footer p{font-size:10px;line-height:1.7;color:var(--g-muted);max-width:400px}.gift-footer>div>p{margin-top:10px}.gift-footer-links{display:flex;flex-direction:column;gap:8px;align-items:start;font-size:11px}.gift-footer-links a{display:flex;gap:8px;align-items:center;min-height:30px}.gift-catalogue-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:20px;text-align:center;font-size:15px}.gift-catalogue-empty p{max-width:240px;line-height:1.5}.gift-empty{font-size:16px;color:var(--g-muted);padding:40px 0}.gift-empty a{text-decoration:underline}
+/* The recipient gets a quiet, personal opening, followed by an honest preview of the holdings. */
+.gift-recipient-main{max-width:1224px;padding:28px 0 65px;margin:auto}.gift-preview-banner{display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px;color:var(--g-muted)}.gift-preview-banner>span:last-child{border-left:1px solid var(--g-line);margin-left:7px;padding-left:15px}.gift-unopened{text-align:center;padding-top:38px}.gift-recipient-intro>.gift-eyebrow{justify-content:center;overflow-wrap:anywhere}.gift-recipient-intro h1{font-size:42px;letter-spacing:-2px;line-height:1.2;margin-top:18px}.gift-recipient-intro>p:last-child{font-size:16px;line-height:1.6;color:var(--g-muted);max-width:520px;margin:19px auto 0;white-space:pre-wrap;overflow-wrap:anywhere}.gift-unopened-pack{position:relative;max-width:244px;margin:40px auto 32px;transform:rotate(-4deg)}.gift-unopened-pack .gift-pack{text-align:left}.gift-budget-stamp{position:absolute;right:-45px;bottom:50px;transform:rotate(12deg);width:105px;height:105px;border-radius:50%;background:oklch(93% .061 88);border:1px dashed oklch(73% .07 70);display:flex;flex-direction:column;justify-content:center;align-items:center;box-shadow:0 5px 10px #2018100a}.gift-budget-stamp strong{font-size:29px;font-weight:550;letter-spacing:-1.3px}.gift-budget-stamp>span{font-size:7px;letter-spacing:.04em;margin-top:4px}.gift-open-actions{max-width:430px;margin:auto}.gift-open-actions>.gift-button{min-width:275px}.gift-open-actions>p{font-size:11px;color:var(--g-muted);margin-top:14px;line-height:1.5}.gift-x-signin{margin:26px auto 0;max-width:350px}.gift-x-signin summary{cursor:pointer;font-size:12px;min-height:44px;padding:10px}.gift-x-signin summary .gift-x-mark{margin-right:6px;vertical-align:middle;font-size:15px}.gift-x-signin p{font-size:11px;line-height:1.7;color:var(--g-muted);margin:10px 0 15px}.gift-x-signin .gift-button{font-size:12px;min-height:44px;padding:10px 15px;gap:12px}.gift-auth-state{display:flex;gap:6px;align-items:center;justify-content:center}.gift-revealed{padding-top:45px}.gift-reveal-heading{text-align:center}.gift-reveal-heading .gift-eyebrow{justify-content:center}.gift-reveal-heading h1{font-size:53px;letter-spacing:-2.8px;margin-top:15px}.gift-reveal-heading>p:last-child{font-size:16px;color:var(--g-muted);line-height:1.6;margin-top:19px;overflow-wrap:anywhere}.gift-reveal-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:23px;max-width:1050px;margin:42px auto 0}.gift-holding-card{background:var(--g-surface);border:1px solid var(--g-line);border-radius:8px;padding:24px;animation:gift-reveal .4s cubic-bezier(.22,1,.36,1) both;animation-delay:var(--reveal-delay)}.gift-holding-number{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.04em;color:var(--g-muted);border-bottom:1px solid var(--g-line);padding-bottom:16px;margin-bottom:28px}.gift-holding-card .tl{border-radius:13px}.gift-holding-card h2{font-size:23px;letter-spacing:-.8px;margin-top:20px}.gift-holding-ticker{display:block;font-size:11px;color:var(--g-muted);margin-top:7px}.gift-holding-card>p{font-size:13px;line-height:1.6;color:var(--g-muted);margin-top:19px;min-height:85px}.gift-holding-value{border-top:1px solid var(--g-line);padding-top:20px;margin-top:25px;display:flex;align-items:baseline;justify-content:space-between;gap:10px}.gift-holding-value strong{font-size:27px;letter-spacing:-1px;font-weight:550}.gift-holding-value span{font-size:9px;color:var(--g-muted)}.gift-reveal-note{text-align:center;margin:35px auto 45px;padding:23px;max-width:620px}.gift-reveal-note p{font-size:23px;line-height:1.5;letter-spacing:-.6px;white-space:pre-wrap;overflow-wrap:anywhere}.gift-reveal-note>span{display:block;font-size:12px;color:var(--g-muted);margin-top:13px}.gift-reveal-story{max-width:1050px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;border-top:1px solid var(--g-line);padding-top:31px}.gift-reveal-story h2{font-size:27px;letter-spacing:-.9px;margin-top:15px}.gift-reveal-story>div>p:last-child{font-size:13px;line-height:1.7;color:var(--g-muted);margin-top:15px}.gift-reveal-story .gift-text-link{margin-top:16px}.gift-reveal-bottom{max-width:1050px;margin:35px auto 0;border-top:1px solid var(--g-line);padding-top:28px;display:flex;justify-content:space-between;gap:45px}.gift-reveal-bottom>p{font-size:12px;line-height:1.7;color:var(--g-muted);max-width:330px}.gift-reveal-bottom strong{color:var(--g-ink);font-weight:550}.gift-reveal-bottom>div{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:flex-end;max-width:350px}.gift-reveal-bottom .gift-button{width:100%}.gift-reveal-bottom .gift-text-link{font-size:11px}.gift-invalid{text-align:center;max-width:560px;margin:90px auto;padding:0 22px}.gift-invalid>svg{margin:auto}.gift-invalid h1{font-size:37px;letter-spacing:-1.5px;margin-top:25px}.gift-invalid p{font-size:15px;line-height:1.7;color:var(--g-muted);margin:20px 0 25px}.gift-loading{text-align:center;padding:100px 0;font-size:16px}
+@keyframes gift-reveal{from{opacity:0;transform:translateY(14px) rotate(-2deg)}to{opacity:1;transform:translateY(0) rotate(0)}}
+@media(min-width:1500px){.gift-header,.gift-hero,.gift-collection,.gift-how,.gift-questions,.gift-footer{max-width:1400px}.gift-hero{min-height:710px;padding-top:90px;padding-bottom:90px}.gift-stage-main{left:95px}.gift-stage-back{right:32px}.gift-compose,.gift-recipient-main{max-width:1304px}}
+@media(max-width:1100px){.gift-header{padding:0 30px}.gift-hero{padding:55px 30px;gap:10px;min-height:590px}.gift-hero h1{font-size:63px;letter-spacing:-3.6px}.gift-hero-stage{height:450px}.gift-stage-main{width:230px;left:15px;top:28px}.gift-stage-back{width:205px;right:0;top:77px}.gift-stage-main .gift-art{height:166px}.gift-stage-back .gift-art{height:145px}.gift-stage-back .gift-pack-title{font-size:28px}.gift-sticker{right:0;bottom:37px;padding:13px}.gift-stage-caption{left:10px}.gift-strip{gap:35px}.gift-collection,.gift-how,.gift-questions{padding-left:30px;padding-right:30px}.gift-compose{margin:0 30px;padding:35px;gap:40px}.gift-pack-grid{gap:20px}.gift-choice-art{height:330px}.gift-choice-art>.gift-pack{transform:rotate(-5deg) scale(.8)}.gift-choice--green .gift-choice-art>.gift-pack{transform:rotate(4deg) scale(.8)}.gift-choice--red .gift-choice-art>.gift-pack{transform:rotate(-3deg) scale(.8)}.gift-logo-row>span:last-child{font-size:9px}.gift-fields-two{grid-template-columns:1fr}.gift-fields-two .gift-field:last-child{margin-top:15px}.gift-amounts button{padding:10px 8px}.gift-custom-amount{width:70px}.gift-recipient-main{padding-left:30px;padding-right:30px}.gift-footer{padding-left:30px;padding-right:30px}}
+@media(max-width:900px){.gift-header{height:75px;padding:0 22px}.gift-header nav{gap:18px}.gift-header nav>.gift-nav-discover{display:none}.gift-wordmark{font-size:25px}.gift-header .gift-wordmark>span{display:none}.gift-header nav>a:first-child{font-size:12px}.gift-header .gift-button--small{font-size:11px;padding:10px 12px;gap:8px}.gift-header .gift-button--small svg{display:none}.gift-hero{grid-template-columns:1fr;padding:42px 24px 28px;gap:0}.gift-hero h1{font-size:58px;letter-spacing:-3.5px}.gift-hero-description{font-size:15px;margin-top:22px!important;max-width:350px}.gift-desktop-break{display:none}.gift-hero-actions{gap:25px;margin-top:24px}.gift-hero-actions .gift-button{padding:15px 18px;font-size:13px}.gift-hero-actions .gift-text-link{font-size:12px}.gift-preview-label{font-size:9px;margin-top:18px!important}.gift-hero-stage{width:100%;max-width:400px;justify-self:center;margin-top:40px;height:375px}.gift-stage-main{width:205px;left:35px;top:0}.gift-stage-main .gift-pack-title{font-size:27px;margin-top:19px}.gift-stage-main .gift-pack-body{padding:17px}.gift-stage-main .gift-art{height:153px}.gift-stage-back{width:185px;top:35px;right:22px}.gift-stage-back .gift-pack-body{padding:16px}.gift-stage-back .gift-pack-title{font-size:25px;margin-top:19px}.gift-stage-back .gift-art{height:126px}.gift-sticker{font-size:10px;bottom:22px;right:2px;gap:8px;padding:11px 13px}.gift-sticker>svg{width:14px}.gift-stage-caption{bottom:0;left:17px;font-size:9px}.gift-orbit-label{display:none}.gift-strip{padding:17px 20px;gap:19px;font-size:9px;justify-content:space-between}.gift-strip>span{gap:5px}.gift-strip>span:nth-child(2){display:none}.gift-strip svg{width:15px}.gift-strip .gift-x-mark{font-size:15px}.gift-collection,.gift-how,.gift-questions{padding:46px 24px}.gift-section-head{display:block;margin-bottom:27px}.gift-section-head h2{font-size:29px;letter-spacing:-1.2px;margin-top:10px;max-width:300px}.gift-section-head>p{font-size:13px;margin-top:14px}.gift-section-head>p br{display:none}.gift-pack-grid{grid-template-columns:1fr;gap:30px}.gift-choice{display:grid;grid-template-columns:145px 1fr;gap:20px}.gift-choice-art{height:235px;overflow:hidden}.gift-choice-art>.gift-pack{min-width:190px;transform:rotate(-5deg) scale(.6)}.gift-choice--green .gift-choice-art>.gift-pack{transform:rotate(4deg) scale(.6)}.gift-choice--red .gift-choice-art>.gift-pack{transform:rotate(-3deg) scale(.6)}@media (hover: hover) { .gift-choice-art:hover>.gift-pack{transform:rotate(0) scale(.63)} }.gift-choice-art .gift-art{height:135px}.gift-choice-art .gift-pack-title{font-size:27px}.gift-choice-art .gift-pack-top{font-size:7px}.gift-choice-arrow{width:27px;height:27px;right:9px;bottom:9px}.gift-choice-arrow svg{width:15px}.gift-choice-info{align-self:center;padding:0}.gift-choice-info h3{font-size:21px;letter-spacing:-.65px}.gift-choice-info>p{font-size:12px;margin-top:8px}.gift-logo-row{flex-wrap:wrap;margin-top:14px}.gift-logo-row>span:last-child{flex-basis:100%;margin-left:0;margin-top:2px;font-size:8px}.gift-choice-info>.gift-text-link{font-size:11px;margin-top:5px}.gift-compose{margin:5px 14px 0;padding:28px 20px;grid-template-columns:1fr;gap:30px;border-radius:6px}.gift-compose-visual{padding:0}.gift-compose-visual>.gift-eyebrow{font-size:9px}.gift-compose-pack{width:140px;margin:23px 0 0;position:absolute;left:4px;top:28px}.gift-compose-pack .gift-pack-body{padding:11px}.gift-compose-pack .gift-pack-top{font-size:5px}.gift-compose-pack .gift-pack-top>span:first-child{font-size:13px}.gift-compose-pack .gift-pack-top svg{width:13px;height:13px}.gift-compose-pack .gift-pack-title{font-size:19px;letter-spacing:-.7px;margin-top:15px}.gift-compose-pack .gift-pack-title>span{font-size:7px;margin-top:8px}.gift-compose-pack .gift-art{height:96px}.gift-compose-pack .gift-pack-bottom{font-size:4.5px;padding-top:6px;gap:4px}.gift-compose-pack .gift-pack-seal{height:11px}.gift-note-preview{max-width:none;margin:63px 0 5px 85px;width:calc(100% - 85px);min-height:180px;padding:21px 18px}.gift-note-preview>p{font-size:16px;margin:12px 0;max-height:150px;overflow:auto}.gift-note-preview>span{font-size:9px}.gift-step{gap:13px;font-size:7px;margin:10px 0 24px}.gift-compose h2{font-size:34px;letter-spacing:-1.5px}.gift-form-intro{font-size:13px;margin-top:15px!important}.gift-field :is(input,select,textarea){font-size:16px}.gift-fields-two{grid-template-columns:1fr 1fr;gap:12px}.gift-fields-two .gift-field:last-child{margin-top:22px}.gift-amounts>div{gap:6px}.gift-amounts button{font-size:12px;padding:10px 8px}.gift-custom-amount{width:66px}.gift-custom-amount input{font-size:16px}.gift-pill{margin-top:15px;font-size:9px}.gift-how ol{grid-template-columns:1fr;gap:24px}.gift-how li{padding-top:20px;display:grid;grid-template-columns:28px 1fr;gap:0 13px}.gift-how h3{margin-top:0;font-size:21px}.gift-how li>span{padding-top:5px}.gift-how li>p{grid-column:2;max-width:none;font-size:13px;margin-top:10px}.gift-questions{grid-template-columns:1fr;gap:25px;padding-top:5px;padding-bottom:45px}.gift-questions h2{font-size:27px;max-width:280px}.gift-questions summary{font-size:13px;min-height:48px}.gift-questions details:first-child summary{padding-top:14px}.gift-footer{padding:28px 24px 35px;grid-template-columns:1fr;gap:23px}.gift-footer p{font-size:10px}.gift-footer-links{flex-direction:row;gap:22px}.gift-recipient-main{padding:23px 22px 45px}.gift-preview-banner{font-size:9px;gap:6px}.gift-preview-banner>span:last-child{margin-left:3px;padding-left:9px}.gift-unopened{padding-top:30px}.gift-recipient-intro>.gift-eyebrow{font-size:8px}.gift-recipient-intro h1{font-size:32px;letter-spacing:-1.5px}.gift-recipient-intro>p:last-child{font-size:14px;max-width:300px}.gift-unopened-pack{max-width:211px;margin-top:32px}.gift-unopened-pack .gift-pack-title{font-size:28px}.gift-unopened-pack .gift-pack-body{padding:17px}.gift-unopened-pack .gift-art{height:157px}.gift-budget-stamp{width:86px;height:86px;right:-32px;bottom:40px}.gift-budget-stamp strong{font-size:25px}.gift-budget-stamp>span{font-size:6px}.gift-open-actions>.gift-button{width:100%;min-width:0}.gift-open-actions>p{font-size:10px}.gift-reveal-heading h1{font-size:39px;letter-spacing:-2px}.gift-reveal-heading>p:last-child{font-size:14px}.gift-reveal-cards{grid-template-columns:1fr;gap:15px;margin-top:28px}.gift-holding-card{padding:23px}.gift-holding-card>p{min-height:0}.gift-holding-number{margin-bottom:20px}.gift-holding-value{margin-top:18px}.gift-reveal-note{padding:10px;margin:28px auto}.gift-reveal-note p{font-size:21px}.gift-reveal-story{grid-template-columns:1fr;gap:26px;padding-top:26px}.gift-reveal-story h2{font-size:25px}.gift-reveal-bottom{flex-direction:column;gap:23px;margin-top:25px}.gift-reveal-bottom>div{max-width:none}.gift-invalid{margin:60px auto;padding:0}.gift-invalid h1{font-size:32px}}
+@media(max-width:374px){.gift-hero h1{font-size:52px;letter-spacing:-3px}.gift-choice{grid-template-columns:128px 1fr;gap:15px}.gift-choice-info h3{font-size:19px}.gift-stage-main{left:15px}.gift-stage-back{right:20px}.gift-fields-two{grid-template-columns:1fr}.gift-hero-actions{gap:20px}.gift-custom-amount{width:57px}}
+@media(prefers-reduced-motion:reduce){.gift-site *,.gift-site *::before,.gift-site *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}@media (hover: hover) { .gift-choice-art:hover>.gift-pack{transform:none} }}
+
+/* ------------------------------------------------------------------------------------------------
+ * Funded gifts · 23 September 2026
+ *
+ * The live send flow, the funded invitation, and what a recipient sees after opening. Same paper,
+ * ink and vermilion as the rest of this file. Two deliberate differences from the preview:
+ *
+ *   - A funded invitation carries a sealed, ink-on-paper "A real gift" banner, where the preview has
+ *     its muted "Unfunded gift preview" line. The two must never be mistaken for each other.
+ *   - Every outcome panel says what state the money is in, and its tone is carried by a left rule
+ *     *and* by words — never by colour alone.
+ * --------------------------------------------------------------------------------------------- */
+
+.gift-spin { animation: gift-spin 900ms linear infinite; }
+@keyframes gift-spin { to { transform: rotate(360deg); } }
+
+.gift-send { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--g-line); }
+.gift-send-title { margin: 0 0 10px; font-size: 20px; line-height: 1.2; letter-spacing: -0.02em; }
+.gift-send-title:focus { outline: none; }
+.gift-send-title:focus-visible { outline: 2px solid var(--g-brand-ink); outline-offset: 4px; border-radius: 2px; }
+.gift-send-quiet { display: flex; align-items: center; gap: 8px; margin: 8px 0 0; font-size: 13px; line-height: 1.55; color: var(--g-muted); }
+.gift-send-panel { padding: 18px 18px 18px 20px; border: 1px solid var(--g-line); border-left: 3px solid var(--g-ink); border-radius: 6px; background: var(--g-surface); }
+.gift-send-panel p { margin: 0 0 10px; font-size: 14px; line-height: 1.6; color: var(--g-ink); }
+.gift-send-panel p svg { vertical-align: -2px; margin-right: 4px; }
+.gift-send-panel ul { margin: 6px 0 12px; padding-left: 18px; }
+.gift-send-panel li { margin: 0 0 6px; font-size: 14px; line-height: 1.55; }
+.gift-send-panel--gated { border-left-color: var(--g-muted); background: oklch(95% .016 82); }
+.gift-send-panel--problem { border-left-color: var(--g-danger); }
+.gift-send-panel--pending { border-left-color: oklch(62% .12 75); }
+.gift-send-panel--done { border-left-color: oklch(52% .11 150); }
+.gift-send-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-top: 14px; }
+.gift-send-actions .gift-text-link { margin-top: 0; }
+
+.gift-account { display: flex; align-items: center; gap: 14px; margin: 6px 0 12px; padding: 12px; border: 1px solid var(--g-line); border-radius: 8px; background: var(--g-paper); }
+.gift-account img, .gift-account-initial { width: 48px; height: 48px; border-radius: 50%; flex: none; }
+.gift-account-initial { display: grid; place-items: center; background: var(--g-ink); color: var(--g-surface); font-weight: 600; font-size: 18px; }
+.gift-account div { display: grid; gap: 2px; }
+.gift-account strong { font-size: 15px; }
+.gift-account span { font-size: 13px; color: var(--g-muted); }
+
+.gift-terms { margin: 4px 0 14px; display: grid; gap: 1px; background: var(--g-line); border: 1px solid var(--g-line); border-radius: 6px; overflow: hidden; }
+.gift-terms > div { display: flex; justify-content: space-between; gap: 16px; padding: 11px 13px; background: var(--g-surface); }
+.gift-terms dt { font-size: 13px; color: var(--g-muted); }
+.gift-terms dd { margin: 0; font-size: 13px; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.gift-terms-list li { font-size: 13.5px; }
+.gift-check { display: flex; align-items: center; gap: 10px; min-height: 44px; font-size: 14px; font-weight: 500; cursor: pointer; }
+.gift-check input { width: 20px; height: 20px; accent-color: var(--g-ink); }
+.gift-button:disabled { opacity: .45; cursor: not-allowed; }
+
+.gift-invite-link { margin: 10px 0 0 !important; padding: 10px 12px; border: 1px dashed var(--g-line); border-radius: 6px; background: var(--g-paper); overflow-wrap: anywhere; }
+.gift-invite-link code { font-size: 12.5px; }
+
+/* The funded invitation's banner: sealed ink, never the preview's muted dot. */
+.gift-real-banner { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 10px; padding: 10px 16px; background: var(--g-ink); color: var(--g-surface); font-size: 12px; font-weight: 600; letter-spacing: .02em; }
+.gift-real-banner span { font-weight: 400; opacity: .78; }
+
+.gift-inv-title { margin: 0 0 10px; font-size: 22px; line-height: 1.2; letter-spacing: -0.02em; }
+.gift-inv-title:focus { outline: none; }
+.gift-inv-title:focus-visible { outline: 2px solid var(--g-brand-ink); outline-offset: 4px; }
+.gift-inv-note { margin: 18px 0 0; padding: 18px 20px; border-left: 3px solid var(--g-brand); background: var(--g-surface); font-size: 19px; line-height: 1.5; letter-spacing: -0.01em; }
+.gift-inv-note cite { display: block; margin-top: 10px; font-size: 13px; font-style: normal; color: var(--g-muted); }
+.gift-inv-note cite::before { content: "— "; }
+.gift-inv-expired { margin-top: 16px; font-size: 14px; line-height: 1.6; color: var(--g-muted); }
+.gift-inv-before { margin-bottom: 18px; }
+.gift-inv-before ul { margin: 6px 0 0; padding-left: 18px; }
+.gift-inv-before li { margin: 0 0 7px; font-size: 13.5px; line-height: 1.55; color: var(--g-ink); }
+.gift-inv-gated { font-size: 14px; line-height: 1.6; color: var(--g-muted); }
+.gift-inv-story { max-width: 1120px; margin: 0 auto; }
+
+/* Opened: the preview's reveal, over confirmed holdings. */
+.gift-inv-opened .gift-reveal-heading .gift-inv-title { font-size: 53px; letter-spacing: -2.8px; line-height: 1.05; margin-top: 15px; }
+.gift-inv-opened .gift-reveal-cards--1 { grid-template-columns: minmax(0, 380px); justify-content: center; }
+.gift-inv-opened .gift-reveal-cards--2 { grid-template-columns: repeat(2, minmax(0, 380px)); justify-content: center; }
+.gift-inv-opened .gift-holding-card h3 { font-size: 23px; letter-spacing: -.8px; margin-top: 20px; }
+.gift-inv-opened .gift-holding-number { align-items: center; }
+.gift-inv-opened .gift-holding-number .gift-text-link { font-size: 11px; min-height: 0; }
+.gift-inv-opened .gift-holding-value strong { font-variant-numeric: tabular-nums; }
+.gift-inv-opened .gift-reveal-bottom > p { max-width: 520px; }
+/* Without a header or footer the page must still fill the window, or the app's dark body shows below. */
+.gift-recipient-site--bare { min-height: 100dvh; background: var(--g-paper); }
+.gift-recipient-site--bare .gift-recipient-main { padding-top: 48px; }
+
+/* The opened pack: seal gone, what came out of it rising from the top, fanned like a hand. */
+.gift-opened-hero { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 72px; align-items: center; max-width: 1050px; margin: 0 auto; }
+.gift-opened-hero .gift-reveal-heading { text-align: left; }
+.gift-opened-hero .gift-reveal-heading > p { margin-top: 14px; }
+.gift-opened-hero .gift-reveal-heading .gift-eyebrow { justify-content: flex-start; }
+.gift-opened-art { position: relative; width: 250px; justify-self: center; padding-top: 104px; display: grid; justify-items: center; gap: 22px; }
+.gift-opened-pack { position: relative; z-index: 1; width: 100%; transform: rotate(-3deg); box-shadow: 0 30px 50px -24px oklch(25% .03 50 / .5); animation: gift-sealed-bob 5s ease-in-out infinite; }
+.gift-opened-pack .gift-pack-seal { opacity: 0; }
+.gift-opened-fan { position: absolute; top: 0; left: 50%; width: 0; height: 140px; z-index: 0; }
+.gift-opened-card {
+  position: absolute; left: -45px; top: 8px; width: 90px; height: 124px;
+  display: grid; place-items: center; align-content: center; gap: 10px;
+  background: var(--g-surface); border: 1px solid var(--g-line); border-radius: 10px;
+  box-shadow: 0 12px 24px -14px oklch(25% .03 50 / .45);
+  transform: translateX(var(--x)) rotate(var(--r)); transform-origin: 50% 130%;
+  animation: gift-card-rise 720ms cubic-bezier(.23, 1, .32, 1) both; animation-delay: var(--d);
+}
+.gift-opened-card b { font-size: 11px; font-weight: 600; letter-spacing: .02em; }
+@keyframes gift-card-rise { from { transform: translate(var(--x), 96px) rotate(0deg); opacity: 0; } }
+.gift-opened-replay { font-size: 13px; }
+.gift-opened-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 26px; margin-top: 28px; }
+.gift-inv-opened > .gift-reveal-cards { margin-top: 64px; }
+@media (max-width: 900px) {
+  .gift-recipient-site--bare .gift-recipient-main { padding-top: 28px; }
+  .gift-opened-hero { grid-template-columns: 1fr; gap: 28px; }
+  .gift-opened-hero .gift-reveal-heading { text-align: center; }
+  .gift-opened-hero .gift-reveal-heading .gift-eyebrow { justify-content: center; }
+  .gift-opened-art { width: 148px; padding-top: 70px; gap: 14px; }
+  .gift-opened-pack .gift-pack-body { padding: 13px; }
+  .gift-opened-pack .gift-pack-title { font-size: 21px; margin-top: 14px; }
+  .gift-opened-pack .gift-art { height: 108px; }
+  .gift-opened-fan { height: 100px; transform: scale(.8); transform-origin: 50% 100%; }
+  .gift-opened-card { width: 62px; height: 86px; left: -31px; gap: 6px; border-radius: 8px; }
+  .gift-opened-card .tl { width: 28px !important; height: 28px !important; }
+  .gift-opened-card b { font-size: 9px; }
+  .gift-opened-replay { font-size: 12px; }
+  .gift-opened-actions { justify-content: center; }
+  .gift-opened-actions .gift-button { width: 100%; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) { .gift-opened-pack, .gift-opened-card { animation: none; } }
+.gift-inv-opened ~ .gift-recovery, .gift-inv-opened .gift-exit { max-width: 1050px; margin-inline: auto; }
+@media (max-width: 900px) {
+  .gift-inv-opened .gift-reveal-heading .gift-inv-title { font-size: 39px; letter-spacing: -2px; }
+  .gift-inv-opened .gift-reveal-cards--1, .gift-inv-opened .gift-reveal-cards--2 { grid-template-columns: 1fr; }
+  .gift-inv-opened .gift-holding-card { padding: 18px; }
+  .gift-inv-opened .gift-holding-number { margin-bottom: 14px; padding-bottom: 12px; }
+  .gift-inv-opened .gift-holding-card .tl { width: 44px !important; height: 44px !important; }
+  .gift-inv-opened .gift-holding-card h3 { margin-top: 12px; font-size: 21px; }
+  .gift-inv-opened .gift-holding-card > p { margin-top: 12px; }
+}
+.gift-exit { display: grid; gap: 14px; padding: 18px; border: 1px solid var(--g-line); border-radius: 6px; }
+.gift-exit > div { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: start; }
+.gift-exit p { margin: 0; font-size: 13px; line-height: 1.55; color: var(--g-muted); }
+.gift-exit p strong { color: var(--g-ink); }
+.gift-exit .gift-button { min-width: 168px; justify-content: center; padding: 12px 16px; }
+
+.gift-recovery { max-width: 1120px; margin: 34px auto 0; padding: 22px; border: 1px solid var(--g-line); border-radius: 8px; background: var(--g-surface); }
+.gift-recovery h2 { margin: 0 0 8px; font-size: 20px; letter-spacing: -0.02em; }
+.gift-recovery > p { margin: 0 0 14px; font-size: 14px; line-height: 1.6; color: var(--g-muted); max-width: 60ch; }
+.gift-recovery-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.gift-recovery-list li { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; min-height: 44px; font-size: 14px; }
+.gift-recovery-list .gift-button { padding: 11px 15px; gap: 8px; }
+.gift-recovery-list .gift-text-link { margin-top: 0; }
+
+@media (max-width: 600px) {
+  .gift-exit > div { grid-template-columns: 1fr; }
+  .gift-exit .gift-button { width: 100%; }
+  .gift-terms > div { flex-direction: column; gap: 2px; }
+  .gift-terms dd { text-align: left; }
+  .gift-inv-note { font-size: 17px; padding: 14px 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gift-spin { animation: none; }
+}
+
+/* A list reads down its left edge. The actions column centres its buttons, not this. */
+.gift-inv-before { width: min(440px, 100%); margin-inline: auto; text-align: left; }
+.gift-open-actions .gift-send-panel { width: min(520px, 100%); margin-inline: auto; text-align: left; }
+
+/* 44px at every width, not only on phones: a trackpad user with a tremor is also a user. */
+.gift-custom-amount input { min-height: 44px; }
+.gift-questions summary { min-height: 44px; display: flex; align-items: center; }
+
+/* ------------------------------------------------------------------------------------------------
+ * Tearing a pack open · see PackRip.tsx
+ *
+ * One perspective, one preserve-3d layer (.rip-tilt), two clipped copies of the pack. The pointer
+ * writes --mx/--my on the tilt layer; the drag writes --p (0..1) and --dir (±1) on the root. Every
+ * moving part is transform or opacity. Sequence and timings:
+ *
+ *   tearing  the strip flies up, toward you and off (440ms)      -> transitionend -> burst
+ *   burst    the body compresses and springs, light spills (380ms) -> animationend -> torn
+ *   torn     the empty pack sinks back into the page (460ms)      -> animationend -> contents
+ *
+ * About 1.3 seconds from release to contents. Once per gift, so it may be a little theatrical.
+ * --------------------------------------------------------------------------------------------- */
+
+.rip {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: grid; justify-items: center; gap: 14px;
+}
+
+.rip-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: min(280px, 82vw); }
+.rip-hint { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 10.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--g-muted); }
+.rip-hint svg { color: var(--g-brand-ink); animation: rip-nudge 1.6s var(--ease-out) 1s 3 both; }
+@keyframes rip-nudge { 0%, 100% { transform: translateX(0); } 40% { transform: translateX(7px); } }
+.rip-sound {
+  display: grid; place-items: center; width: 44px; height: 44px; margin-right: -10px;
+  border: 0; border-radius: 50%; background: transparent; color: var(--g-muted);
+  transition: color 160ms ease, background-color 160ms ease, transform 160ms var(--ease-out);
+}@media (hover: hover) { .rip-sound:hover { color: var(--g-ink); background: oklch(from var(--g-ink) l c h / .06); } }
+.rip-sound:active { transform: scale(.94); }
+.rip-sound[aria-pressed="true"] { color: var(--g-brand-ink); }
+
+/* The scene: perspective lives here, the soft floor shadow too (a filter would flatten the 3D). */
+.rip-scene {
+  position: relative;
+  width: min(260px, 74vw);
+  perspective: 900px;
+  touch-action: pan-y;               /* sideways drags tear; vertical ones still scroll the page */
+  user-select: none; -webkit-user-select: none;
+  cursor: grab;
+  padding: 18px 0 26px;
+}
+.rip--dragging .rip-scene { cursor: grabbing; }
+.rip-scene::after {
+  content: ""; position: absolute; left: 12%; right: 12%; bottom: 6px; height: 26px; z-index: -1;
+  border-radius: 50%; background: radial-gradient(closest-side, oklch(25% .03 60 / .28), transparent);
+  transition: transform 500ms var(--ease-out), opacity 400ms ease;
+}
+.rip--torn .rip-scene::after { transform: scale(.7); opacity: 0; }
+
+.rip-tilt {
+  --mx: .5; --my: .5;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateX(calc((.5 - var(--my)) * 22deg)) rotateY(calc((var(--mx) - .5) * 26deg)) rotateZ(-4deg);
+  transition: transform 600ms var(--ease-out);
+}@media (hover: hover) { .rip-scene:hover .rip-tilt { transition-duration: 160ms; } }
+.rip--dragging .rip-tilt { transform: rotateX(8deg) rotateY(calc(var(--dir) * var(--p) * -8deg)) rotateZ(-4deg); transition-duration: 300ms; }
+/* Touch screens have no hover: the pack floats gently instead, so it still reads as an object. */
+@media (hover: none) {
+  .rip--sealed .rip-tilt { animation: rip-float 5.5s ease-in-out infinite; }
+}
+@keyframes rip-float {
+  0%, 100% { transform: rotateX(4deg) rotateY(-9deg) rotateZ(-4deg) translateY(0); }
+  50% { transform: rotateX(-3deg) rotateY(9deg) rotateZ(-3deg) translateY(-6px); }
+}
+
+.rip-scene .gift-pack { width: 100%; transform: none; box-shadow: 0 1px 0 oklch(100% 0 0 / .5) inset, 0 18px 34px -18px oklch(25% .03 50 / .45); }
+.rip-body, .rip-strip, .rip-extras { will-change: transform; backface-visibility: hidden; }
+.rip-body { position: relative; transform-style: preserve-3d; }
+.rip-strip, .rip-extras { position: absolute; inset: 0; pointer-events: none; }
+
+/* Holographic foil: a rainbow that slides under the light as the pack turns. */
+.rip-foil {
+  position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+  mix-blend-mode: color-dodge; opacity: .18;
+  background:
+    radial-gradient(farthest-corner circle at calc(var(--mx, .5) * 100%) calc(var(--my, .5) * 100%), oklch(100% 0 0 / .55), transparent 55%),
+    repeating-linear-gradient(115deg,
+      oklch(80% .14 20) 0%, oklch(86% .14 90) 8%, oklch(84% .13 160) 16%,
+      oklch(80% .12 240) 24%, oklch(80% .14 310) 32%, oklch(80% .14 20) 40%);
+  background-size: 100% 100%, 300% 300%;
+  background-position: 0 0, calc(var(--mx, .5) * 100%) calc(var(--my, .5) * 100%);
+  transition: opacity 300ms ease;
+}
+.rip--dragging .rip-foil { opacity: .38; }@media (hover: hover) { .rip-scene:hover .rip-foil { opacity: .38; } }
+@media (hover: none) { .rip--sealed .rip-foil { animation: rip-foil-drift 5.5s ease-in-out infinite; opacity: .3; } }
+@keyframes rip-foil-drift { 0%, 100% { background-position: 0 0, 10% 20%; } 50% { background-position: 0 0, 90% 80%; } }
+
+/* One sweep of light on arrival, to invite the hand. */
+.rip-sheen {
+  position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen;
+  background: linear-gradient(105deg, transparent 38%, oklch(100% 0 0 / .42) 50%, transparent 62%);
+  transform: translateX(-110%);
+  animation: rip-shine 1.4s var(--ease-out) .4s both;
+}
+@keyframes rip-shine { from { transform: translateX(-110%); } to { transform: translateX(110%); } }
+
+/* Drag: the strip curls up and toward you from the end being pulled, pivoting on the far corner. */
+.rip-strip {
+  transform-origin: calc(50% - var(--dir) * 50%) 100%;
+  transform:
+    translate3d(calc(var(--p) * var(--dir) * 14px), calc(var(--p) * -26px), calc(var(--p) * 48px))
+    rotateX(calc(var(--p) * 22deg))
+    rotateY(calc(var(--p) * var(--dir) * -18deg))
+    rotateZ(calc(var(--p) * var(--dir) * 24deg));
+}
+.rip--sealed .rip-strip { transition: transform 460ms var(--ease-spring); }   /* snaps back if let go early */
+.rip--tearing .rip-strip, .rip--burst .rip-strip, .rip--torn .rip-strip {
+  transition: transform 440ms var(--ease-out), opacity 260ms ease 180ms;
+  transform: translate3d(calc(var(--dir) * 90%), -190%, 160px) rotateX(78deg) rotateZ(calc(var(--dir) * 48deg));
+  opacity: 0;
+}
+
+/* The body takes the strain, then gives up its contents. */
+.rip-body, .rip-extras { transform: translate3d(0, calc(var(--p) * 3px), 0) rotateZ(calc(var(--p) * var(--dir) * -1.2deg)); }
+.rip--sealed .rip-body, .rip--sealed .rip-extras { transition: transform 460ms var(--ease-spring); }
+.rip--burst .rip-body, .rip--burst .rip-extras { animation: rip-pop 380ms var(--ease-out) both; }
+@keyframes rip-pop {
+  0%   { transform: translate3d(0, 3px, 0) scale(1, 1); }
+  30%  { transform: translate3d(0, 6px, -10px) scale(1.04, .95); }
+  65%  { transform: translate3d(0, -8px, 30px) scale(.98, 1.04); }
+  100% { transform: translate3d(0, 0, 18px) scale(1); }
+}
+.rip--torn .rip-body, .rip--torn .rip-extras { animation: rip-sink 460ms var(--ease-out) forwards; }
+@keyframes rip-sink {
+  from { transform: translate3d(0, 0, 18px); opacity: 1; }
+  to   { transform: translate3d(0, 60px, -160px) rotateX(24deg) rotateZ(calc(var(--dir) * -4deg)); opacity: 0; }
+}
+
+/* Light spilling out of the opening. */
+.rip-light {
+  position: absolute; left: -20%; right: -20%; top: -10px; height: 120px; pointer-events: none;
+  background: radial-gradient(ellipse 50% 60% at 50% 40%, oklch(97% .08 85 / .95), oklch(85% .16 60 / .45) 45%, transparent 72%);
+  mix-blend-mode: screen; opacity: 0; transform: translateZ(40px) scale(.4);
+}
+.rip--burst .rip-light { animation: rip-flare 620ms var(--ease-out) both; }
+@keyframes rip-flare {
+  0%   { opacity: 0; transform: translateZ(40px) scale(.4); }
+  35%  { opacity: 1; transform: translateZ(40px) scale(1.1); }
+  100% { opacity: 0; transform: translateZ(40px) scale(1.5) translateY(-20px); }
+}
+
+.rip .gift-budget-stamp { position: absolute; }
+.rip-button { min-width: 220px; transition: opacity 200ms ease, transform 160ms var(--ease-out); }
+.rip-button:active:not(:disabled) { transform: scale(.97); }
+.rip--tearing .rip-button, .rip--burst .rip-button, .rip--torn .rip-button { opacity: 0; }
+.rip--tearing .rip-top, .rip--burst .rip-top, .rip--torn .rip-top { opacity: 0; transition: opacity 200ms ease; }
+.rip-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+.gift-unopened-rip { margin: 26px auto 18px; }
+.gift-unopened-rip .gift-budget-stamp { right: -18px; bottom: 58px; transform: rotate(12deg) translateZ(24px); }
+
+/* Contents: cards fly up out of the pack and turn to face you, one after another. */
+.gift-reveal-cards { perspective: 1400px; }
+.gift-reveal-cards .gift-holding-card {
+  transform-origin: 50% 100%;
+  animation: gift-card-out 720ms var(--ease-card, cubic-bezier(0.23, 1, 0.32, 1)) both;
+  animation-delay: calc(var(--reveal-delay, 0ms) * 1.5);
+  backface-visibility: hidden;
+}
+@keyframes gift-card-out {
+  0%   { opacity: 0; transform: translate3d(0, 90px, -220px) rotateX(-58deg) rotateY(-32deg) scale(.72); }
+  45%  { opacity: 1; }
+  70%  { transform: translate3d(0, -10px, 20px) rotateX(6deg) rotateY(4deg) scale(1.02); }
+  100% { opacity: 1; transform: none; }
+}
+.gift-inv-opened .gift-allocation { perspective: 900px; }
+.gift-inv-opened .gift-allocation li { animation: gift-row-out 560ms cubic-bezier(0.23, 1, 0.32, 1) both; transform-origin: 50% 0; }
+.gift-inv-opened .gift-allocation li:nth-child(2) { animation-delay: 110ms; }
+.gift-inv-opened .gift-allocation li:nth-child(3) { animation-delay: 220ms; }
+.gift-inv-opened .gift-allocation li:nth-child(n+4) { animation-delay: 330ms; }
+@keyframes gift-row-out { from { opacity: 0; transform: translate3d(0, 24px, -60px) rotateX(-40deg); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .rip-hint svg, .rip-sheen, .rip-tilt, .rip-foil, .rip-light,
+  .gift-reveal-cards .gift-holding-card, .gift-inv-opened .gift-allocation li { animation: none !important; }
+  .rip-tilt { transform: rotateZ(-4deg) !important; }
+  .rip-strip, .rip-body, .rip-extras, .rip-tilt { transition: none !important; }
+}
+
+/* ------------------------------------------------------------------------------------------------
+ * Brand orange, restored · 23 September 2026
+ *
+ * The gift surface drifted to --g-red: oklch(49% .17 35), a dark brick red that read as "champagne
+ * red" beside the brand's vermilion-orange. One orange cannot do every job on this paper, so there are
+ * three, each measured against --g-paper:
+ *
+ *   --g-brand          oklch(70% .19 34)  #fe6847  2.65:1  marks, art, confetti — never text
+ *   --g-brand-display  oklch(62% .19 36)  #e04e24  3.65:1  large display type (3:1 large-text rule)
+ *   --g-brand-ink      oklch(56% .18 38)  #c74007  4.63:1  small text, links, focus rings (4.5:1)
+ *   --g-danger         oklch(52% .2 27)            errors only, so a problem never reads as branding
+ * --------------------------------------------------------------------------------------------- */
+
+/* Headings that receive focus programmatically (after a reveal, for screen readers) draw no ring. */
+.gift-site [tabindex="-1"]:focus { outline: none; }
+.gift-preview-label--live .gift-preview-dot { background: oklch(62% .15 150); box-shadow: 0 0 0 3px oklch(62% .15 150 / .18); }
+
+/* The pack is absolutely placed beside the note on narrow screens; the note must be tall enough that the step row clears it. */
+@media (max-width: 900px) { .gift-note-preview { min-height: 204px; } }
+
+/* ------------------------------------------------------------------------------------------------
+ * The tear stage · see PackStage.tsx and pack-scene.ts
+ *
+ * Full screen, nothing but the pack. Dark and warm under one soft spotlight, because foil only looks
+ * like foil when there is something for it to reflect against, and confetti reads best on dark.
+ * --------------------------------------------------------------------------------------------- */
+.gift-stage {
+  position: fixed; inset: 0; z-index: 80; min-height: 0;
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto;
+  padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  background:
+    radial-gradient(60% 50% at 50% 44%, oklch(34% .035 60), transparent 70%),
+    radial-gradient(120% 90% at 50% 40%, oklch(22% .02 55), oklch(13% .012 50));
+  color: oklch(93% .02 80);
+  overscroll-behavior: contain;
+  transition: opacity 600ms cubic-bezier(0.23, 1, 0.32, 1);
+  animation: gift-stage-in 420ms cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+@keyframes gift-stage-in { from { opacity: 0; } }
+.gift-stage--leaving { opacity: 0; pointer-events: none; }
+.gift-stage-top { display: flex; align-items: center; justify-content: space-between; min-height: 44px; }
+.gift-stage-from { font-size: 11px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: oklch(80% .03 75); }
+.gift-stage-sound {
+  display: grid; place-items: center; width: 44px; height: 44px; margin-right: -8px;
+  border: 0; border-radius: 50%; background: transparent; color: oklch(78% .02 75);
+  transition: color 160ms ease, background-color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}@media (hover: hover) { .gift-stage-sound:hover { color: oklch(96% .01 80); background: oklch(100% 0 0 / .08); } }
+.gift-stage-sound:active { transform: scale(.94); }
+.gift-stage-scene { position: relative; min-height: 0; touch-action: none; }
+.gift-stage-scene canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; display: block; cursor: grab; }
+.gift-stage[data-phase="dragging"] .gift-stage-scene canvas { cursor: grabbing; }
+.gift-stage-placeholder { position: absolute; inset: 0; display: grid; place-items: center; }
+.gift-stage-placeholder .gift-pack { width: min(240px, 56vw, 34svh); transform: rotate(-3deg); box-shadow: 0 30px 60px -20px #000a; }
+.gift-stage-bottom { display: grid; justify-items: center; gap: 6px; }
+.gift-stage-hint { font-size: 14px; letter-spacing: -.1px; color: oklch(86% .025 78); min-height: 20px; transition: opacity 200ms ease; }
+.gift-stage[data-phase="tearing"] .gift-stage-bottom, .gift-stage[data-phase="burst"] .gift-stage-bottom, .gift-stage[data-phase="torn"] .gift-stage-bottom { opacity: 0; transition: opacity 200ms ease; }
+.gift-stage-tear {
+  min-height: 44px; padding: 10px 16px; border: 0; background: transparent;
+  font-size: 12px; color: oklch(72% .02 75); text-decoration: underline; text-underline-offset: 4px;
+}@media (hover: hover) { .gift-stage-tear:hover:not(:disabled) { color: oklch(96% .01 80); } }
+.gift-stage :is(button):focus-visible { outline: 2px solid oklch(78% .15 50); outline-offset: 3px; }
+.gift-stage-flat { display: grid; place-items: center; min-height: 0; }
+.gift-stage-flat .rip-hint, .gift-stage-flat .rip-sound { color: oklch(82% .025 78); }
+@media (prefers-reduced-motion: reduce) { .gift-stage { animation: none; transition: none; } }
+/* Being bought behind the pack: a held breath, then the burst. The status line is the only text. */
+.gift-stage-status { font-size: 15px; letter-spacing: -.1px; color: oklch(92% .02 80); min-height: 22px; text-align: center; font-variant-numeric: tabular-nums; }
+.gift-stage-status--failed { color: oklch(84% .09 40); max-width: 34ch; }
+.gift-stage--waiting .gift-stage-scene { animation: gift-stage-anticipate 1.6s cubic-bezier(.45, 0, .55, 1) infinite; }
+.gift-stage--waiting .gift-stage-scene canvas { cursor: progress; }
+@keyframes gift-stage-anticipate {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  8% { transform: rotate(-1.4deg) scale(1.01); }
+  16% { transform: rotate(1.2deg) scale(1.01); }
+  24% { transform: rotate(0deg) scale(1); }
+}
+.gift-stage-flat-wait { display: grid; justify-items: center; gap: 20px; }
+.gift-stage-flat-wait .gift-pack { width: min(62vw, 260px); }
+@media (prefers-reduced-motion: reduce) { .gift-stage--waiting .gift-stage-scene { animation: none; } }
+
+/* The sealed pack on the card screen: the wrapping on the table, waiting. */
+.gift-sealed {
+  display: block; width: min(230px, 62vw); margin: 34px auto 30px; padding: 0; border: 0; background: none;
+  transform: rotate(-4deg); transition: transform 240ms cubic-bezier(0.23, 1, 0.32, 1);
+  animation: gift-sealed-bob 4.5s ease-in-out infinite;
+}
+.gift-sealed .gift-pack { width: 100%; transform: none; text-align: left; box-shadow: 0 24px 40px -18px oklch(25% .03 50 / .5); }@media (hover: hover) { .gift-sealed:hover { transform: rotate(-2deg) translateY(-4px) scale(1.02); } }
+.gift-sealed:active { transform: rotate(-2deg) scale(.98); }
+@keyframes gift-sealed-bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -5px; } }
+@media (prefers-reduced-motion: reduce) { .gift-sealed { animation: none; } }
+.gift-inv-peek { margin-top: 12px; font-size: 13px; color: var(--g-muted); }
+.gift-inv-peek summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; text-decoration: underline; text-underline-offset: 3px; }
+.gift-inv-peek p { margin-top: 2px; color: var(--g-ink); }
+/* Phones: narrowing the pack wraps its fixed-size type and makes it taller, not smaller, so keep its
+   natural width and scale it; the negative margins take back the space the scale frees. */
+@media (max-width: 600px) { .gift-sealed { width: 230px; margin: -34px auto -34px; transform: rotate(-4deg) scale(.7); } .gift-sealed:active { transform: rotate(-2deg) scale(.68); } }
+.gift-open-cta { display: flex; margin: 0 auto 4px; min-width: 240px; justify-content: center; }
+@media (max-width: 600px) {
+  /* Thumb reach: the one action on this screen stays at the bottom edge until you get to it. */
+  .gift-open-cta { position: sticky; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 5; width: 100%; box-shadow: 0 10px 30px -8px oklch(20% .02 60 / .45); }
+}
+
+/* After the pack: the thesis behind it, then passing one on. See GiftNext.tsx. */
+.gift-next { max-width: 1050px; margin: 48px auto 0; display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 20px; align-items: stretch; }
+.gift-next-card { background: var(--g-surface); border: 1px solid var(--g-line); border-radius: 12px; padding: 34px 36px; }
+.gift-next-card h2 { font-size: 34px; letter-spacing: -1.4px; line-height: 1.12; margin-top: 14px; }
+.gift-next-lede { font-size: 15px; line-height: 1.65; color: var(--g-muted); margin-top: 16px !important; max-width: 560px; }
+.gift-next-against { margin-top: 24px; padding: 18px 0 0; border-top: 1px dashed var(--g-line); }
+.gift-next-against > p:last-child { font-size: 13px; line-height: 1.7; color: var(--g-muted); margin-top: 8px; }
+.gift-next-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 26px; }
+.gift-next-pass { border-radius: 12px; padding: 30px; background: var(--g-ink); color: var(--g-paper); display: flex; flex-direction: column; justify-content: flex-end; gap: 16px; }
+.gift-next-pass .gift-eyebrow { color: oklch(80% .03 75); }
+.gift-next-pass h3 { font-size: 26px; letter-spacing: -.8px; line-height: 1.2; }
+/* The outline button is ink-on-paper everywhere else, with !important; this is its one dark home. */
+.gift-next-pass .gift-button--outline { align-self: flex-start; color: var(--g-paper) !important; border-color: oklch(100% 0 0 / .35); background: transparent; }@media (hover: hover) { .gift-next-pass .gift-button--outline:hover { background: oklch(100% 0 0 / .08); } }
+.gift-inv-opened .gift-next { margin-top: 42px; }
+.gift-inv-opened .gift-exit { margin-top: 28px; }
+@media (max-width: 900px) {
+  .gift-next { grid-template-columns: 1fr; margin-top: 32px; }
+  .gift-next-card { padding: 24px 20px; }
+  .gift-next-card h2 { font-size: 26px; letter-spacing: -1px; }
+  .gift-next-actions .gift-button { width: 100%; justify-content: center; }
+  .gift-next-pass { padding: 24px 20px; }
+}
+
+/* How it works: one picture per step. See HowVisual in GiftHome.tsx. */
+.how-v { position: relative; height: 190px; border-radius: 12px; background: oklch(94% .02 82); overflow: hidden; margin-bottom: 22px; grid-column: 1 / -1; }
+.how-mini { position: absolute; width: 214px; left: 50%; top: 50%; }
+.how-mini .gift-pack { width: 214px; transform: none; box-shadow: 0 16px 28px -14px oklch(25% .03 50 / .5); }
+.how-mini--0, .how-mini--1, .how-mini--2 { transition: transform 500ms cubic-bezier(0.23, 1, 0.32, 1); }
+.how-mini--0 { transform: translate(-50%, -38%) scale(.42) translateX(-150px) rotate(-12deg); }
+.how-mini--1 { transform: translate(-50%, -44%) scale(.42) rotate(0deg); z-index: 1; }
+.how-mini--2 { transform: translate(-50%, -38%) scale(.42) translateX(150px) rotate(12deg); }@media (hover: hover) { .how-v--packs:hover .how-mini--1, .gift-how li:hover .how-mini--1 { transform: translate(-50%, -52%) scale(.44) rotate(0deg); } }
+.how-v--note { display: grid; place-items: center; }
+.how-note { width: 76%; background: var(--g-surface); border: 1px solid var(--g-line); border-radius: 6px; padding: 16px 18px; transform: rotate(-2deg); box-shadow: 0 10px 22px -12px oklch(25% .03 50 / .35); }
+.how-note-to { font-size: 10px; letter-spacing: .06em; color: var(--g-muted); }
+.how-note p { font-size: 17px; letter-spacing: -.3px; margin: 8px 0 12px !important; }
+.how-caret { display: inline-block; width: 2px; height: 1em; margin-left: 2px; vertical-align: -2px; background: var(--g-brand); animation: how-blink 1.1s steps(1) infinite; }
+@keyframes how-blink { 50% { opacity: 0; } }
+.how-note-chip { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: .04em; padding: 5px 9px; border-radius: 99px; background: oklch(93% .061 88); }
+.how-mini--open { transform: translate(-50%, -30%) scale(.42) rotate(-4deg); }
+.how-strip { position: absolute; left: 0; right: 0; top: -2px; height: 30px; background: var(--pack-bg); transform-origin: 100% 100%; animation: how-peel 4.2s cubic-bezier(0.23, 1, 0.32, 1) infinite; }
+@keyframes how-peel { 0%, 12% { transform: none; opacity: 1; } 34% { transform: translate(30px, -26px) rotate(22deg); opacity: 1; } 46%, 100% { transform: translate(90px, -70px) rotate(40deg); opacity: 0; } }
+.how-rise { position: absolute; left: 50%; top: 58px; display: flex; gap: 10px; transform: translateX(-50%); z-index: 2; }
+.how-rise > span { display: block; opacity: 0; animation: how-rise 4.2s cubic-bezier(0.23, 1, 0.32, 1) infinite; animation-delay: calc(var(--i) * 110ms); }
+.how-rise .tl { border-radius: 9px; box-shadow: 0 6px 14px -6px oklch(25% .03 50 / .4); }
+@keyframes how-rise { 0%, 38% { opacity: 0; transform: translateY(40px) scale(.8); } 52% { opacity: 1; transform: translateY(-6px) scale(1.04); } 60%, 88% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-8px); } }
+@media (max-width: 900px) { .how-v { height: 170px; margin-bottom: 16px; } }
+@media (prefers-reduced-motion: reduce) {
+  .how-caret, .how-strip, .how-rise > span { animation: none; }
+  .how-strip { opacity: 0; }
+  .how-rise > span { opacity: 1; }
+}
+
+/* Links that go somewhere lean that way a little under the pointer; a press answers on touch too. */
+.gift-text-link svg:last-child { transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1); }
+@media (hover: hover) { .gift-text-link:hover svg:last-child { transform: translateX(3px); } }
+.gift-text-link:active { opacity: .7; }
+
+/* Pack 04, The long game: ochre gold, for a first, broad investment. */
+.gift-pack--gold { --pack-bg: oklch(58% .105 78); --pack-ink: oklch(98% .02 88); }
+.gift-choice--gold .gift-choice-art { background: oklch(93% .04 88); }
+.gift-choice--gold .gift-choice-art > .gift-pack { transform: rotate(3deg) scale(.87); }
+/* Four packs: two by two on mid widths, four across on wide screens. */
+@media (min-width: 901px) and (max-width: 1279px) { .gift-pack-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1280px) { .gift-pack-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 22px; } .gift-choice-art { height: 350px; } }
+
+/* Decorative packs may lean past the edge at some widths; they never make the page scroll sideways. */
+.gift-site { overflow-x: clip; }
+/* Pack 04 follows the same per-width scale as the others (its base rule above would otherwise win). */
+@media (max-width: 1100px) { .gift-choice--gold .gift-choice-art > .gift-pack { transform: rotate(3deg) scale(.8); } }
+@media (max-width: 900px) { .gift-choice--gold .gift-choice-art > .gift-pack { transform: rotate(3deg) scale(.6); } }
+/* Between tablet and desktop the rotated back pack leaned past the right edge; keep it inside. */
+@media (min-width: 901px) and (max-width: 1180px) { .gift-stage-back { right: 22px; } }
+
+/* ------------------------------------------------------------------------------------------------
+ * Small details · 23 September 2026
+ * --------------------------------------------------------------------------------------------- */
+
+/* Fields: a quiet brand ring hugging the field, not a thick outline floating 5px away from it. */
+.gift-site :is(input, select, textarea):focus-visible { outline: none; }
+.gift-field :is(input, select, textarea), .gift-handle-input { transition: border-color 160ms ease, box-shadow 160ms ease; }
+.gift-field :is(input, select, textarea):focus-visible, .gift-handle-input:focus-within {
+  border-color: var(--g-brand-ink); box-shadow: 0 0 0 3px oklch(70% .19 34 / .18);
+}
+.gift-handle-input input:focus-visible { box-shadow: none; }
+.gift-site :is(a, button, summary):focus-visible { outline-offset: 3px; border-radius: 6px; }
+
+/* The pack picker: the packs themselves, not a system menu. Real radio inputs underneath, so arrow
+   keys, labels and screen readers work as they do for any radio group. */
+.gift-pick { border: 0; padding: 0; min-width: 0; }
+.gift-pick > legend { padding: 0; font-size: 12px; font-weight: 550; }
+.gift-pick-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 8px; }
+.gift-pick-option {
+  position: relative; display: flex; align-items: center; gap: 11px; min-height: 52px; padding: 8px 12px 8px 9px;
+  border: 1px solid var(--g-line); border-radius: 8px; background: var(--g-surface); color: var(--g-ink);
+  cursor: pointer; transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.gift-pick-option input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.gift-pick-swatch {
+  flex: none; width: 24px; height: 34px; border-radius: 3px; background: var(--pack-bg);
+  background-image: linear-gradient(180deg, oklch(100% 0 0 / .18) 0 4px, transparent 4px calc(100% - 4px), oklch(100% 0 0 / .18) calc(100% - 4px)),
+                    linear-gradient(125deg, oklch(100% 0 0 / .22), transparent 55%);
+  box-shadow: 0 3px 8px -3px oklch(25% .03 50 / .45); transform: rotate(-4deg);
+  transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1);
+}
+.gift-pick-name { font-size: 13px; font-weight: 500; line-height: 1.25; }
+.gift-pick-option:has(input:checked) { border-color: var(--g-ink); box-shadow: inset 0 0 0 1px var(--g-ink); }
+.gift-pick-option:has(input:checked) .gift-pick-swatch { transform: rotate(0deg) scale(1.06); }
+.gift-pick-option:has(input:focus-visible) { box-shadow: inset 0 0 0 1px var(--g-ink), 0 0 0 3px oklch(70% .19 34 / .25); }
+.gift-pick-option:active { transform: scale(.98); }
+@media (hover: hover) { .gift-pick-option:hover:not(:has(input:checked)) { border-color: oklch(72% .03 75); } }
+@media (max-width: 360px) { .gift-pick-grid { grid-template-columns: 1fr; } }
+.gift-fee-note { font-size: 11px; line-height: 1.5; color: var(--g-muted); margin-top: 8px !important; }
+
+/* The sender's photo in the middle of the pack: a window cut into the foil, same footprint as the motif. */
+.gift-photo { position: relative; aspect-ratio: 1; width: 78%; margin: 6px auto 4px; border-radius: 10px; overflow: hidden; box-shadow: 0 0 0 2px var(--pack-ink), 0 10px 20px -10px oklch(15% .02 60 / .6); }
+.gift-photo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.gift-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(125deg, oklch(100% 0 0 / .28), transparent 38%, transparent 70%, oklch(100% 0 0 / .12)); mix-blend-mode: screen; pointer-events: none; }
+
+/* ------------------------------------------------------------------------------------------------
+ * Pack art row and the pack builder · GiftHome.tsx, GiftPackBuilder.tsx
+ * --------------------------------------------------------------------------------------------- */
+.gift-pick-build { justify-content: flex-start; border-style: dashed; background: transparent; }
+.gift-pick-plus { display: grid; place-items: center; width: 24px; height: 34px; border-radius: 3px; border: 1px dashed oklch(70% .03 75); font-size: 18px; color: var(--g-muted); }
+.gift-pick-build[aria-expanded="true"] { border-style: solid; border-color: var(--g-ink); }
+
+.gift-art-row { display: flex; align-items: center; gap: 10px 12px; flex-wrap: wrap; margin-top: 16px; padding: 10px 12px; border: 1px solid var(--g-line); border-radius: 8px; background: var(--g-surface); }
+.gift-art-label { font-size: 12px; font-weight: 550; flex-basis: 100%; }
+.gift-art-thumb { flex: none; width: 40px; height: 40px; border-radius: 8px; overflow: hidden; display: grid; place-items: center; background: oklch(94% .02 82); }
+.gift-art-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.gift-art-desc { flex: 1; min-width: 150px; font-size: 12px; color: var(--g-muted); line-height: 1.4; }
+.gift-art-row .gift-text-link { margin: 0; min-height: 40px; }
+
+.gift-builder { margin-top: 14px; border: 1px solid var(--g-line); border-radius: 12px; background: var(--g-surface); padding: 18px; animation: gift-builder-in 320ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+@keyframes gift-builder-in { from { opacity: 0; transform: translateY(-6px); } }
+.gift-builder-head { display: flex; align-items: center; justify-content: space-between; }
+.gift-builder-head h3 { font-size: 19px; letter-spacing: -.4px; }
+.gift-builder-close { display: grid; place-items: center; width: 40px; height: 40px; margin-right: -8px; border: 0; background: none; border-radius: 50%; color: var(--g-muted); }
+@media (hover: hover) { .gift-builder-close:hover { background: oklch(92% .015 85); color: var(--g-ink); } }
+.gift-builder-step { border: 0; padding: 0; margin: 18px 0 0; min-width: 0; }
+.gift-builder-step > legend { font-size: 12px; font-weight: 600; letter-spacing: .02em; display: flex; justify-content: space-between; width: 100%; padding: 0; margin-bottom: 8px; }
+.gift-builder-step > legend span { color: var(--g-muted); font-weight: 500; }
+.gift-builder-search { display: flex; align-items: center; gap: 8px; border: 1px solid var(--g-line); border-radius: 8px; padding: 0 12px; background: var(--g-paper); color: var(--g-muted); }
+.gift-builder-search:focus-within { border-color: var(--g-brand-ink); box-shadow: 0 0 0 3px oklch(70% .19 34 / .18); }
+.gift-builder-search input { flex: 1; min-width: 0; border: 0; background: none; padding: 11px 0; font-size: 16px; color: var(--g-ink); }
+.gift-builder-assets { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 6px; max-height: 236px; overflow: auto; margin-top: 8px; padding: 2px; overscroll-behavior: contain; }
+.gift-builder-asset { position: relative; display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 6px 10px; border: 1px solid var(--g-line); border-radius: 8px; background: var(--g-paper); text-align: left; color: var(--g-ink); transition: border-color 160ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1); }
+.gift-builder-asset span { display: grid; min-width: 0; }
+.gift-builder-asset strong { font-size: 12px; }
+.gift-builder-asset small { font-size: 10px; color: var(--g-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gift-builder-asset[aria-pressed="true"] { border-color: var(--g-ink); box-shadow: inset 0 0 0 1px var(--g-ink); }
+.gift-builder-asset:active:not(:disabled) { transform: scale(.97); }
+.gift-builder-asset:disabled { opacity: .45; }
+.gift-builder-tick { position: absolute; top: 6px; right: 6px; }
+.gift-builder-weights { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.gift-builder-weights li { display: grid; grid-template-columns: 1fr 40px 52px 40px; align-items: center; gap: 6px; font-size: 13px; }
+.gift-builder-weights button { display: grid; place-items: center; height: 40px; border: 1px solid var(--g-line); border-radius: 8px; background: var(--g-paper); color: var(--g-ink); }
+.gift-builder-weights button:active:not(:disabled) { transform: scale(.94); }
+.gift-builder-weights strong { text-align: center; font-variant-numeric: tabular-nums; }
+.gift-builder-warn { color: var(--g-danger) !important; font-size: 11px; margin-top: 6px !important; }
+.gift-builder-count { display: flex; align-items: center; gap: 4px; justify-content: flex-end; font-size: 10px; font-weight: 400; color: var(--g-muted); margin-top: 5px; float: none !important; }
+.gift-builder-colors { display: flex; gap: 10px; margin-top: 16px; }
+.gift-builder-color { width: 34px; height: 34px; border-radius: 50%; border: 0; background: var(--pack-bg); box-shadow: 0 0 0 1px oklch(0% 0 0 / .08); transition: transform 160ms cubic-bezier(0.23, 1, 0.32, 1), box-shadow 160ms ease; }
+.gift-builder-color[aria-checked="true"] { box-shadow: 0 0 0 2px var(--g-surface), 0 0 0 4px var(--g-ink); transform: scale(1.05); }
+.gift-builder-foot { margin-top: 20px; display: grid; gap: 10px; }
+.gift-builder-foot > p { font-size: 11px; line-height: 1.5; color: var(--g-muted); }
+@media (prefers-reduced-motion: reduce) { .gift-builder { animation: none; } }
+.gift-builder-assets { grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); }
+@media (max-width: 600px) {
+  .gift-builder { padding: 14px; }
+  .gift-builder .gift-fields-two { grid-template-columns: 1fr; gap: 0; }
+  .gift-builder .gift-fields-two .gift-field:last-child { margin-top: 22px; }
+  .gift-art-row .gift-text-link:last-of-type { margin-left: auto; }
+}
+/* Sign-in inside the builder wears the gift buttons, not the terminal's. */
+.gift-builder .signin { display: grid; gap: 8px; }
+.gift-builder .signin .ln-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 12px 18px; border-radius: 7px; border: 1px solid var(--g-line); background: var(--g-surface); color: var(--g-ink); font-size: 14px; font-weight: 550; }
+.gift-builder .signin .ln-btn--ink { background: var(--g-ink); border-color: transparent; color: var(--g-surface); }
+.gift-builder .signin .ln-btn:active:not(:disabled) { transform: scale(.97); }
+.gift-builder .signin-note { font-size: 11px; line-height: 1.5; color: var(--g-muted); }
+.gift-builder .signin-error { font-size: 12px; color: var(--g-danger); }
+/* One, two or three holdings: the cards stay card-sized and centred rather than stretching. */
+.gift-reveal-cards { grid-template-columns: repeat(auto-fit, minmax(0, 330px)); justify-content: center; }
+@media (max-width: 900px) { .gift-reveal-cards { grid-template-columns: 1fr; } }
+.gift-builder-one { font-size: 13px; color: var(--g-muted); }
+.gift-resume { max-width: 620px; margin: 0 auto; padding: 40px 20px 60px; }
+.gift-resume-card h1 { font-size: 36px; letter-spacing: -1.4px; margin-bottom: 12px; }
+.gift-resume-card > p { color: var(--g-muted); margin-bottom: 18px !important; }
+.gift-resume-pack { width: 160px; margin: 18px 0 8px; transform: rotate(-3deg); }
+.gift-resume-pack .gift-pack { width: 100%; transform: none; }
+.gift-accept-why { font-size: 13px; line-height: 1.6; color: var(--g-muted); margin: 0 auto 14px !important; max-width: 380px; }
+.gift-accept-next { text-align: center; max-width: 380px; margin: 8px auto 0 !important; }
+.gift-builder-note { font-size: 12px; line-height: 1.5; color: var(--g-muted); margin-top: 14px !important; }
+
+/* ------------------------------------------------------------------------------------------------
+ * Sending, in a dialog · GiftSend.tsx SendDialog
+ * Centred modal on desktop, bottom sheet on phones. Enter is a short rise; the backdrop dims.
+ * --------------------------------------------------------------------------------------------- */
+.gift-send-open { margin-bottom: 10px; }
+.gift-send-dialog { padding: 0; border: 0; background: transparent; max-width: none; max-height: none; min-height: 0; color: var(--g-ink); overflow: visible; }
+.gift-send-dialog::backdrop { background: oklch(20% .02 60 / .45); backdrop-filter: blur(3px); }
+.gift-send-dialog-body {
+  position: relative; width: min(560px, calc(100vw - 32px)); max-height: min(86svh, 760px); overflow: auto; overscroll-behavior: contain;
+  background: var(--g-paper); border-radius: 16px; padding: 22px 22px 24px; box-shadow: 0 30px 80px -20px oklch(15% .02 60 / .5);
+}
+.gift-send-dialog[open] .gift-send-dialog-body { animation: gift-dialog-in 260ms cubic-bezier(0.23, 1, 0.32, 1) both; }
+@keyframes gift-dialog-in { from { opacity: 0; transform: translateY(12px) scale(.98); } }
+.gift-send-dialog .gift-send { margin: 0; }
+.gift-send-dialog-close { position: absolute; top: 12px; right: 12px; display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 50%; background: none; color: var(--g-muted); z-index: 1; }
+@media (hover: hover) { .gift-send-dialog-close:hover { background: oklch(92% .015 85); color: var(--g-ink); } }
+@media (max-width: 600px) {
+  .gift-send-dialog { margin: auto 0 0; width: 100%; }
+  .gift-send-dialog-body { width: 100vw; max-height: 92svh; border-radius: 18px 18px 0 0; padding-bottom: max(24px, env(safe-area-inset-bottom)); }
+  .gift-send-dialog[open] .gift-send-dialog-body { animation-name: gift-sheet-in; }
+}
+@keyframes gift-sheet-in { from { transform: translateY(100%); } }
+@media (prefers-reduced-motion: reduce) { .gift-send-dialog[open] .gift-send-dialog-body { animation: none; } }
+
+.gift-send-wallet { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 12px; font-size: 12px; color: var(--g-muted); margin: 0 44px 12px 0 !important; }
+.gift-send-wallet code { font-size: 12px; color: var(--g-ink); }
+.gift-send-wallet .gift-text-link { margin: 0; min-height: 36px; font-size: 12px; }
+.gift-fund-address { display: grid; gap: 6px; margin-top: 12px; padding: 12px; border-radius: 8px; background: oklch(95% .015 85); font-size: 12px; color: var(--g-muted); }
+.gift-fund-address code { font-size: 12px; color: var(--g-ink); overflow-wrap: anywhere; }
+.gift-fund-address .gift-text-link { margin: 0; justify-self: start; }
+/* Centred: a global reset removes <dialog>'s own centring. */
+.gift-send-dialog { position: fixed; inset: 0; margin: auto; width: fit-content; height: fit-content; }
+/* Inside the dialog the dialog is the card: no divider above, no card within the card. The coloured
+   edge that marks a problem or a finished send stays. */
+.gift-send-dialog .gift-send { padding-top: 0; border-top: 0; }
+.gift-send-dialog .gift-send-panel { border-top: 0; border-right: 0; border-bottom: 0; border-radius: 0; background: none; padding: 4px 0 4px 16px; }
+.gift-send-dialog .gift-send-panel:not(.gift-send-panel--problem):not(.gift-send-panel--done) { border-left: 0; padding-left: 0; }
+@media (max-width: 600px) { .gift-send-dialog { inset: auto 0 0 0; margin: 0; width: 100%; } }
+/* Where the recipient lives, asked only where the deployment checks it (production). */
+.gift-inv-where { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--g-line); text-align: left; }
+.gift-inv-where .gift-field { margin-top: 0; }
+.gift-inv-attest { display: flex; gap: 10px; align-items: flex-start; margin-top: 12px; font-size: 12px; line-height: 1.5; color: var(--g-muted); cursor: pointer; }
+.gift-inv-attest input { margin-top: 2px; width: 18px; height: 18px; flex: none; accent-color: var(--g-ink); }
+
+/* The dialog, calmer: the headline carries the moment; the eyebrow stays only as the dialog's label. */
+.gift-send-dialog .gift-send > .gift-eyebrow { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.gift-send-dialog .gift-send-title { font-size: 26px; letter-spacing: -.8px; margin: 2px 0 14px; }
+.gift-send-dialog .gift-send-wallet { margin-bottom: 18px !important; }
+/* Terms: three lines and a total, no box. */
+.gift-send-terms .gift-terms { background: none; border: 0; border-radius: 0; gap: 0; margin: 0 0 12px; }
+.gift-send-terms .gift-terms > div { background: none; padding: 9px 0; border-bottom: 1px solid var(--g-line); flex-direction: row; }
+.gift-send-terms .gift-terms dt, .gift-send-terms .gift-terms dd { font-size: 14px; }
+.gift-send-terms .gift-terms dd { font-weight: 500; }
+.gift-send-terms .gift-terms-total { border-bottom: 0 !important; padding-top: 12px !important; }
+.gift-send-terms .gift-terms-total dt { color: var(--g-ink) !important; font-weight: 600; }
+.gift-send-terms .gift-terms-total dd { font-weight: 650 !important; font-size: 16px !important; }
+.gift-terms-fine { font-size: 12.5px; line-height: 1.55; color: var(--g-muted); margin: 0 0 14px !important; }
+.gift-terms-fine strong { color: var(--g-ink); font-weight: 600; }
+.gift-send-terms .gift-check { margin-bottom: 10px; font-size: 13.5px; }
+.gift-inv-fine { font-size: 12px; line-height: 1.5; color: var(--g-muted); margin-top: 12px !important; }
+.gift-inv-before:empty { display: none; }
+
+/* ------------------------------------------------------------------------------------------------
+ * Pack cards lead with the thesis's record, not the wrapping. See PackPerformance in GiftHome.tsx.
+ * --------------------------------------------------------------------------------------------- */
+.gift-choice-art--perf { display: block; text-align: left; padding: 22px 22px 0; }
+.gift-perf { position: relative; z-index: 1; display: grid; gap: 2px; color: var(--g-ink); }
+.gift-perf-label { font-size: 10px; font-weight: 600; letter-spacing: .14em; color: var(--g-muted); }
+.gift-perf strong { font-size: 44px; line-height: 1.05; letter-spacing: -1.8px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.gift-perf-up { color: oklch(46% .12 150); }
+.gift-perf-down { color: var(--g-danger); }
+.gift-perf-bench { font-size: 12px; color: var(--g-muted); font-variant-numeric: tabular-nums; }
+.gift-perf--new strong { font-size: 22px; letter-spacing: -.5px; }
+.gift-spark { width: 100%; height: 64px; margin-top: 14px; overflow: visible; }
+.gift-spark polyline { fill: none; stroke-width: 2.2; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
+.gift-spark-basket { stroke: var(--g-ink); }
+.gift-spark-bench { stroke: oklch(62% .02 75); stroke-dasharray: 3 4; stroke-width: 1.6 !important; }
+.gift-choice-mini { position: absolute; right: -34px; bottom: -64px; width: 214px; transform: rotate(-8deg) scale(.5); transform-origin: bottom right; pointer-events: none; transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1); }
+.gift-choice-mini .gift-pack { width: 214px; transform: none; }
+@media (hover: hover) { .gift-choice-art--perf:hover .gift-choice-mini { transform: rotate(-4deg) scale(.54) translateY(-8px); } }
+.gift-choice-art--perf .gift-choice-arrow { z-index: 2; }
+.gift-perf-note { font-size: 11px; line-height: 1.5; color: var(--g-muted); margin-top: 18px !important; max-width: 640px; }
+@media (max-width: 900px) {
+  .gift-choice-art--perf { padding: 14px 12px 0; }
+  .gift-perf strong { font-size: 30px; letter-spacing: -1px; }
+  .gift-spark { height: 44px; margin-top: 8px; }
+  .gift-choice-mini { right: -20px; bottom: -40px; transform: rotate(-8deg) scale(.36); }
+}
+.gift-choice-art--perf { display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; }
+/* The corner pack stays inside its card's width at every size. */
+.gift-choice-mini { right: 12px; bottom: -70px; }
+@media (max-width: 900px) { .gift-choice-mini { right: 6px; bottom: -44px; } }
+
+/* Powered by: real marks on one tile style, rolling. The track holds two copies and slides by one. */
+.gift-powered { max-width: 1224px; margin: 0 auto; padding: 52px 0 12px; text-align: center; }
+.gift-powered .gift-eyebrow { justify-content: center; }
+.gift-powered img { display: block; width: 52px; height: 52px; padding: 11px; border-radius: 14px; object-fit: contain; background: var(--g-surface); box-shadow: 0 0 0 1px var(--g-line), 0 6px 14px -8px oklch(25% .03 50 / .25); transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1); }
+@media (hover: hover) { .gift-powered a:hover img { transform: translateY(-2px); } }
+@media (max-width: 900px) { .gift-powered { padding-top: 36px; } .gift-powered img { width: 46px; height: 46px; padding: 10px; } }
+/* Powered by: logos only, rolling. The track holds two copies and slides by exactly one. */
+.gift-powered { overflow: hidden; }
+.gift-powered-track { display: flex; width: max-content; margin-top: 22px; animation: gift-marquee 32s linear infinite; }
+.gift-powered { -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+.gift-powered-row { display: flex; gap: 56px; padding: 6px 28px; margin: 0; list-style: none; flex-wrap: nowrap; }
+.gift-powered-row li { flex: none; }
+.gift-powered-row a { display: block; }
+@media (hover: hover) { .gift-powered:hover .gift-powered-track { animation-play-state: paused; } }
+@keyframes gift-marquee { to { transform: translateX(-50%); } }
+@media (max-width: 900px) { .gift-powered-row { gap: 36px; padding: 6px 18px; } .gift-powered-track { animation-duration: 24s; } }
+@media (prefers-reduced-motion: reduce) {
+  .gift-powered-track { animation: none; width: auto; justify-content: center; flex-wrap: wrap; }
+  .gift-powered-row[aria-hidden] { display: none; }
+  .gift-powered-row { flex-wrap: wrap; justify-content: center; }
+}
+/* Powered by: a quiet credits band above the footer, framed, smaller marks. */
+.gift-powered { border-top: 1px solid var(--g-line); padding: 36px 0 44px; margin-top: 8px; }
+.gift-powered .gift-eyebrow { font-size: 10px; color: var(--g-muted); letter-spacing: .18em; }
+.gift-powered img { width: 44px; height: 44px; padding: 9px; border-radius: 12px; box-shadow: 0 0 0 1px var(--g-line); }
+.gift-powered-row { gap: 44px; }
+.gift-powered-track { margin-top: 18px; }
+@media (max-width: 900px) { .gift-powered img { width: 40px; height: 40px; padding: 8px; } .gift-powered-row { gap: 30px; } }
+
+/* Next to the card: what the sender is putting in it. (Restored: lost in the Powered-by cleanup.) */
+.gift-compose-inside { margin-top: 22px; max-width: 340px; }
+.gift-compose-inside ul { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 2px; }
+.gift-compose-inside li { display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--g-line); }
+.gift-compose-inside li span { display: grid; min-width: 0; gap: 1px; }
+.gift-compose-inside strong { font-size: 13px; font-weight: 550; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.gift-compose-inside small { font-size: 11px; color: var(--g-muted); }
+.gift-compose-inside b { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.gift-compose-inside .tl { border-radius: 7px; }
+@media (max-width: 900px) { .gift-compose-inside { max-width: none; margin-top: 38px; } }
+/* Three featured packs: three columns from tablet up, so no empty slot. Four use the rule above. */
+@media (min-width: 901px) { .gift-pack-grid:not(:has(> :nth-child(4))) { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; } .gift-pack-grid:not(:has(> :nth-child(4))) .gift-choice-art { height: 360px; } }
+/* Six sets per half make the track long, so keep the pace the same as before. */
+.gift-powered-track { animation-duration: 180s; }
+@media (max-width: 900px) { .gift-powered-track { animation-duration: 140s; } }
+@media (prefers-reduced-motion: reduce) { .gift-powered-row li:nth-child(n+8) { display: none; } }
+
+/* ------------------------------------------------------------------------------------------------
+ * The invitation, as one moment: being handed something. The real pack in 3D on a glow in its own
+ * colour, the words and the sender's tag beside it, one button.
+ * --------------------------------------------------------------------------------------------- */
+.gift-inv-moment {
+  --glow: oklch(60% .15 268);
+  position: relative; isolation: isolate;
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); grid-template-areas: "copy visual";
+  align-items: center; gap: 24px 64px;
+  max-width: 1180px; min-height: min(84vh, 800px); margin: 0 auto; padding: 8px 8px 40px; text-align: left;
+}
+.gift-inv--green { --glow: oklch(62% .12 155); }
+.gift-inv--red { --glow: oklch(63% .16 36); }
+.gift-inv--gold { --glow: oklch(74% .12 82); }
+/* The light the pack sits in. */
+.gift-inv-moment::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  inset: -6% -14% -4% 38%;
+  background:
+    radial-gradient(closest-side, color-mix(in oklch, var(--glow) 30%, transparent), transparent 75%),
+    radial-gradient(closest-side at 60% 70%, color-mix(in oklch, var(--glow) 16%, transparent), transparent 80%);
+}
+.gift-inv-copy { grid-area: copy; justify-self: end; width: min(100%, 560px); }
+.gift-inv-visual { grid-area: visual; position: relative; min-width: 0; }
+
+.gift-inv-head { text-align: left; }
+.gift-inv-head .gift-eyebrow {
+  display: inline-flex; justify-content: flex-start; gap: 8px; padding: 8px 13px; border-radius: 999px;
+  border: 1px solid var(--g-line); background: color-mix(in oklch, var(--g-surface) 80%, transparent);
+}
+.gift-inv-head .gift-eyebrow::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--glow); box-shadow: 0 0 0 4px color-mix(in oklch, var(--glow) 22%, transparent); }
+.gift-inv-head h1 { font-size: clamp(44px, 4.6vw, 68px); letter-spacing: -.048em; line-height: .98; margin-top: 22px; text-wrap: balance; }
+.gift-inv-head h1 em { font-style: normal; color: var(--g-brand-display); }
+
+/* The sender's note, as a gift tag: notched end, punched hole, a slight hang. */
+.gift-inv-stage { margin: 34px 0 30px; }
+.gift-inv-note {
+  position: relative; margin: 0; max-width: 420px; padding: 24px 28px 22px 60px; text-align: left; border: 0; font-size: inherit;
+  background: var(--g-surface); border-radius: 4px 12px 12px 4px;
+  clip-path: polygon(30px 0, 100% 0, 100% 100%, 30px 100%, 0 50%);
+  filter: drop-shadow(0 16px 22px oklch(25% .03 50 / .16)) drop-shadow(0 1px 0 oklch(25% .03 50 / .08));
+  transform: rotate(-2deg); transform-origin: 0 50%;
+}
+.gift-inv-note-hole { position: absolute; left: 22px; top: 50%; width: 12px; height: 12px; translate: 0 -50%; border-radius: 50%; background: var(--g-paper); box-shadow: inset 0 1px 2px oklch(20% .02 60 / .35); }
+.gift-inv-note-to { font-size: 11px; letter-spacing: .06em; color: var(--g-muted); }
+.gift-inv-note blockquote { margin: 10px 0 14px; font-size: 23px; line-height: 1.35; letter-spacing: -.5px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.gift-inv-note figcaption { font-size: 13px; color: var(--g-muted); }
+
+.gift-inv-moment .gift-open-actions { max-width: 420px; margin: 0; text-align: left; }
+.gift-inv-moment .gift-open-actions > .gift-button {
+  width: 100%; min-width: 0; min-height: 60px; font-size: 17px; justify-content: center;
+  box-shadow: 0 18px 34px -16px color-mix(in oklch, var(--glow) 75%, oklch(15% .02 60));
+}
+.gift-inv-moment .gift-inv-before:empty, .gift-inv-moment .gift-inv-before:not(:has(*)) { display: none; }
+
+/* The pack itself. */
+.gift-pack3d { position: relative; height: min(74vh, 660px); min-height: 420px; }
+.gift-pack3d-scene { position: absolute; inset: 0; overflow: hidden; }
+/* The renderer sizes its canvas in pixels; pin it to the box so a big or zoomed window can't
+   blow the pack up past its column. */
+.gift-pack3d-scene canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; display: block; touch-action: pan-y !important; cursor: default !important; }
+.gift-pack3d-flat { position: absolute; inset: 0; display: grid; place-items: center; }
+.gift-pack3d-flat .gift-pack { width: min(290px, 62%); transform: rotate(4deg); box-shadow: 0 30px 50px -24px oklch(25% .03 50 / .5); animation: gift-sealed-bob 4.5s ease-in-out infinite; }
+.gift-pack3d-floor { position: absolute; left: 50%; bottom: 17%; width: 42%; height: 28px; translate: -50% 0; border-radius: 50%; background: radial-gradient(closest-side, oklch(25% .03 60 / .26), transparent); pointer-events: none; }
+
+@media (max-width: 900px) {
+  .gift-inv-moment { grid-template-columns: 1fr; grid-template-areas: none; gap: 0; min-height: 0; padding: 0 0 24px; text-align: center; }
+  .gift-inv-moment::before { inset: 14% -30% 38% -30%; }
+  .gift-inv-copy { display: contents; }
+  .gift-inv-moment > * , .gift-inv-copy > * { min-width: 0; }
+  .gift-inv-head { order: 1; text-align: center; }
+  .gift-inv-visual { order: 2; grid-area: auto; }
+  .gift-inv-stage { order: 3; margin: 0 auto 24px; }
+  .gift-inv-moment .gift-open-actions { order: 4; margin: 0 auto; width: 100%; text-align: center; }
+  .gift-inv-head h1 { font-size: 40px; letter-spacing: -1.8px; margin-top: 16px; }
+  .gift-pack3d { height: 380px; min-height: 0; }
+  .gift-pack3d-floor { bottom: 10%; }
+  /* The flat pack's type is fixed-size, so narrowing it makes it taller; scale it to the 3D pack's footprint instead. */
+  .gift-pack3d-flat .gift-pack { width: 230px; transform: rotate(4deg) scale(.66); }
+  .gift-inv-note { width: min(100%, 360px); margin-inline: auto; transform: rotate(-1.5deg); transform-origin: 50% 50%; }
+  .gift-inv-note blockquote { font-size: 19px; }
+  /* The one action stays in thumb reach while scrolling the card. */
+  .gift-inv-moment .gift-open-actions > .gift-button { position: sticky; bottom: max(16px, env(safe-area-inset-bottom)); z-index: 5; }
+}
+@media (prefers-reduced-motion: reduce) { .gift-pack3d-flat .gift-pack { animation: none; } }
+
+/* Interest in a pack's companies (Wikipedia reads, week on week). Quiet next to the return. */
+.gift-attn { display: grid; grid-template-columns: 8px minmax(0, 1fr); align-items: center; gap: 2px 8px; margin-top: 12px; font-size: 13px; color: var(--g-ink); position: relative; z-index: 1; }
+.gift-attn small { grid-column: 2; font-size: 11px; color: var(--g-muted); }
+.gift-attn-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--g-muted); }
+.gift-attn--up .gift-attn-dot { background: oklch(62% .19 38); box-shadow: 0 0 0 0 oklch(62% .19 38 / .5); animation: gift-attn-pulse 2.2s ease-out infinite; }
+@keyframes gift-attn-pulse { 70% { box-shadow: 0 0 0 7px oklch(62% .19 38 / 0); } 100% { box-shadow: 0 0 0 0 oklch(62% .19 38 / 0); } }
+@media (prefers-reduced-motion: reduce) { .gift-attn--up .gift-attn-dot { animation: none; } }
+
+/* Phones: stack each pack card (art full width, words under it). The side-by-side card left the
+   return, the interest line and the chart a 145px column to share with the pack artwork. */
+@media (max-width: 900px) {
+  .gift-choice { grid-template-columns: 1fr; gap: 16px; }
+  .gift-choice-art { height: 290px; }
+}
+
+/* After the rip, before the claim: amount and claim button first, so a phone sees them at once. */
+.gift-claim .gift-claim-actions { max-width: 420px; margin: 26px auto 0; }
+.gift-claim .gift-claim-actions .gift-open-actions { max-width: none; margin: 0; }
+.gift-claim .gift-claim-actions .gift-button { width: 100%; min-height: 58px; justify-content: center; font-size: 17px; }
+.gift-claim > .gift-reveal-cards { margin-top: 44px; }
+.gift-claim-again { text-align: center; margin: 28px 0 0; }
+@media (max-width: 900px) {
+  .gift-claim .gift-claim-actions { position: sticky; bottom: max(12px, env(safe-area-inset-bottom)); z-index: 5; }
+}
+
+/* Pre-IPO packs say what they are, next to the tickers. */
+.gift-preipo { margin: 10px 0 0 !important; font-size: 11.5px !important; line-height: 1.5; color: var(--g-muted); max-width: 42ch; }
+.gift-preipo b { display: inline-block; margin-right: 6px; padding: 1px 7px; border-radius: 999px; font-size: 10px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--g-ink); border: 1px solid var(--g-line); }
+
+/* Five packs: three across, then two wider ones, so no card sits alone. */
+@media (min-width: 1100px) {
+  .gift-pack-grid:has(> :nth-child(5)):not(:has(> :nth-child(6))) { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .gift-pack-grid:has(> :nth-child(5)):not(:has(> :nth-child(6))) > * { grid-column: span 2; }
+  .gift-pack-grid:has(> :nth-child(5)):not(:has(> :nth-child(6))) > :nth-child(n+4) { grid-column: span 3; }
+}

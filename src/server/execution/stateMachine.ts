@@ -187,6 +187,13 @@ export function deriveIntentStatus(
   if (inFlight > 0 || context.anySigned) return "executing";
   if (context.cancelledByUser) return "cancelled";
 
+  // Some legs finished, others have not: the basket is part way through a run, whatever
+  // signed it. Keying this on a signature alone was wrong for simulation, which never
+  // signs anything — a simulated basket read as "draft" between legs, so the progress
+  // screen fell through to the amount slider mid-run, and abandoning it there left an
+  // intent that the open-basket check refused to look past with no way to cancel it.
+  if (legs.some(isTerminal)) return "executing";
+
   if (legs.every((l) => l === "quoted")) return "ready";
   return "draft";
 }

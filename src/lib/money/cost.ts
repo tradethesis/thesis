@@ -50,14 +50,15 @@ export function estimateLegCost(legInputRaw: bigint): LegCostEstimate {
   return { legInputRaw, estimatedCostRaw, estimatedCostBps };
 }
 
-export function estimateBasketCost(budgetRaw: bigint): {
+/** `legs`: how many holdings the basket has (one to three); the flat part is paid once per holding. */
+export function estimateBasketCost(budgetRaw: bigint, legs: number = LEG_COUNT): {
   estimatedCostRaw: bigint;
   estimatedCostBps: number;
   isHighCost: boolean;
 } {
-  const perLeg = budgetRaw / BigInt(LEG_COUNT);
+  const perLeg = budgetRaw / BigInt(legs);
   const { estimatedCostRaw } = estimateLegCost(perLeg);
-  const total = estimatedCostRaw * BigInt(LEG_COUNT);
+  const total = estimatedCostRaw * BigInt(legs);
   const bps = budgetRaw > 0n ? Number((total * 10_000n) / budgetRaw) : 0;
   return { estimatedCostRaw: total, estimatedCostBps: bps, isHighCost: bps >= HIGH_COST_WARNING_BPS };
 }

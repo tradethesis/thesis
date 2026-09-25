@@ -1,0 +1,78 @@
+/* A one-line entry so this route owns a stylesheet no other route imports.
+   Next folds a CSS file shared by several routes into one chunk and then links it on
+   only some of them, which left this page with no palette and no type stack at all.
+   A distinct entry per route cannot be deduped away. */
+@import "../shell.css";
+
+/* ------------------------------------------------------------------ portfolio */
+
+.pf { display: grid; gap: 22px; }
+
+.pf-total {
+  border: 1px solid var(--ln-line);
+  border-radius: 14px;
+  background: var(--ln-surface);
+  padding: 20px 20px 18px;
+}
+.pf-label { margin: 0 !important; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ln-ink-3); }
+.pf-total-value { margin: 6px 0 0 !important; font-size: clamp(34px, 7vw, 46px); font-weight: 600; line-height: 1.05; color: var(--ln-ink); }
+.pf-split { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 14px 0 0; }
+.pf-split div { display: grid; gap: 2px; }
+.pf-split dt { font-size: 12px; color: var(--ln-ink-3); }
+.pf-split dd { margin: 0; font-size: 16px; color: var(--ln-ink); }
+.pf-asof { margin: 14px 0 0 !important; font-size: 12px; line-height: 1.5; color: var(--ln-ink-3); }
+
+.pf-section { display: grid; gap: 10px; }
+.pf-h2 { margin: 0 !important; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ln-ink-2); }
+.pf-note { margin: 0 !important; font-size: 12.5px; line-height: 1.5; color: var(--ln-ink-3); }
+
+.pf-holdings { list-style: none; margin: 0; padding: 0; border: 1px solid var(--ln-line); border-radius: 12px; background: var(--ln-surface); overflow: hidden; }
+.pf-holding {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) minmax(88px, auto) minmax(96px, auto);
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  min-height: 60px;
+}
+.pf-holding + .pf-holding { border-top: 1px solid var(--ln-line); }
+.pf-holding-name { display: grid; gap: 2px; min-width: 0; }
+.pf-holding-name strong { font-size: 14.5px; font-weight: 600; color: var(--ln-ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pf-holding-name span { font-size: 12px; color: var(--ln-ink-3); }
+.pf-holding-price { display: grid; justify-items: end; gap: 2px; font-size: 13px; color: var(--ln-ink-2); }
+.pf-cell-label { font-size: 10.5px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ln-ink-3); }
+.pf-holding-value { text-align: right; }
+.pf-holding-value strong { font-size: 15px; font-weight: 600; color: var(--ln-ink); }
+
+.pf-theses { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.pf-thesis { border: 1px solid var(--ln-line); border-radius: 12px; background: var(--ln-surface); padding: 14px 16px; display: grid; gap: 12px; }
+.pf-thesis-head { display: flex; align-items: baseline; gap: 12px; }
+.pf-thesis-head h3 { margin: 0 !important; flex: 1; font-size: 15px; line-height: 1.35; font-weight: 600; }
+.landing .pf-thesis-head h3 a { color: var(--ln-ink); text-decoration: none; }
+.landing .pf-thesis-head h3 a:hover { color: var(--ln-accent); text-decoration: underline; }
+.pf-thesis-date { flex-shrink: 0; font-size: 12px; color: var(--ln-ink-3); }
+.pf-thesis-figures { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0; }
+.pf-thesis-figures div { display: grid; gap: 3px; }
+.pf-thesis-figures dt { font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ln-ink-3); }
+.pf-thesis-figures dd { margin: 0; font-size: 16px; font-weight: 600; color: var(--ln-ink); }
+.pf-thesis-figures dd small { font-size: 12px; font-weight: 500; }
+.pf-thesis-figures dd.is-up { color: var(--ln-confirmed); }
+.pf-thesis-figures dd.is-down { color: var(--ln-accent); }
+.pf-thesis .mine-legs { margin: 0; }
+
+.pf-practice summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: var(--ln-ink-2); }
+.pf-practice summary span { font-weight: 400; color: var(--ln-ink-3); }
+.pf-practice[open] summary { margin-bottom: 4px; }
+
+@media (max-width: 560px) {
+  .pf-total { padding: 16px; }
+  .pf-holding { grid-template-columns: 36px minmax(0, 1fr) auto; grid-template-areas: "logo name value" "logo name price"; row-gap: 0; padding: 12px 14px; }
+  .pf-holding > .tl, .pf-holding > :first-child { grid-area: logo; }
+  .pf-holding-name { grid-area: name; }
+  .pf-holding-value { grid-area: value; }
+  .pf-holding-price { grid-area: price; font-size: 12px; }
+  .pf-holding-price .pf-cell-label { display: none; }
+  .pf-thesis { padding: 13px 14px; }
+  .pf-thesis-head { flex-direction: column; gap: 4px; }
+  .pf-thesis-figures dd { font-size: 14.5px; }
+}

@@ -1,122 +1,1801 @@
+/* Pulled in here rather than imported from the page.
+   landing.css is shared by /, /join and every app route, and the bundler folded it
+   into a chunk it then linked only on some of them — the app routes rendered with no
+   palette and no type stack at all. A CSS @import is inlined into this file's own
+   chunk, which these routes provably do link, so the tokens cannot go missing. */
+@import "../landing.css";
+@import "../calls.css";
+@import "../buy/[slug]/buy.css";
+@import "../conviction.css";
+
 /*
- * The product surface.
+ * The app surface: Discover, Leaderboard, My theses.
  *
- * Quieter than the marketing site on purpose. The landing page's job is to make an
- * argument, so it has a hero, sections, and generous vertical rhythm. This page's job is
- * to be read through, so the chrome gets out of the way: a thin header, a small title,
- * and the grid starting near the top of the screen.
+ * Mobile-first and deliberately denser than the marketing site. A returning user is here to
+ * scan beliefs, not to read an argument for the product, so the chrome is thin, the type
+ * scale is compressed, and nothing above the first card is bigger than it needs to be.
  *
  * Every token comes from landing.css. Nothing here defines a colour.
  */
 
-.ap {
-  min-height: 100dvh;
+:root {
+  --app-ease: cubic-bezier(0.23, 1, 0.32, 1);
+  --nav-bottom-h: 58px;
 }
 
-/* ------------------------------------------------------------------ header */
+.app-shell {
+  min-height: 100dvh;
+  background: var(--ln-bg);
+}
 
-.ap-header {
+.app-main {
+  max-width: 720px;
+  margin-inline: auto;
+  padding-inline: 16px;
+  /* Clears the bottom bar plus the home indicator, so the last card is never trapped
+     behind the navigation on a phone. */
+  padding-bottom: calc(var(--nav-bottom-h) + env(safe-area-inset-bottom, 0px) + 28px);
+}
+
+/* ----------------------------------------------------------------- navigation */
+
+.nav-top {
   position: sticky;
   top: 0;
-  z-index: 20;
-  background: color-mix(in oklab, var(--ln-bg) 88%, transparent);
+  z-index: 30;
+  background: color-mix(in oklab, var(--ln-bg) 90%, transparent);
   backdrop-filter: saturate(140%) blur(10px);
   border-bottom: 1px solid var(--ln-line);
+  padding-top: env(safe-area-inset-top, 0px);
 }
 
-.ap-header-inner {
-  max-width: var(--ln-maxw);
+.nav-top-inner {
+  max-width: 720px;
   margin-inline: auto;
-  padding-inline: var(--ln-gutter);
-  min-height: 58px;
+  padding-inline: 16px;
+  min-height: 52px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
+  gap: 14px;
 }
 
-.landing .ap-mark {
+.landing .nav-mark {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   color: var(--ln-ink);
   text-decoration: none;
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 600;
   letter-spacing: -0.06em;
   line-height: 1;
 }
 
-.landing .ap-back {
+.nav-desktop { display: none; }
+.landing .nav-about {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--ln-ink-3);
+  text-decoration: none;
+  min-height: 44px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  min-height: 44px;
-  font-size: 13px;
-  color: var(--ln-ink-2);
+}
+.landing .nav-about:hover { color: var(--ln-ink); }
+
+.nav-bottom {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: color-mix(in oklab, var(--ln-surface) 94%, transparent);
+  backdrop-filter: saturate(140%) blur(12px);
+  border-top: 1px solid var(--ln-line);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.landing .nav-bottom a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: var(--nav-bottom-h);
+  font-size: 11px;
+  color: var(--ln-ink-3);
   text-decoration: none;
 }
+.landing .nav-bottom a[aria-current="page"] { color: var(--ln-accent); font-weight: 600; }
+.landing .nav-bottom a:hover { color: var(--ln-ink); }
 
-.landing .ap-back:hover {
-  color: var(--ln-ink);
-  text-decoration: underline;
+@media (min-width: 720px) {
+  .nav-bottom { display: none; }
+  .app-main { padding-bottom: 72px; padding-inline: 24px; }
+  .nav-top-inner { padding-inline: 24px; gap: 22px; max-width: 1060px; }
+  .nav-desktop { display: flex; gap: 4px; }
+  .landing .nav-desktop a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 40px;
+    padding-inline: 13px;
+    border-radius: 9px;
+    font-size: 13.5px;
+    color: var(--ln-ink-2);
+    text-decoration: none;
+  }
+  .landing .nav-desktop a:hover { background: var(--ln-surface-2); color: var(--ln-ink); }
+  .landing .nav-desktop a[aria-current="page"] { background: var(--ln-ink); color: var(--ln-surface); }
 }
 
-/* -------------------------------------------------------------------- page */
+/* ---------------------------------------------------------------- page header */
 
-.ap-main {
-  max-width: var(--ln-maxw);
-  margin-inline: auto;
-  padding-inline: var(--ln-gutter);
-}
-
-.ap-head {
-  padding-block: clamp(24px, 3.5vw, 40px) clamp(14px, 2vw, 22px);
-}
-
-.ap-title {
+.page-head { padding-block: 20px 14px; }
+.page-head h1 {
   margin: 0;
-  font-size: clamp(27px, 3.4vw, 38px);
+  font-size: 26px;
   line-height: 1.1;
   letter-spacing: -0.04em;
   font-weight: 600;
 }
-
-.ap-note {
+.page-head p {
+  margin: 6px 0 0 !important;
   color: var(--ln-ink-3);
-  font-size: 13px;
+  font-size: 14px;
+}
+
+.page-note {
+  margin-top: 22px !important;
+  color: var(--ln-ink-3);
+  font-size: 12px;
   line-height: 1.6;
-  max-width: 66ch;
-  padding-bottom: clamp(48px, 8vw, 84px);
 }
 
-/* The toolbar sticks under the header so the filters stay reachable while reading down
-   a long grid. Its own background is opaque — a translucent bar over scrolling cards
-   turns the filter labels into mush. */
-.ap .cg-toolbar {
-  position: sticky;
-  top: 58px;
-  z-index: 10;
+/* ----------------------------------------------------------------------- feed */
+
+.feed-search {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding-inline: 13px;
+  min-height: 44px;
+  border: 1px solid var(--ln-line);
+  border-radius: 11px;
+  background: var(--ln-surface);
+  color: var(--ln-ink-3);
+  margin-bottom: 14px;
+}
+.feed-search input {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: var(--ln-ink);
+  font: inherit;
+  font-size: 14px;
+}
+
+.feed { display: grid; gap: 12px; }
+
+.fc {
+  border: 1px solid var(--ln-line);
+  border-radius: 14px;
+  background: var(--ln-surface);
+  padding: 13px 13px 9px;
+  min-width: 0;
+}
+
+/* ---------------------------------------------------------------- the card */
+/* Three parts: who said it, what it buys, what you can do. Nothing else earns a row. */
+
+.fc-who { display: flex; align-items: center; gap: 9px; }
+.fc-who p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 7px;
+  margin: 0 !important;
+  min-width: 0;
+  font-size: 13px;
+}
+.fc-who strong { font-weight: 600; color: var(--ln-ink); }
+.landing .fc .fc-who a {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--ln-ink-3);
+  font-size: 12px;
+  text-decoration: none;
+}
+.landing .fc .fc-who a:hover { color: var(--ln-accent); text-decoration: underline; }
+.fc-when { color: var(--ln-ink-3); font-size: 12px; }
+.fc-when::before { content: "·"; margin-right: 6px; }
+
+/* The post itself, at reading size. It is the reason the thesis exists, so it is the
+   largest type on the card — larger than anything we wrote about it. */
+.fc-post {
+  margin: 8px 0 0;
+  white-space: pre-line;
+  font-size: 15px;
+  line-height: 1.45;
+  letter-spacing: -0.008em;
+  color: var(--ln-ink);
+}
+
+/* Our own card wears the same shape as a quoted one: a mark, a name, then what was said.
+   The brand mark sits in a tile the size of an author's avatar so the two kinds of card
+   share a baseline instead of one looking like a row in a table. */
+.fc-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--ln-accent-soft);
+}
+.fc-mark .ln-brand-mark { width: 21px; height: 21px; }
+.fc-cat { color: var(--ln-ink-3); font-size: 12px; text-transform: capitalize; }
+/* The horizon wraps the byline onto a second line on a phone, stranding a middot at the
+   start of it. It is on the thesis page and in the drawer; the category is the part that
+   helps somebody scanning.
+   Scoped to the editorial head only — the same element on a sourced card is the post's
+   date, and how old a quoted post is changes how much weight to give it. */
+@media (max-width: 460px) {
+  .fc-who:has(.fc-cat) .fc-when { display: none; }
+}
+.fc-cat::before { content: "·"; margin-right: 6px; }
+
+.fc-post--claim {
+  font-weight: 600;
+  letter-spacing: -0.018em;
+}
+/* Three classes deep because `.landing a:not(.ln-btn):not(.ln-wordmark)` is (0,3,1) and
+   would otherwise paint every claim in the accent. */
+.landing .fc .fc-post--claim a { color: var(--ln-ink); text-decoration: none; }
+.landing .fc .fc-post--claim a:hover { color: var(--ln-accent); text-decoration: underline; }
+
+/* Two lines of the argument, so our card has a body where a quoted one has the post. */
+.fc-summary {
+  margin: 5px 0 0 !important;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--ln-ink-2);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------- the basket tile */
+/* A quoted object inside the card, the way an embed sits inside a post — and the way in:
+   the whole tile is the buy trigger, so the basket and the button are the same thing. */
+.landing .fc .fc-tile {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 11px;
+  padding: 13px 12px;
+  border: 1px solid var(--ln-line);
+  border-radius: 12px;
+  background: var(--ln-surface-sunken);
+  color: var(--ln-ink);
+  text-decoration: none;
+  transition: background-color 180ms var(--app-ease), border-color 180ms var(--app-ease), transform 140ms var(--app-ease);
+}
+.landing .fc .fc-tile:hover { background: var(--ln-surface-2); border-color: var(--ln-line-strong); }
+.landing .fc .fc-tile:active { transform: scale(0.99); }
+
+.fc-tile-logos { display: flex; flex-shrink: 0; }
+.fc-tile-logos > span { display: flex; }
+.fc-tile-logos > span + span { margin-left: -9px; }
+.fc-tile-logos .tl { box-shadow: 0 0 0 2px var(--ln-surface-sunken); border-radius: 6px; }
+
+.fc-tile-name { min-width: 0; flex: 1; }
+/* How the future is held, under what the future is. */
+.landing .fc .fc-tile-name > span:not(.ln-sr-only) {
+  display: block;
+  margin-top: 3px;
+  font-size: 11.5px;
+  color: var(--ln-ink-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* The credit line, directly above the basket it credits. Ink-2 rather than ink-3: this is
+   the answer to "whose basket is this", which is the question the card most needs to
+   answer, not a footnote to be greyed out of the way. Its own row because it shares the
+   tile's line with two figures otherwise, and was clipped on forty-nine of sixty cards. */
+.fc-by {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0 0 !important;
+  font-size: 11.5px;
+  font-weight: 550;
+  letter-spacing: 0.01em;
+  color: var(--ln-ink-2);
+}
+.fc-by .ln-brand-mark { width: 13px; height: 13px; flex-shrink: 0; color: var(--ln-brand); }
+.fc-by + .fc-claim { margin-top: 7px !important; }
+
+/* The signal itself. The largest text on the card, because the card carries no post body
+   and no summary any more — this sentence is the whole of it. */
+.fc-claim {
+  margin: 12px 0 0 !important;
+  font-size: 17px;
+  line-height: 1.24;
+  letter-spacing: -0.026em;
+  font-weight: 600;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+/* Three classes deep because `.landing a:not(.ln-btn):not(.ln-wordmark)` is (0,3,1). */
+.landing .fc .fc-claim a { color: var(--ln-ink); text-decoration: none; }
+.landing .fc .fc-claim a:hover { color: var(--ln-accent); text-decoration: underline; }
+.fc-claim + .fc-tile { margin-top: 9px !important; }
+/* Colour set on the text, not inherited from the tile. The tile is an <a>, and
+   `.landing a:not(.ln-btn):not(.ln-wordmark)` is (0,3,1) — it outweighs any rule on the
+   tile itself, so a basket title came out accent-red and competed with the one figure on
+   the row that is meant to be read. */
+.landing .fc .fc-tile-name strong {
+  color: var(--ln-ink);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.32;
+  letter-spacing: -0.012em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+
+/* Two figures, labelled, right-aligned — the shape a position readout has everywhere.
+   Kept narrow on purpose: this column and the basket name share one line at 390px, and
+   every pixel taken here is a ticker turned into an ellipsis. */
+.fc-figs { display: flex; gap: 10px; flex-shrink: 0; margin: 0 !important; }
+.fc-fig { display: grid; gap: 1px; text-align: right; }
+.fc-fig-label {
+  font-size: 9.5px;
+  letter-spacing: 0.04em;
+  /* Not uppercased. The benchmark's label is a ticker — SPYx, not SPYX — and an xStock's
+     trailing lowercase x is part of its name, not styling. */
+  color: var(--ln-ink-3);
+}
+.fc-fig strong { font-size: 12.5px; font-weight: 600; }
+.fc-fig strong.is-up { color: var(--ln-confirmed); }
+.fc-fig strong.is-down { color: var(--ln-accent); }
+.fc-fig-bench { color: var(--ln-ink-3); font-weight: 550 !important; }
+.fc-figs--none { flex-shrink: 0; font-size: 11.5px; color: var(--ln-ink-3); white-space: nowrap; }
+
+/* ------------------------------------------------------------------ the foot */
+.fc-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 6px;
+  min-height: 44px;
+}
+.fc-reach {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0 !important;
+  min-width: 0;
+  font-size: 11.5px;
+  color: var(--ln-ink-3);
+  font-variant-numeric: tabular-nums;
+  overflow: hidden;
+}
+.fc-reach span { white-space: nowrap; flex-shrink: 0; }
+/* Never dropped, and never the thing that gets clipped. These are somebody else's numbers
+   on somebody else's platform, and "306k views on" with the label cut off is worse than no
+   label at all — it reads as this product's own traction. The reposts figure is the one
+   that goes when the row is tight; it is the least informative of the three. */
+.fc-reach em { font-style: normal; opacity: 0.75; white-space: nowrap; flex-shrink: 0; }
+@media (max-width: 430px) {
+  .fc-reach span:nth-of-type(2) { display: none; }
+}
+
+.fc-foot-acts { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
+
+/* ---------------------------------------------------- take a side (conviction) */
+/* The only action on a card that works without a wallet, so it reads as an invitation
+   rather than a footnote — but as pills, not a third row of full-weight buttons. */
+
+/* Instant feedback on press: the tap is the whole interaction, so it has to land. */
+
+/* Held sides are filled, not merely outlined — at a glance you can see what you called
+   without reading the label, and the two sides never wear the same colour. */
+
+
+
+
+.fc-why {
+  min-height: 44px;
+  padding-inline: 15px;
+  border: 1px solid var(--ln-line-strong);
+  border-radius: 10px;
+  background: var(--ln-surface);
+  color: var(--ln-ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 550;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.fc-why:hover { background: var(--ln-surface-2); }
+
+
+.feed-empty, .lb-empty, .mine-empty {
+  border: 1px dashed var(--ln-line-strong);
+  border-radius: 14px;
+  padding: 36px 20px;
+  text-align: center;
+  color: var(--ln-ink-2);
+}
+.feed-empty h2, .lb-empty h2, .mine-empty h2 {
+  margin: 0 !important;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--ln-ink);
+}
+.feed-empty p, .lb-empty p, .mine-empty p {
+  margin: 9px auto 18px !important;
+  font-size: 14px;
+  max-width: 44ch;
+}
+.mine-empty .ln-btn, .lb-empty .ln-btn { min-height: 44px; }
+
+/* ---------------------------------------------------------------- leaderboard */
+
+.lb-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.lb-tabs, .mine-tabs { display: flex; gap: 4px; }
+.lb-tabs button, .mine-tabs button {
+  min-height: 40px;
+  padding-inline: 14px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--ln-ink-2);
+  font: inherit;
+  font-size: 13.5px;
+  cursor: pointer;
+}
+.lb-tabs button[aria-pressed="true"], .mine-tabs button[aria-pressed="true"] {
+  background: var(--ln-ink);
+  color: var(--ln-surface);
+}
+.lb-tabs button:hover:not([aria-pressed="true"]),
+.mine-tabs button:hover:not([aria-pressed="true"]) { background: var(--ln-surface-2); }
+
+.mine-tabs { margin-bottom: 14px; }
+
+.lb-selects { display: flex; gap: 8px; }
+.lb-selects select {
+  min-height: 40px;
+  padding-inline: 10px;
+  border: 1px solid var(--ln-line);
+  border-radius: 9px;
+  background: var(--ln-surface);
+  color: var(--ln-ink);
+  font: inherit;
+  font-size: 13px;
+}
+
+.lb { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.lb-row {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--ln-line);
+  border-radius: 12px;
+  background: var(--ln-surface);
+}
+.lb-row.is-unranked { background: var(--ln-surface-sunken); }
+.lb-rank {
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--ln-ink-3);
+  text-align: center;
+}
+.lb-main { min-width: 0; }
+.lb-main h2 { margin: 0 !important; font-size: 14.5px; line-height: 1.3; font-weight: 600; }
+.landing .lb-main h2 a { color: var(--ln-ink); text-decoration: none; }
+.landing .lb-main h2 a:hover { color: var(--ln-accent); text-decoration: underline; }
+.lb-by { margin: 3px 0 0 !important; font-size: 11.5px; color: var(--ln-ink-3); }
+.lb-cohort { opacity: 0.8; }
+.lb-assets { list-style: none; display: flex; gap: 4px; margin: 7px 0 0; padding: 0; }
+
+.lb-figures { text-align: right; display: flex; flex-direction: column; gap: 1px; }
+.lb-figures strong { font-size: 15px; font-variant-numeric: tabular-nums; }
+.lb-figures strong.is-up { color: var(--ln-confirmed); }
+.lb-figures strong.is-down { color: var(--ln-accent); }
+.lb-figures span, .lb-figures small { font-size: 11px; color: var(--ln-ink-3); white-space: nowrap; }
+.lb-excluded { font-size: 11.5px; color: var(--ln-ink-3); max-width: 13ch; }
+
+/* ------------------------------------------------------------------ my theses */
+
+.mine-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.mine-row {
+  border: 1px solid var(--ln-line);
+  border-radius: 12px;
+  background: var(--ln-surface);
+  padding: 13px;
+}
+.mine-row-head { display: flex; align-items: flex-start; gap: 10px; }
+.mine-row-head h2 { margin: 0 !important; flex: 1; font-size: 15px; line-height: 1.3; font-weight: 600; }
+.landing .mine-row-head h2 a { color: var(--ln-ink); text-decoration: none; }
+.landing .mine-row-head h2 a:hover { color: var(--ln-accent); text-decoration: underline; }
+
+.mine-mode {
+  flex-shrink: 0;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+.mine-mode--simulation { background: var(--ln-surface-2); color: var(--ln-ink-2); }
+.mine-mode--live { background: var(--ln-accent-soft); color: var(--ln-accent); }
+
+.mine-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin: 7px 0 0 !important;
+  font-size: 12px;
+  color: var(--ln-ink-3);
+}
+.landing .mine-record { display: inline-flex; align-items: center; gap: 3px; margin-left: auto; font-size: 12px; }
+
+.mine-legs { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 0; padding: 0; }
+.mine-legs li {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px 4px 5px;
+  border-radius: 8px;
+  background: var(--ln-surface-2);
+  font-size: 11.5px;
+  color: var(--ln-ink-3);
+}
+.mine-legs li.is-filled { color: var(--ln-ink); }
+.mine-legs b { font-weight: 500; font-size: 10.5px; }
+
+.mine-update {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-left: 2px solid var(--ln-brand);
+  background: var(--ln-surface-sunken);
+  border-radius: 0 8px 8px 0;
+}
+.mine-update-head { margin: 0 !important; font-size: 10.5px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--ln-ink-3); }
+.mine-update strong { display: block; margin-top: 4px; font-size: 13.5px; }
+.mine-update p { margin: 5px 0 0 !important; font-size: 13px; color: var(--ln-ink-2); line-height: 1.5; }
+
+.mine-unfollow {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 36px;
+  padding-inline: 10px;
+  border: 1px solid var(--ln-line);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ln-ink-3);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+.mine-unfollow:hover { color: var(--ln-ink); border-color: var(--ln-line-strong); }
+
+/* ------------------------------------------------------------- your record */
+.rec-summary {
+  margin: 0 0 12px !important;
+  padding: 11px 13px;
+  border: 1px solid var(--ln-line);
+  border-radius: 12px;
+  background: var(--ln-surface);
+  font-size: 13px;
+  color: var(--ln-ink-2);
+}
+.rec-summary strong { color: var(--ln-ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.rec-side {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+.rec-side--backing { background: color-mix(in oklab, var(--ln-confirmed) 12%, var(--ln-surface)); color: var(--ln-confirmed); }
+.rec-side--doubting { background: var(--ln-accent-soft); color: var(--ln-accent); }
+
+.rec-verdict strong { font-weight: 600; }
+.rec-verdict.is-ahead strong { color: var(--ln-confirmed); }
+.rec-verdict.is-behind strong { color: var(--ln-accent); }
+
+.mine-error { margin-bottom: 10px !important; font-size: 13px; color: var(--ln-accent); }
+
+/* ---------------------------------------------------------------- "See why" sheet */
+
+.sheet {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ln-ink);
+  max-width: min(560px, 100vw);
+  width: 100%;
+  max-height: 100dvh;
+  margin: auto auto 0;
+}
+.sheet::backdrop { background: oklch(25% 0.012 140 / 0.45); }
+
+.sheet-panel {
+  max-height: 88dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background: var(--ln-bg);
-  padding-block: 12px;
-  margin-bottom: 8px;
-  border-bottom: 1px solid var(--ln-line);
+  border: 1px solid var(--ln-line);
+  border-radius: 16px 16px 0 0;
+  padding: 16px 18px calc(22px + env(safe-area-inset-bottom, 0px));
+}
+.sheet-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 10px;
+  background: var(--ln-bg);
+}
+.sheet-eyebrow {
+  margin: 0 !important;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ln-accent);
+}
+.sheet-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--ln-line);
+  border-radius: 9px;
+  background: var(--ln-surface);
+  color: var(--ln-ink-2);
+  cursor: pointer;
+}
+.sheet-body h2 { margin: 0 !important; font-size: 21px; line-height: 1.2; letter-spacing: -0.03em; font-weight: 600; }
+.sheet-body section { margin-top: 18px; }
+.sheet-body h3 {
+  margin: 0 !important;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ln-ink-3);
+}
+.sheet-body section > p { margin: 7px 0 0 !important; font-size: 14.5px; line-height: 1.6; color: var(--ln-ink-2); }
+.sheet-objection > p { color: var(--ln-ink); }
+
+.sheet-holdings { margin: 10px 0 0; display: grid; gap: 14px; }
+.sheet-holdings dt { font-size: 14px; font-weight: 600; }
+.sheet-holdings dt span { font-weight: 400; color: var(--ln-ink-3); font-size: 12px; }
+.sheet-holdings dd { margin: 5px 0 0; font-size: 13.5px; line-height: 1.55; color: var(--ln-ink-2); }
+.sheet-limit { color: var(--ln-ink-3) !important; }
+.sheet-sources { margin-top: 18px !important; font-size: 12px; color: var(--ln-ink-3); }
+.landing .sheet-full {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  min-height: 44px;
+  font-size: 14px;
+  font-weight: 550;
 }
 
-@media (max-width: 760px) {
-  .ap .cg-toolbar { position: static; border-bottom: 0; }
+@media (min-width: 560px) {
+  .sheet { margin: auto; max-height: 90dvh; }
+  .sheet-panel { border-radius: 16px; max-height: 90dvh; }
+}
+
+/* -------------------------------------------------------------------- motion */
+
+@keyframes fc-rise { to { opacity: 1; transform: none; } }
+.feed > .fc {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fc-rise 360ms var(--app-ease) forwards;
+}
+.feed > .fc:nth-child(2) { animation-delay: 50ms; }
+.feed > .fc:nth-child(3) { animation-delay: 100ms; }
+.feed > .fc:nth-child(n + 4) { animation-delay: 150ms; }
+
+.fc, .lb-row, .mine-row { transition: border-color 180ms ease; }
+@media (hover: hover) and (pointer: fine) {
+  .fc:hover, .lb-row:hover, .mine-row:hover { border-color: var(--ln-line-strong); }
+}
+
+.landing .ln-btn, .fc-why, .lb-tabs button, .mine-tabs button, .sheet-close, .mine-unfollow {
+  transition: transform 150ms var(--app-ease), background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+}
+.landing .ln-btn:active, .fc-why:active, .lb-tabs button:active,
+.mine-tabs button:active, .sheet-close:active, .mine-unfollow:active { transform: scale(0.97); }
+
+.sheet, .sheet::backdrop {
+  transition: opacity 220ms ease, transform 220ms var(--app-ease), overlay 220ms allow-discrete, display 220ms allow-discrete;
+}
+.sheet[open] { opacity: 1; transform: translateY(0); }
+.sheet[open]::backdrop { opacity: 1; }
+.sheet:not([open]) { opacity: 0; transform: translateY(12px); }
+@starting-style {
+  .sheet[open] { opacity: 0; transform: translateY(12px); }
+  .sheet[open]::backdrop { opacity: 0; }
+}
+
+/* Focus has to be visible on every interactive thing, including the ones with custom
+   backgrounds that would otherwise swallow the default ring. */
+.app-shell :is(a, button, input, select, summary):focus-visible {
+  outline: 2px solid var(--ln-focus);
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ap-header { backdrop-filter: none; background: var(--ln-bg); }
+  .feed > .fc { opacity: 1; transform: none; animation: none; }
+  .landing .ln-btn:active, .fc-why:active, .lb-tabs button:active,
+  .mine-tabs button:active, .sheet-close:active, .mine-unfollow:active,
+  .sheet, .sheet::backdrop { transition: opacity 120ms ease; }
+  .sheet:not([open]) { transform: none; }
+  .nav-top, .nav-bottom { backdrop-filter: none; }
 }
 
-.ap-head .ln-eyebrow { margin-bottom:12px; font-size:10px; }
-.ap-title { font-size:32px; }
-.ap-intro { margin-top:12px !important; color:var(--ln-ink-2); font-size:15px; line-height:1.6; }
-@media(max-width:600px) { .ap-title { font-size:28px; } .ap-intro { font-size:14px; max-width:30ch; } }
-@media(max-width:600px) {
- .ap-head { padding-block:22px 10px; }
- .ap-head .ln-eyebrow, .ap-intro { display:none; }
- .ap-title { font-size:25px; }
+/* ─── Desktop rail ────────────────────────────────────────────────────────────
+ *
+ * Above 1024px the app is two columns: the feed, and what you already hold beside it.
+ * Deciding what to buy is easier when your existing positions are on screen rather than
+ * one navigation away.
+ *
+ * Below that the rail is not rendered narrower, it is removed — on a phone the same
+ * content is a destination in the bottom bar, and a panel duplicating a tab is a second
+ * copy to keep in step forever.
+ */
+
+.app-body { display: block; }
+.rail { display: none; }
+
+@media (min-width: 1024px) {
+  /* Two columns first: the feed and what you hold. The left rail is the one that goes
+     when space runs out, because it is a way in and the other two are the work.
+     The track list is chosen from which rails are actually rendered. Both of them return
+     null on the page they would duplicate — the trending rail on the leaderboard, the
+     portfolio rail on My theses — and a fixed three-track grid does not notice: the main
+     column simply slid into the 252px slot meant for the rail and the leaderboard came
+     out squeezed into a quarter of the width with a blank third beside it. */
+  .app-body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 288px;
+    gap: 28px;
+    max-width: 1060px;
+    margin-inline: auto;
+    padding-inline: 24px;
+    /* Air under the sticky header. Without it the rails start two pixels below the border
+       and the whole page reads as one stuck-together slab. The main column gives up its
+       own top padding so all three start on the same line. */
+    padding-top: 22px;
+    align-items: start;
+  }
+  .app-body .page-head { padding-top: 0; }
+  /* The wrapper owns the gutter now, so the main column stops adding its own. */
+  .app-body .app-main { max-width: none; margin-inline: 0; padding-inline: 0; }
+
+  .rail { display: block; }
+  .rail-inner {
+    position: sticky;
+    /* Clears the sticky header. */
+    top: 72px;
+    padding: 16px;
+    border: 1px solid var(--ln-line);
+    border-radius: 14px;
+    background: var(--ln-surface);
+  }
 }
+
+.rail-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.rail-head h2 { margin: 0 !important; font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+.landing .rail-head a { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; }
+
+.rail-block { margin-top: 16px; }
+.rail-label {
+  margin: 0 0 8px !important;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ln-ink-3);
+}
+.rail-quiet { margin: 0 !important; font-size: 12.5px; line-height: 1.5; color: var(--ln-ink-3); }
+
+.rail-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
+.rail-list li { display: grid; gap: 3px; }
+.landing .rail-list a {
+  font-size: 13px;
+  line-height: 1.3;
+  font-weight: 550;
+  color: var(--ln-ink);
+  text-decoration: none;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.landing .rail-list a:hover { color: var(--ln-accent); text-decoration: underline; }
+.rail-list small { font-size: 11px; color: var(--ln-ink-3); }
+
+.rail-mode {
+  justify-self: start;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+.rail-mode--simulation { background: var(--ln-surface-2); color: var(--ln-ink-2); }
+.rail-mode--live { background: var(--ln-accent-soft); color: var(--ln-accent); }
+
+.rail-connect {
+  margin-top: 9px;
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid var(--ln-line-strong);
+  border-radius: 9px;
+  background: var(--ln-surface);
+  color: var(--ln-ink);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 550;
+  cursor: pointer;
+}
+.rail-connect:hover:not(:disabled) { background: var(--ln-surface-2); }
+.rail-connect:disabled { opacity: 0.6; cursor: default; }
+
+.rail-note {
+  margin: 16px 0 0 !important;
+  padding-top: 12px;
+  border-top: 1px solid var(--ln-line);
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--ln-ink-3);
+}
+
+/* ─── Performance chart ───────────────────────────────────────────────────────
+ *
+ * Series colours are inline on the marks, because they are data and are validated as a
+ * pair. Everything else here is chrome and wears text tokens: values, labels and ticks
+ * never take the series colour, so a colour is only ever identity beside them.
+ */
+
+/* Capped, not stretched. The SVG scales to its container, so on a wide row it grew to
+   the height of a hero image for three data points. A chart earns width by having
+   something to put in it. */
+.pc { margin: 0; max-width: 420px; }
+.pc-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  font-size: 11.5px;
+  color: var(--ln-ink-2);
+}
+.pc-legend span { display: inline-flex; align-items: center; gap: 5px; }
+.pc-legend i { width: 8px; height: 2px; border-radius: 1px; flex-shrink: 0; }
+.pc-legend b { font-variant-numeric: tabular-nums; font-weight: 600; }
+.pc-legend time { margin-left: auto; color: var(--ln-ink-3); font-size: 11px; }
+
+.pc-svg { display: block; width: 100%; height: auto; margin-top: 6px; overflow: visible; }
+.pc-zero { stroke: var(--ln-line-strong); stroke-width: 1; stroke-dasharray: 2 3; }
+.pc-tick { fill: var(--ln-ink-3); font-size: 9px; }
+.pc-crosshair { stroke: var(--ln-line-strong); stroke-width: 1; }
+
+.pc-empty { margin: 0 !important; font-size: 11.5px; line-height: 1.5; color: var(--ln-ink-3); }
+
+.pc-table { margin-top: 8px; font-size: 11px; }
+.pc-table summary { cursor: pointer; color: var(--ln-ink-3); min-height: 28px; display: flex; align-items: center; }
+.pc-table table { width: 100%; border-collapse: collapse; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.pc-table th, .pc-table td { text-align: right; padding: 3px 0; font-weight: 400; color: var(--ln-ink-2); }
+.pc-table thead th { color: var(--ln-ink-3); border-bottom: 1px solid var(--ln-line); }
+.pc-table tbody th { text-align: left; color: var(--ln-ink-3); }
+
+.mine-chart { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--ln-line); }
+
+/* The two things a leaderboard can rank here — what the model called, and what people
+   called — are different claims about the world, so they never share a table. */
+.lb-views { margin-bottom: 12px; }
+
+/* ------------------------------------------------- since you last looked */
+/* Quiet on purpose. This is a digest that happens to be at the top, not an alert: no
+   badge, no count styled as urgency, and nothing at all when nothing changed. */
+.since {
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--ln-line);
+  border-radius: 12px;
+  background: var(--ln-surface);
+}
+.since h2 {
+  margin: 0 0 7px !important;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ln-ink-3);
+}
+.since ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
+.since li { font-size: 13px; line-height: 1.5; color: var(--ln-ink-2); }
+.landing .since a { font-weight: 550; white-space: nowrap; }
+
+/* The objection, in the thesis's own words. Quiet, but present — it is the reason the
+   second button is a real choice rather than a thumbs-down. */
+
+/* The ticker, when there is no logo file. Sized to sit in the same 26px tile so a mixed
+   row of logos and letters keeps one baseline. */
+.tl-letters {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  min-width: 26px;
+  min-height: 26px;
+  /* Scales with its tile. Fixed at 9px it vanished inside a 34px map cell and read as an
+     empty white disc, which is worse than the broken glyph it replaced. */
+  font-size: clamp(9px, 34cqw, 13px);
+  container-type: inline-size;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ln-ink-2);
+}
+.rec-line { margin-top: 2px !important; }
+
+/* ------------------------------------------- taking a side, in the foot row */
+/* Two icons where a reader's thumb already is, level with the post's own figures. The
+   counts beside them are raw numbers, never a percentage: the floor governs the split,
+   which is a claim about what people think, and a count of two is only a count of two. */
+/* The tap is the whole interaction, so it has to land before the network does. */
+.tas-icon[aria-pressed="true"] { color: var(--ln-confirmed); background: color-mix(in oklab, var(--ln-confirmed) 10%, transparent); }
+.tas-icon--doubt[aria-pressed="true"] { color: var(--ln-accent); background: var(--ln-accent-soft); }
+
+/* Your standing, once there is one. Its own line because it only exists on the handful of
+   cards you have actually called. */
+.fc .tas-verdict { margin: 0 0 3px !important; font-size: 11.5px; line-height: 1.45; color: var(--ln-ink-3); }
+
+/* ------------------------------------------------------------ the card menu */
+.fc-menu { position: relative; display: flex; }
+.fc-menu-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--ln-ink-3);
+  cursor: pointer;
+  transition: background-color 160ms var(--app-ease), color 160ms var(--app-ease);
+}
+.fc-menu-btn:hover, .fc-menu-btn[aria-expanded="true"] { background: var(--ln-surface-2); color: var(--ln-ink); }
+
+.fc-menu-list {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 4px);
+  z-index: 5;
+  display: grid;
+  min-width: 176px;
+  padding: 4px;
+  border: 1px solid var(--ln-line-strong);
+  border-radius: 11px;
+  background: var(--ln-surface);
+  box-shadow: 0 8px 24px oklch(25% 0.012 140 / 0.12);
+}
+.landing .fc .fc-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ln-ink-2);
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.landing .fc .fc-menu-item:hover { background: var(--ln-surface-2); color: var(--ln-ink); }
+/* `.landing a:not(.ln-btn):not(.ln-wordmark)` is (0,3,1); a class-only rule on the item
+   loses to it and the link in the menu came out accent-red beside three ink-grey ones. */
+.landing .fc .fc-menu-list a { color: var(--ln-ink-2); text-decoration: none; }
+.landing .fc .fc-menu-list a:hover { color: var(--ln-ink); text-decoration: none; }
+.fc-menu-item svg { width: 14px; height: 14px; flex-shrink: 0; }
+/* The wrappers these controls bring with them must not become layout. */
+.fc-menu-list .follow-control, .fc-menu-list .share-control { display: contents; }
+.fc-menu-list .follow-note, .fc-menu-list .share-status, .fc-menu-list .share-fallback { display: none; }
+
+@media (max-width: 380px) {
+  /* The post's figures and the actions cannot share a line at this width without the
+     numbers being clipped, and a clipped count is worse than a wrapped row. */
+  .fc-foot { flex-wrap: wrap; row-gap: 2px; }
+  .fc-reach { order: 2; flex-basis: 100%; }
+  .fc-foot-acts { margin-left: auto; }
+}
+
+/* ------------------------------------------------------- three columns */
+/* Present in the DOM at every width so the layout does not depend on a media query to be
+   correct, hidden until there is honestly room for it. Declared before the query that
+   reveals it — both rules are one class, so the later one would simply win. */
+.rail--left { display: none; }
+
+/* Wide enough for the feed to keep its reading measure with a rail either side. Below
+   this the left rail is dropped rather than squeezed: two 260px rails and a 500px feed
+   is three things that are all slightly too narrow. */
+/* No right rail — My theses, where it would sit beside a fuller copy of itself. */
+@media (min-width: 1024px) {
+  .app-body:not(:has(.rail:not(.rail--left))) { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (min-width: 1280px) {
+  .app-body:has(.rail--left) {
+    grid-template-columns: 252px minmax(0, 1fr) 288px;
+  }
+  .app-body:has(.rail--left):not(:has(.rail:not(.rail--left))) {
+    grid-template-columns: 252px minmax(0, 1fr);
+  }
+  .app-body {
+    max-width: 1340px;
+    gap: 24px;
+  }
+  .rail--left { display: block; }
+
+  /* The header tracks the body's width at every breakpoint. It was pinned at 720px, which
+     was invisible while the body was 720px and became a floating island the moment the
+     body grew to 1340 — the wordmark sat a third of the way across the screen with the
+     left rail beginning outside it. A header that does not line up with the content under
+     it reads as a rendering fault. */
+  .nav-top-inner { max-width: 1340px; }
+}
+
+.rail-head h2 { display: inline-flex; align-items: center; gap: 6px; }
+.rail-head h2 svg { color: var(--ln-ink-3); }
+
+.rail-rank { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 2px; }
+.rail-rank li {
+  display: grid;
+  grid-template-columns: 16px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 4px 8px;
+  padding: 8px 0;
+}
+.rail-body { min-width: 0; }
+/* The stats under a claim: separated by middots, wrapping before they clip. Each one is
+   a measured figure — never a projection, never a rate derived from a single day. */
+.rail-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  margin: 3px 0 0 !important;
+  font-size: 10.5px;
+  color: var(--ln-ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.rail-stats span + span::before { content: "·"; margin-right: 8px; }
+.rail-stats .is-up { color: var(--ln-confirmed); }
+.rail-stats .is-down { color: var(--ln-accent); }
+.rail-rank li + li { border-top: 1px solid var(--ln-line); }
+.rail-pos { font-size: 11px; color: var(--ln-ink-3); font-variant-numeric: tabular-nums; }
+.landing .rail .rail-rank a {
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--ln-ink);
+  text-decoration: none;
+  /* Two lines, then stop. A claim is a sentence and the rail is 252px wide. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+.landing .rail .rail-rank a:hover { color: var(--ln-accent); }
+.rail-fig { font-size: 12px; font-weight: 600; white-space: nowrap; }
+.rail-fig.is-up { color: var(--ln-confirmed); }
+.rail-fig.is-down { color: var(--ln-accent); }
+.rail-fig--quiet { color: var(--ln-ink-3); font-weight: 550; }
+
+.rail-foot {
+  margin: 14px 0 0 !important;
+  padding-top: 10px;
+  border-top: 1px solid var(--ln-line);
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--ln-ink-3);
+}
+
+/* ------------------------------------------------------------------ sign in */
+/* Two ways in, stacked, with the one that needs no extension leading when there is no
+   extension. Full width because this is the only action on the surface it appears on. */
+.signin { display: grid; gap: 8px; }
+.signin .ln-btn { width: 100%; min-height: 44px; font-size: 13.5px; }
+.signin--inline .ln-btn { min-height: 40px; padding: 10px 12px; font-size: 12.5px; }
+.signin-note {
+  margin: 2px 0 0 !important;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--ln-ink-3);
+}
+.signin--inline .signin-note { font-size: 11px; }
+.signin-error { margin: 2px 0 0 !important; font-size: 12px; color: var(--ln-accent); }
+
+/* --------------------------------------------------------------- thesis drawer */
+/* Slides in from the edge and keeps the feed behind it, because reading a belief and
+   deciding on it are the same act and a second URL breaks it in half. */
+.drawer {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ln-ink);
+  max-width: min(520px, 100vw);
+  width: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  /* Pinned to the right edge. Detail panels arrive from the right because that is where
+     the reading finishes, and because the left is where the lists that open it live —
+     sliding in over them hid the thing that was just clicked. */
+  margin: 0 0 0 auto;
+  transition:
+    translate 260ms var(--app-ease),
+    opacity 200ms var(--app-ease),
+    overlay 260ms allow-discrete,
+    display 260ms allow-discrete;
+}
+.drawer::backdrop {
+  background: oklch(25% 0.012 140 / 0.4);
+  transition: opacity 240ms var(--app-ease), overlay 240ms allow-discrete, display 240ms allow-discrete;
+}
+.drawer[open] { translate: 0 0; opacity: 1; }
+.drawer[open]::backdrop { opacity: 1; }
+/* Never from translate: -100% alone — an element sliding in from nothing reads as a jump.
+   The pair with opacity is what makes it arrive rather than appear. */
+@starting-style {
+  .drawer[open] { translate: 100% 0; opacity: 0; }
+  .drawer[open]::backdrop { opacity: 0; }
+}
+.drawer:not([open]) { translate: 100% 0; opacity: 0; }
+
+.drawer-panel {
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--ln-bg);
+  border-left: 1px solid var(--ln-line);
+  padding: 14px 20px calc(28px + env(safe-area-inset-bottom, 0px));
+}
+.drawer-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-block: 4px 10px;
+  background: var(--ln-bg);
+}
+.drawer-eyebrow {
+  margin: 0 !important;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ln-ink-3);
+}
+.drawer-quiet { margin: 10px 0 0 !important; font-size: 13px; line-height: 1.55; color: var(--ln-ink-3); }
+
+.drawer-body h2 {
+  margin: 0 !important;
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: -0.032em;
+  font-weight: 600;
+}
+.drawer-summary { margin: 9px 0 0 !important; font-size: 14.5px; line-height: 1.55; color: var(--ln-ink-2); }
+.drawer-body section { margin-top: 20px; }
+.drawer-body h3 {
+  margin: 0 0 7px !important;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ln-ink-3);
+}
+.drawer-body section > p { margin: 0 !important; font-size: 14px; line-height: 1.6; color: var(--ln-ink-2); }
+
+.drawer-post { display: flex; gap: 10px; margin-top: 16px; padding: 12px; border: 1px solid var(--ln-line); border-radius: 12px; background: var(--ln-surface); }
+.drawer-post-who { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 7px; margin: 0 !important; font-size: 13px; }
+.drawer-post-who strong { font-weight: 600; }
+.landing .drawer-post-who a { display: inline-flex; align-items: center; gap: 3px; color: var(--ln-ink-3); font-size: 12px; text-decoration: none; }
+.drawer-post blockquote { margin: 6px 0 0; white-space: pre-line; font-size: 14px; line-height: 1.5; }
+
+.drawer-holdings { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.drawer-holdings > li { padding: 11px 12px; border: 1px solid var(--ln-line); border-radius: 12px; background: var(--ln-surface); }
+.drawer-holding-head { display: flex; align-items: center; gap: 8px; }
+.drawer-holding-head strong { font-size: 13.5px; font-weight: 600; }
+.drawer-role { font-size: 11.5px; color: var(--ln-ink-3); }
+.drawer-weight { margin-left: auto; font-size: 13px; font-weight: 600; }
+.drawer-holdings p { margin: 7px 0 0 !important; font-size: 13px; line-height: 1.5; color: var(--ln-ink-2); }
+.drawer-limit { color: var(--ln-ink-3) !important; }
+/* What the issuer can do to a holding, on the holding. It is the fact least visible on a
+   chart and the one most likely to decide the outcome. */
+.drawer-issuer {
+  margin-top: 8px !important;
+  padding-top: 8px;
+  border-top: 1px solid var(--ln-line);
+  font-size: 11.5px !important;
+  color: var(--ln-ink-3) !important;
+}
+
+.drawer-call { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 9px; margin: 0 0 6px !important; }
+.drawer-call strong { font-size: 19px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.drawer-call strong.is-up { color: var(--ln-confirmed); }
+.drawer-call strong.is-down { color: var(--ln-accent); }
+.drawer-call span { font-size: 12px; color: var(--ln-ink-3); }
+
+.drawer-sources { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.landing .drawer-sources a { display: inline-flex; align-items: center; gap: 4px; font-size: 13.5px; font-weight: 550; }
+.drawer-sources > li > span { display: block; margin-top: 2px; font-size: 11.5px; color: var(--ln-ink-3); }
+.drawer-sources p { margin: 4px 0 0 !important; font-size: 12.5px; line-height: 1.5; color: var(--ln-ink-3); }
+
+.drawer-disclosure { margin: 20px 0 0 !important; font-size: 11.5px; line-height: 1.5; color: var(--ln-ink-3); }
+.drawer-actions { display: flex; gap: 9px; margin-top: 16px; }
+.drawer-actions .ln-btn { flex: 1; min-height: 46px; font-size: 13.5px; }
+.drawer-body .tas { margin-top: 14px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer, .drawer::backdrop { transition: opacity 120ms ease; }
+  .drawer:not([open]), .drawer[open] { translate: 0 0; }
+  @starting-style {
+    .drawer[open] { translate: 0 0; }
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════ skeuomorphic pass
+   One material per component, light from the top, depth that means something: raised for
+   things you act on, carved for things that hold content. The tokens are the standard
+   recipe retuned to this palette — warm ivory and vermilion, never the default cool grey,
+   and never pure black in a shadow. */
+
+:root {
+  /* Tactile in the dark.
+     The physics do not invert with the palette: light still comes from above, so a raised
+     surface still has its bright edge on top — it is just a faint white line on a dark
+     face rather than a broad highlight on a light one. What does change is that elevation
+     can no longer be carried by shadow alone, because a shadow on a dark ground is nearly
+     invisible; a raised thing is *lighter* than what it sits on, and the shadow only
+     separates the two. */
+  --sk-bg-top: oklch(24% 0.01 260);
+  --sk-bg-mid: oklch(22% 0.009 260);
+  --sk-bg-bottom: oklch(19.5% 0.009 260);
+  --sk-edge-top: oklch(100% 0 0 / 0.14);
+  --sk-edge-bottom: oklch(0% 0 0 / 0.5);
+  --sk-shadow: oklch(0% 0 0 / 0.42);
+  --sk-shadow-deep: oklch(0% 0 0 / 0.55);
+  --sk-highlight: oklch(100% 0 0 / 0.1);
+  --sk-carve: oklch(0% 0 0 / 0.55);
+  --sk-ease: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ---------------------------------------------------------------- raised surfaces */
+/* Cards, rails, menus, the drawer. A 1px gradient border does the reflective edge; the
+   pair of outer shadows does elevation; the inset pair does the lip. */
+.fc,
+.rail-inner,
+.fc-menu-list,
+.rec-summary,
+.mine-row,
+.lb-row,
+.signin .ln-btn--secondary {
+  border-color: transparent;
+  background:
+    linear-gradient(180deg, var(--sk-bg-top), var(--sk-bg-mid) 48%, var(--sk-bg-bottom)) padding-box,
+    linear-gradient(180deg, var(--sk-edge-top), oklch(100% 0 0 / 0.2) 45%, var(--sk-edge-bottom)) border-box;
+  box-shadow:
+    0 10px 22px var(--sk-shadow),
+    0 3px 7px oklch(0% 0 0 / 0.3),
+    inset 0 1px 0 var(--sk-highlight),
+    inset 0 -1px 0 oklch(0% 0 0 / 0.45);
+}
+.fc { transition: box-shadow 200ms var(--sk-ease), transform 200ms var(--sk-ease); }
+.fc:hover {
+  box-shadow:
+    0 16px 30px var(--sk-shadow),
+    0 5px 10px oklch(38% 0.03 60 / 0.1),
+    inset 0 1px 0 var(--sk-highlight),
+    inset 0 -1px 0 oklch(0% 0 0 / 0.45);
+}
+
+/* ---------------------------------------------------------------- carved wells */
+/* The basket tile is a thing the card contains, not a thing sitting on it, so it is cut
+   into the surface rather than raised off it. Same for the search field and the digest. */
+.landing .fc .fc-tile,
+.feed-search,
+.since,
+.drawer-holdings > li,
+.drawer-post {
+  border-color: transparent;
+  background:
+    linear-gradient(180deg, oklch(13.5% 0.008 260), oklch(15.5% 0.008 260) 60%, oklch(17% 0.008 260)) padding-box,
+    linear-gradient(180deg, var(--sk-carve), oklch(100% 0 0 / 0.6)) border-box;
+  box-shadow:
+    inset 0 2px 5px oklch(0% 0 0 / 0.55),
+    inset 0 -1px 0 var(--sk-highlight);
+}
+.landing .fc .fc-tile {
+  transition: box-shadow 180ms var(--sk-ease), transform 160ms var(--sk-ease);
+}
+.landing .fc .fc-tile:hover {
+  box-shadow:
+    inset 0 3px 7px oklch(0% 0 0 / 0.62),
+    inset 0 -1px 0 var(--sk-highlight);
+}
+.landing .fc .fc-tile:active {
+  transform: translateY(1px) scale(0.997);
+  box-shadow:
+    inset 0 5px 11px oklch(0% 0 0 / 0.7),
+    inset 0 -1px 0 var(--sk-highlight);
+}
+/* The logo stack sits in the well, so its ring matches the well rather than the card. */
+.fc-tile-logos .tl { box-shadow: 0 0 0 2px oklch(15% 0.008 260); }
+
+/* ---------------------------------------------------------------- enamel buttons */
+/* One material: a deep enamel key for the primary action, with a real top highlight. */
+.landing .ln-btn--ink {
+  border-color: transparent;
+  background:
+    linear-gradient(180deg, oklch(96% 0.004 260), oklch(90% 0.005 260) 55%, oklch(84% 0.006 260)) padding-box,
+    linear-gradient(180deg, oklch(100% 0 0 / 0.6), oklch(0% 0 0 / 0.35)) border-box;
+  box-shadow:
+    0 6px 14px oklch(0% 0 0 / 0.5),
+    0 2px 4px oklch(0% 0 0 / 0.36),
+    inset 0 1px 0 oklch(100% 0 0 / 0.75);
+  text-shadow: 0 1px 0 oklch(100% 0 0 / 0.5);
+  transition: box-shadow 180ms var(--sk-ease), transform 160ms var(--sk-ease), background 180ms var(--sk-ease);
+}
+.landing .ln-btn--ink:hover { background:
+    linear-gradient(180deg, oklch(99% 0.002 260), oklch(94% 0.004 260) 55%, oklch(88% 0.005 260)) padding-box,
+    linear-gradient(180deg, oklch(100% 0 0 / 0.7), oklch(0% 0 0 / 0.35)) border-box; }
+.landing .ln-btn--ink:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 3px 8px oklch(0% 0 0 / 0.28),
+    inset 0 -1px 0 oklch(100% 0 0 / 0.3),
+    0 1px 3px oklch(0% 0 0 / 0.36);
+}
+
+/* ---------------------------------------------------------------- tactile keys */
+/* The thumbs are the one control everybody can reach, so they get real key travel:
+   raised at rest, genuinely pressed when held. */
+/* Held: a key that has been pushed in and stayed there. */
+.tas-icon[aria-pressed="true"] {
+  box-shadow:
+    inset 0 2px 6px oklch(40% 0.06 150 / 0.24),
+    inset 0 -1px 0 oklch(100% 0 0 / 0.55);
+}
+.tas-icon--doubt[aria-pressed="true"] {
+  box-shadow:
+    inset 0 2px 6px oklch(48% 0.14 33 / 0.24),
+    inset 0 -1px 0 oklch(100% 0 0 / 0.55);
+}
+
+/* ---------------------------------------------------------------- the header */
+/* Was frosted glass, which the recipe forbids mixing with this. Now a thin brushed panel:
+   a soft vertical gradient and one bright seam along the bottom edge. */
+.nav-top, .nav-bottom {
+  backdrop-filter: none;
+  background: linear-gradient(180deg, oklch(19.5% 0.009 260), oklch(16.5% 0.008 260));
+  border-color: transparent;
+  box-shadow:
+    inset 0 1px 0 var(--sk-highlight),
+    0 1px 0 oklch(0% 0 0 / 0.55),
+    0 4px 12px oklch(0% 0 0 / 0.36);
+}
+.nav-bottom { box-shadow: inset 0 1px 0 var(--sk-highlight), 0 -1px 0 oklch(0% 0 0 / 0.55), 0 -4px 12px oklch(0% 0 0 / 0.36); }
+.landing .nav-desktop a[aria-current="page"] {
+  background:
+    linear-gradient(180deg, oklch(97% 0.003 260), oklch(88% 0.005 260)) padding-box,
+    linear-gradient(180deg, oklch(100% 0 0 / 0.22), oklch(0% 0 0 / 0.3)) border-box;
+  box-shadow: 0 3px 8px oklch(0% 0 0 / 0.46), inset 0 1px 0 oklch(100% 0 0 / 0.75);
+  text-shadow: 0 1px 0 oklch(100% 0 0 / 0.45);
+}
+
+/* ---------------------------------------------------------------- embossed labels */
+/* Sparingly, and only on the small caps that sit directly on a tactile surface. */
+.fc-fig-label, .rail-label, .drawer-eyebrow, .rail-foot {
+  text-shadow: 0 1px 0 oklch(0% 0 0 / 0.5);
+}
+
+/* ---------------------------------------------------------------- the drawer */
+.drawer-panel {
+  background: linear-gradient(180deg, oklch(19% 0.009 260), oklch(17.5% 0.008 260) 40%, oklch(18.5% 0.009 260));
+  border-left-color: transparent;
+  box-shadow:
+    inset 1px 0 0 oklch(100% 0 0 / 0.08),
+    -14px 0 40px oklch(0% 0 0 / 0.55);
+}
+.drawer-head { background: linear-gradient(180deg, oklch(19% 0.009 260) 70%, oklch(19% 0.009 260 / 0)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .fc, .landing .fc .fc-tile, .landing .ln-btn--ink, .tas-icon, .fc-menu-btn {
+    transition: none;
+  }
+  .landing .fc .fc-tile:active, .landing .ln-btn--ink:active, .tas-icon:active, .fc-menu-btn:active {
+    transform: none;
+  }
+}
+
+/* --------------------------------------------------------------- the signal map */
+/* A market map of what the catalogue points at. Area is how many baskets hold an asset;
+   colour is what the price has done since those baskets were struck. Two facts, two
+   channels — an asset can be heavily signalled and falling, and that has to stay visible. */
+.map { margin-bottom: 14px; }
+.map-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.map-head h2 {
+  margin: 0 !important;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ln-ink-3);
+  text-shadow: 0 1px 0 oklch(0% 0 0 / 0.5);
+}
+/* Names whatever is hovered, so a tile too small for a label is still identifiable. */
+.map-head p {
+  margin: 0 !important;
+  font-size: 11.5px;
+  color: var(--ln-ink-3);
+  text-align: right;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.map-plot {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 14px;
+  overflow: hidden;
+  /* Carved, like the basket tile: a thing the page contains rather than a card floating
+     on it. The gaps between tiles show this surface through, which is what separates them
+     without drawing a grid. */
+  background: oklch(12.5% 0.008 260);
+  box-shadow:
+    inset 0 2px 6px oklch(45% 0.03 60 / 0.16),
+    inset 0 -1px 0 oklch(100% 0 0 / 0.7);
+}
+@media (min-width: 720px) { .map-plot { aspect-ratio: 16 / 6; } }
+
+.map-tile {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  /* The 2px inset is the gap between neighbours. Doing it with a margin would eat into the
+     area, and area is the only thing on this chart that carries a number. */
+  background: var(--map-tint);
+  box-shadow:
+    inset 0 0 0 2px oklch(12.5% 0.008 260),
+    inset 0 2px 0 -1px oklch(100% 0 0 / 0.4);
+  transition:
+    filter 160ms var(--sk-ease),
+    box-shadow 200ms var(--sk-ease),
+    transform 180ms var(--sk-ease);
+  animation: map-in 260ms var(--sk-ease) backwards;
+}
+.map-tile:hover, .map-tile:focus-visible {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+  z-index: 1;
+  box-shadow:
+    inset 0 0 0 2px oklch(12.5% 0.008 260),
+    0 6px 14px oklch(0% 0 0 / 0.5);
+}
+.map-tile:active { filter: brightness(0.97); transform: translateY(0) scale(0.995); }
+
+/* Never from scale(0) — nothing in the world appears from nothing. */
+@keyframes map-in {
+  from { opacity: 0; transform: scale(0.96); }
+}
+.map-tile:nth-child(-n + 4) { animation-delay: 0ms; }
+.map-tile:nth-child(n + 5) { animation-delay: 40ms; }
+.map-tile:nth-child(n + 9) { animation-delay: 80ms; }
+.map-tile:nth-child(n + 13) { animation-delay: 120ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .map-tile { animation: none; }
+  .map-tile:hover, .map-tile:focus-visible, .map-tile:active { transform: none; }
+}
+
+.map-label { display: grid; justify-items: center; gap: 3px; padding: 2px; min-width: 0; }
+/* The logo reads at a size where the ticker no longer does, so it is the last thing to go.
+   Lifted off the tile with a white ring and a soft drop so it sits on the colour rather
+   than in it. */
+/* Measured against its own cell, both axes, so it can never be wider or taller than the
+   tile holding it. `cqh` needs the tile to be a size container, which is what makes this
+   exact where a JavaScript guess from percentages was not. */
+.map-logo { display: flex; }
+.map-tile { container-type: size; }
+.map-logo .tl,
+.map-logo .tl img {
+  width: min(40cqw, 40cqh, 34px);
+  height: min(40cqw, 40cqh, 34px);
+}
+.map-logo .tl {
+  border-radius: 7px;
+  box-shadow:
+    0 0 0 1.5px oklch(100% 0 0 / 0.8),
+    0 2px 5px oklch(0% 0 0 / 0.5);
+}
+.map-logo .tl img { border-radius: 6px; }
+.map-logo .tl { container-type: inline-size; }
+.map-logo .tl-letters { min-width: 0; min-height: 0; font-size: clamp(8px, 30cqw, 12px); }
+.map-label strong {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: oklch(97% 0.004 260);
+  text-shadow: 0 1px 2px oklch(0% 0 0 / 0.55);
+}
+.map-label em {
+  font-style: normal;
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  color: oklch(92% 0.005 260 / 0.85);
+}
+
+.map-key {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 7px 0 0 !important;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--ln-ink-3);
+}
+.map-swatch { width: 14px; height: 9px; border-radius: 2px; flex-shrink: 0; }
+.map-swatch.is-down { background: oklch(52% 0.16 30); }
+.map-swatch.is-flat { background: oklch(30% 0.01 260); }
+.map-swatch.is-up { background: oklch(52% 0.13 152); }
+.map-swatch.is-up { margin-right: 4px; }
+
+/* The map spans the shell, above the columns. */
+.app-map { padding-inline: 16px; }
+@media (min-width: 1024px) { .app-map { max-width: 1060px; margin-inline: auto; padding-inline: 24px; padding-top: 22px; } }
+@media (min-width: 1280px) { .app-map { max-width: 1340px; } }
+@media (min-width: 1024px) { .app-body { padding-top: 14px; } }
+@media (min-width: 720px) { .map-plot { aspect-ratio: 16 / 5.4; } }
+
+/* ------------------------------------------------------- map: list beside plot */
+/* The same assets twice, because the shapes answer different questions: the plot shows
+   proportion and cannot hold a number, the list holds the numbers and cannot show
+   proportion. Hovering either one names it in the other. */
+.map-cols { display: grid; gap: 10px; }
+@media (min-width: 900px) { .map-cols { grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: 14px; } }
+
+.map-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  display: grid;
+  gap: 1px;
+  align-content: start;
+  max-height: 436px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border-radius: 14px;
+  background: oklch(12.5% 0.008 260);
+  box-shadow:
+    inset 0 2px 6px oklch(0% 0 0 / 0.55),
+    inset 0 -1px 0 oklch(100% 0 0 / 0.7);
+}
+.map-list li { min-width: 0; }
+.map-list button {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 6px 9px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 160ms var(--sk-ease);
+}
+.map-list button:hover, .map-list .is-hot button {
+  background: var(--ln-surface-2);
+  box-shadow: 0 1px 3px oklch(0% 0 0 / 0.4);
+}
+.map-list-name { display: grid; min-width: 0; }
+.map-list-name strong { font-size: 12.5px; font-weight: 600; color: var(--ln-ink); }
+.map-list-name span {
+  font-size: 10.5px;
+  color: var(--ln-ink-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.map-list-mcap { font-size: 11.5px; color: var(--ln-ink-3); white-space: nowrap; }
+.map-list-chg { font-size: 12px; font-weight: 600; white-space: nowrap; min-width: 52px; text-align: right; }
+.map-list-chg.is-up { color: var(--ln-confirmed); }
+.map-list-chg.is-down { color: var(--ln-accent); }
+.map-list-chg.is-flat, .map-list-chg.is-none { color: var(--ln-ink-3); }
+
+/* The plot keeps a fixed height so the two columns end together. */
+.map-cols .map-plot { aspect-ratio: auto; height: 436px; }
+@media (max-width: 899px) { .map-cols .map-plot { height: 300px; } .map-list { max-height: 260px; } }
+
+/* ------------------------------------------------------------- thesis author */
+/* Who is behind a belief, rendered the same way everywhere it appears. A thesis listed as
+   a row of numbers with no face is one nobody can be held to. */
+.au { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+/* Sized to be a face, not a bullet. At eighteen pixels a person reads as a decoration on
+   the row; the point of putting them here is that a belief belongs to somebody, and that
+   only lands if you can tell who it is. The ring lifts them off whatever they sit on. */
+.au .am, .au-mark {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 12px;
+  box-shadow:
+    0 0 0 1.5px var(--ln-line-strong),
+    0 2px 5px oklch(0% 0 0 / 0.35);
+}
+.au--md .am, .au--md .au-mark { width: 34px; height: 34px; font-size: 14px; }
+.au .am img { width: 100%; height: 100%; }
+/* The desk's own mark, never a borrowed face: an editorial thesis wearing a stock portrait
+   would be the one lie this component exists to prevent. */
+.au-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ln-accent-soft);
+}
+.au-mark .ln-brand-mark { width: 16px; height: 16px; color: var(--ln-brand); }
+.au--md .au-mark .ln-brand-mark { width: 19px; height: 19px; }
+.au-name {
+  font-size: 12.5px;
+  font-weight: 550;
+  color: var(--ln-ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.au-prefix { color: var(--ln-ink-3); font-weight: 400; }
+
+.lb-by { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+.lb-by .lb-cohort { color: var(--ln-ink-3); }
+.rail-body .au { margin-top: 5px; }
+.rail-body .au-name { font-size: 11.5px; }
+.rail-body .au .am, .rail-body .au .au-mark { width: 24px; height: 24px; font-size: 11px; }
+.rail-body .au-mark .ln-brand-mark { width: 14px; height: 14px; }
+
+/* What people actually did with money, as opposed to what they said. Absent entirely
+   until it is true — a zero here would read as "nobody wanted this" rather than "nobody
+   has bought yet", and a figure built from simulated runs would be worse still. */
+.fc-bought {
+  margin: 9px 0 0 !important;
+  font-size: 12px;
+  color: var(--ln-ink-2);
+}
+.fc-bought strong { color: var(--ln-ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* ------------------------------------------------------------------- mobile */
+/* A phone gets the feed and the dock, and that is the whole screen.
+   The map is a survey of the catalogue — worth a column on a desktop, and on a phone it
+   was three hundred pixels of chart standing between somebody and the first card. It is
+   not lost: the same assets are ranked on the leaderboard, one tap away in the dock. */
+@media (max-width: 719px) {
+  .app-map { display: none; }
+  .page-head { padding-block: 14px 10px; }
+  /* The feed is the page, so it starts where the page starts. */
+  .feed-search { margin-top: 2px; }
+}
+
+/* Between a phone and a laptop the map earns its place back, but only as the list: a
+   treemap at this width squarifies into tiles too small to label. */
+@media (min-width: 720px) and (max-width: 899px) {
+  .map-plot { display: none; }
+  .map-list { max-height: 260px; }
+}
+
+
+/*
+ * Thumb-sized controls on the routes that are not the terminal.
+ *
+ * terminal.css carried a 44px block, but every selector in it was a `tm-*` class, so the
+ * leaderboard tabs, the my-theses tabs, the scope selects and the unfollow button were never
+ * covered. PRODUCT.md asks for 44px targets and these were 28-40.
+ */
+/* Up to 1024, not 768: a tablet is a touch device too, and the desktop nav only appears at 1024.
+   `.landing .mine-record` needs the same specificity it is defined with to win. */
+@media (max-width: 1023.98px) {
+  .lb-tabs button,
+  .mine-tabs button,
+  .lb-selects select,
+  .mine-unfollow,
+  .signin--inline .ln-btn { min-height: 44px; }
+  .pc-table summary { min-height: 44px; display: flex; align-items: center; }
+  .landing .mine-record { min-height: 44px; }
+  .mine-row-head a,
+  .mine-row-foot a { min-height: 44px; display: inline-flex; align-items: center; }
+}
+
+/* A long basket name in a `flex: 1` cell has `min-width: auto`, so one unbreakable string pushes
+   the whole row past the viewport. */
+.mine-row-head h2 { overflow-wrap: anywhere; min-width: 0; }
+
+/* Leaderboard rows: the claim is the row's link, so it gets a full-size tap area. */
+.lb-main h2 a { display: inline-flex; align-items: center; min-height: 44px; }

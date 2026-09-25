@@ -1,0 +1,360 @@
+/* The shell — tokens, nav, page measure — comes from the layout, which imports shell.css. This
+   file is only the terminal itself. app.css arrives through that same import. */
+@import "./shell.css";
+/* The basket chart, shared with the public homepage at /. */
+@import "../chart.css";
+
+/*
+ * The terminal: three columns of workspace.
+ *
+ * Graphite rather than the ivory reading surface the catalogue pages use. The two are deliberately
+ * different because one is for reading an argument and this is for comparing ten at once.
+ *
+ * Panels are connected rather than floating. A bento of twelve shadowed cards reads as a dashboard
+ * template; one surface divided by quiet rules reads as an instrument, and the divisions are where
+ * the meaning is.
+ */
+
+/* ------------------------------------------------------------------ grid */
+
+.tm-tabs {
+  display: grid;
+  grid-auto-flow: column;
+  border-bottom: 1px solid var(--tm-rule);
+  background: var(--tm-bg);
+}
+.tm-tabs button {
+  min-height: 42px;
+  padding-inline: 8px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--tm-ink-3);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tm-tabs button[aria-pressed="true"] { color: var(--tm-ink); border-bottom-color: var(--ln-accent); }
+
+.tm-grid { display: block; }
+.tm-col { min-width: 0; }
+
+/* One state at a time on a phone. Three 20/60/20 columns at 390px is three things that are all
+   too narrow to use. */
+.tm--list .tm-col--main,
+.tm--list .tm-col--right,
+.tm--detail .tm-col--left,
+.tm--detail .tm-col--right,
+.tm--traders .tm-col--left,
+.tm--traders .tm-col--main { display: none; }
+
+.tm-loading, .tm-empty { padding: 40px 16px; color: var(--tm-ink-2); }
+.tm-empty h1 { font-size: 20px; margin: 0 0 6px; }
+
+@media (min-width: 1024px) {
+  .tm-tabs { display: none; }
+  .tm-grid {
+    display: grid;
+    /* 20 / 60 / 20 of the workspace, with floors so no column becomes unusable before the
+       layout collapses to two. */
+    grid-template-columns: minmax(232px, 20fr) minmax(480px, 60fr) minmax(232px, 20fr);
+    /* `minmax(0, 1fr)`, and no `align-items: start`.
+       With `align-items: start` the items do not stretch, so the row is sized by its tallest
+       content — a long expanded argument made the row 1837px, `height: 100%` resolved against
+       *that*, and the column never clipped or scrolled. The whole page grew instead, leaving a
+       dead band under three columns that were supposed to scroll inside themselves. */
+    grid-template-rows: minmax(0, 1fr);
+    height: calc(100dvh - var(--tm-nav-h));
+  }
+  .tm--list .tm-col, .tm--detail .tm-col, .tm--traders .tm-col { display: block; }
+  /* min-height: 0 is what lets a grid item shrink below its content and scroll. */
+  .tm-col { min-height: 0; height: 100%; overflow-y: auto; }
+  .tm-col--left { border-right: 1px solid var(--tm-rule); }
+  .tm-col--right { border-left: 1px solid var(--tm-rule); }
+}
+
+/* Two columns before three: the traders panel is the one a narrower screen can do without,
+   because it is scoped to whatever is selected in the middle. */
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  .tm-tabs { grid-template-columns: 1fr 1fr; }
+  .tm-tabs button:nth-child(2) { display: none; }
+  .tm--list .tm-grid, .tm--detail .tm-grid {
+    display: grid;
+    grid-template-columns: minmax(240px, 34fr) minmax(0, 66fr);
+    grid-template-rows: minmax(0, 1fr);
+    /* Minus the tab strip AND the bottom bar, which is still shown below 1024. Without the
+       second term the columns scroll to a last row that sits five pixels under the bar. */
+    height: calc(100dvh - var(--tm-nav-h) - 42px - var(--tm-bar-h) - env(safe-area-inset-bottom, 0px));
+  }
+  .tm--list .tm-col--main, .tm--detail .tm-col--left { display: block; }
+  .tm--list .tm-col--right, .tm--detail .tm-col--right { display: none; }
+  .tm-col { min-height: 0; height: 100%; overflow-y: auto; }
+  .tm-col--left { border-right: 1px solid var(--tm-rule); }
+}
+
+/* --------------------------------------------------------- left: baskets */
+
+.tml-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 13px 14px 9px;
+  border-bottom: 1px solid var(--tm-rule-soft);
+  background: var(--tm-bg);
+}
+.tml-head h2 { margin: 0; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tm-ink-3); }
+.tml-period { font-size: 10.5px; color: var(--tm-ink-3); }
+
+.tml-rows { list-style: none; margin: 0; padding: 0; }
+.tml-row {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: start;
+  width: 100%;
+  /* 76–96px: dense enough that several choices are visible at once, tall enough for a name, a
+     line of description and the holdings. */
+  min-height: 82px;
+  padding: 12px 14px;
+  border: 0;
+  border-bottom: 1px solid var(--tm-rule-soft);
+  border-left: 2px solid transparent;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 140ms var(--app-ease);
+}
+.tml-row:hover { background: var(--tm-panel); }
+.tml-row.is-on { background: var(--tm-panel-2); border-left-color: var(--ln-accent); }
+
+.tml-rank { font-size: 11px; color: var(--tm-ink-3); padding-top: 2px; }
+.tml-body { display: grid; gap: 3px; min-width: 0; }
+.tml-name { font-size: 13.5px; font-weight: 600; letter-spacing: -0.01em; }
+.tml-desc {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--tm-ink-3);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.tml-logos { display: flex; align-items: center; gap: 3px; margin-top: 2px; }
+.tml-tickers { margin-left: 4px; font-size: 10.5px; color: var(--tm-ink-3); }
+.tml-figure { display: grid; justify-items: end; gap: 2px; }
+.tml-figure strong { font-size: 13px; }
+.tml-unranked { font-size: 10.5px; color: var(--tm-ink-3); }
+.tml-args { font-size: 10px; color: var(--ln-accent); }
+.tml-note { margin: 0; padding: 12px 14px 28px; font-size: 10.5px; line-height: 1.5; color: var(--tm-ink-3); }
+
+/* ------------------------------------------------------- centre: basket */
+
+.tmw { padding: 18px 20px 40px; display: grid; gap: 18px; }
+.tmw-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.tmw-title h1 { margin: 0; font-size: 25px; line-height: 1.12; letter-spacing: -0.035em; font-weight: 600; }
+.tmw-desc { margin: 5px 0 0; font-size: 13.5px; line-height: 1.5; color: var(--tm-ink-2); max-width: 62ch; }
+.tmw-by { margin: 7px 0 0; font-size: 11.5px; color: var(--tm-ink-3); }
+.tmw-figure { display: grid; justify-items: end; gap: 2px; }
+.tmw-figure strong { font-size: 27px; letter-spacing: -0.04em; }
+.tmw-figure span { font-size: 11px; color: var(--tm-ink-3); }
+.tmw-untracked { font-size: 12px; color: var(--tm-ink-3); }
+
+.tmw-actions { display: grid; gap: 8px; justify-items: start; }
+.tmw-basis { margin: 0; font-size: 11px; line-height: 1.5; color: var(--tm-ink-3); max-width: 70ch; }
+.tmw-blocked { margin: 0; font-size: 12.5px; color: var(--ln-pending); }
+
+.tmw-split { display: grid; gap: 16px; }
+@media (min-width: 720px) { .tmw-split { grid-template-columns: 1.35fr 1fr; } }
+
+.tmw :is(.tmw-holdings, .tmw-activity, .tmw-theses) > h2 {
+  margin: 0 0 9px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tm-ink-3);
+}
+.tmw-count { margin-left: 5px; color: var(--ln-accent); }
+
+.tmw-holdings ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; background: var(--tm-rule-soft); border: 1px solid var(--tm-rule-soft); border-radius: 10px; overflow: hidden; }
+.tmw-holdings li { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto auto; gap: 10px; align-items: center; padding: 10px 12px; background: var(--tm-panel); }
+.tmw-h-sym { display: grid; min-width: 0; }
+.tmw-h-sym strong { font-size: 13px; }
+.tmw-h-sym span { font-size: 10.5px; color: var(--tm-ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tmw-h-role { font-size: 11px; color: var(--tm-ink-3); }
+.tmw-h-wt { font-size: 13px; font-weight: 600; }
+.tmw-why-weights { margin: 9px 0 0; font-size: 11.5px; line-height: 1.55; color: var(--tm-ink-3); }
+
+.tmw-act { margin: 0; display: grid; gap: 2px; }
+.tmw-act strong { font-size: 22px; letter-spacing: -0.03em; }
+.tmw-act span { font-size: 12px; color: var(--tm-ink-2); }
+.tmw-act em { font-size: 10.5px; font-style: normal; line-height: 1.5; color: var(--tm-ink-3); }
+.tmw-act-none { margin: 0; font-size: 12px; color: var(--tm-ink-3); }
+
+.tmw-theses-note { margin: 0 0 10px; font-size: 11.5px; line-height: 1.55; color: var(--tm-ink-3); max-width: 70ch; }
+
+.tma { border: 1px solid var(--tm-rule-soft); border-radius: 10px; background: var(--tm-panel); margin-bottom: 7px; overflow: hidden; }
+.tma.is-open { background: var(--tm-panel-2); }
+.tma-head {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  min-height: 56px;
+  padding: 10px 12px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.tma-title { display: grid; gap: 2px; min-width: 0; }
+.tma-title strong { font-size: 13.5px; line-height: 1.35; }
+.tma-title span { font-size: 11px; color: var(--tm-ink-3); }
+.tma-title em { font-style: normal; color: var(--ln-accent); }
+.tma-chev { color: var(--tm-ink-3); transition: transform 180ms var(--app-ease); }
+.tma.is-open .tma-chev { transform: rotate(180deg); }
+.tma-body { padding: 0 12px 14px 12px; display: grid; gap: 4px; }
+.tma-body h3 { margin: 10px 0 0; font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--tm-ink-3); font-weight: 600; }
+.tma-body p { margin: 0; font-size: 13px; line-height: 1.6; color: var(--tm-ink-2); max-width: 72ch; }
+.tma-summary { font-size: 13.5px !important; color: var(--tm-ink) !important; }
+.tma-disclosure { margin-top: 10px !important; font-size: 10.5px !important; color: var(--tm-ink-3) !important; }
+
+/* ------------------------------------------------------------- the chart */
+/* Its rules live in ../chart.css, imported at the top of this file — a CSS @import is only valid
+   before any rule, so it cannot sit here where the block used to. */
+
+/* -------------------------------------------------------- right: traders */
+
+.tmt { padding: 13px 14px 28px; display: grid; gap: 9px; align-content: start; }
+.tmt-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.tmt-head h2 { margin: 0; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tm-ink-3); }
+.tmt-scope { display: flex; gap: 2px; }
+.tmt-scope button {
+  min-height: 24px;
+  padding-inline: 7px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: none;
+  color: var(--tm-ink-3);
+  font: inherit;
+  font-size: 10.5px;
+  cursor: pointer;
+}
+.tmt-scope button[aria-pressed="true"] { background: var(--tm-panel-2); border-color: var(--tm-rule); color: var(--tm-ink); }
+.tmt-scope-line { margin: 0; font-size: 10.5px; color: var(--tm-ink-3); }
+
+.tmt-empty { display: grid; gap: 7px; padding: 14px; border: 1px dashed var(--tm-rule); border-radius: 11px; }
+.tmt-empty-head { margin: 0; font-size: 13px; font-weight: 600; }
+.tmt-empty-body { margin: 0; font-size: 11.5px; line-height: 1.6; color: var(--tm-ink-3); }
+.tmt-why {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 30px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ln-accent);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+.tmt-missing { margin: 2px 0 0; padding-left: 15px; display: grid; gap: 7px; }
+.tmt-missing li { font-size: 11px; line-height: 1.55; color: var(--tm-ink-3); }
+.tmt-missing strong { color: var(--tm-ink-2); }
+
+
+@media (max-width: 1023.98px) {
+  .tmc-ranges button,
+  .tmt-scope button,
+  .tmt-why,
+  .tma-head,
+  .tml-row,
+  .tm-tabs button { min-height: 44px; }
+  .tmc-table summary { min-height: 44px; display: flex; align-items: center; }
+}
+
+/* The ticker fallback is sized for the 26px tile. In a dense row the tile is 18px and three letters
+   at a fixed size spill out of the circle — cbBTC rendered as "cbB" lying across its neighbours. */
+.tml-logos .tl { overflow: hidden; }
+.tml-logos .tl-letters {
+  /* min-width/min-height are 26px on the base rule, which is what pushed the letters out. The
+     treemap resets them the same way. */
+  min-width: 0;
+  min-height: 0;
+  font-size: 7px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* ---- Right rail: your holdings first, traders second ---- */
+.tmr { display: grid; align-content: start; }
+.tmr-tabs { display: flex; gap: 2px; padding: 10px 12px 0; border-bottom: 1px solid var(--tm-rule-soft); }
+.tmr-tabs button {
+  min-height: 40px; padding: 0 10px; border: 0; border-bottom: 2px solid transparent; background: none;
+  color: var(--tm-ink-3); font-size: 12.5px; font-weight: 600; cursor: pointer;
+}
+.tmr-tabs button[aria-selected="true"] { color: var(--tm-ink); border-bottom-color: var(--ln-accent); }
+.tmr > .tmt-empty { margin: 13px 14px; }
+.tmh { display: grid; gap: 4px; padding: 16px 14px 28px; }
+.tmh-total { margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -0.02em; }
+.tmh-sub { margin: 0 0 10px; font-size: 11.5px; color: var(--tm-ink-3); }
+.tmh-list { list-style: none; margin: 0; padding: 0; display: grid; }
+.tmh-list li { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; align-items: center; gap: 10px; padding: 9px 6px; border-top: 1px solid var(--tm-rule-soft); border-left: 2px solid transparent; }
+.tmh-list li.is-in { border-left-color: var(--ln-accent); background: var(--tm-panel-2); }
+.tmh-name { display: grid; min-width: 0; }
+.tmh-name strong { font-size: 13px; }
+.tmh-name span { font-size: 10.5px; color: var(--tm-ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tmh-list li.is-in .tmh-name span { color: var(--ln-accent); }
+.tmh-val { display: grid; justify-items: end; }
+.tmh-val strong { font-size: 13px; }
+.tmh-val span { font-size: 10.5px; color: var(--tm-ink-3); }
+.tmh-asof, .tmh-quiet { margin: 8px 0 0; font-size: 10.5px; color: var(--tm-ink-3); }
+.tmh-quiet { padding: 14px; }
+.tmh-link { justify-self: start; margin-top: 8px; font-size: 12px; font-weight: 600; color: var(--ln-accent); text-decoration: none; }
+
+/* ---- The thesis leads the basket; the chart folds under it ---- */
+.tmw-lead { display: grid; gap: 10px; margin: 18px 0 16px; }
+.tmw-voice { margin: 0; padding: 14px 16px; border: 1px solid var(--tm-rule-soft); border-left: 2px solid var(--ln-accent); border-radius: 10px; background: var(--tm-panel); display: grid; gap: 8px; }
+.tmw-voice-who { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 12px; }
+.tmw-voice-who > span { color: var(--tm-ink-3); }
+.tmw-voice blockquote { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--tm-ink); white-space: pre-wrap; overflow-wrap: anywhere; }
+.tmw-voice figcaption { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 11px; color: var(--tm-ink-3); }
+.tmw-voice figcaption a { color: var(--ln-accent); font-weight: 600; text-decoration: none; }
+.tmw-voice-none { margin: 0; font-size: 11.5px; color: var(--tm-ink-3); }
+.tmw-claim { margin: 4px 0 0; font-size: 22px; line-height: 1.25; letter-spacing: -0.015em; text-wrap: balance; }
+.tmw-summary { margin: 0; font-size: 14px; line-height: 1.6; color: var(--tm-ink-2); max-width: 72ch; }
+.tmw-case summary { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; font-size: 12.5px; font-weight: 600; color: var(--ln-accent); cursor: pointer; list-style: none; }
+.tmw-case summary::-webkit-details-marker { display: none; }
+.tmw-case[open] summary svg { transform: rotate(180deg); }
+.tmw-case h3 { margin: 12px 0 4px; font-size: 10.5px; letter-spacing: 0.07em; text-transform: uppercase; color: var(--tm-ink-3); font-weight: 600; }
+.tmw-case p { margin: 0; font-size: 13px; line-height: 1.6; color: var(--tm-ink-2); max-width: 72ch; }
+details.tmw-chart { border: 1px solid var(--tm-rule-soft); border-radius: 10px; background: var(--tm-panel); margin-bottom: 18px; }
+details.tmw-chart > summary { display: flex; align-items: center; gap: 12px; min-height: 46px; padding: 0 14px; cursor: pointer; list-style: none; font-size: 12.5px; font-weight: 600; }
+details.tmw-chart > summary::-webkit-details-marker { display: none; }
+.tmw-chart-sum { margin-left: auto; font-weight: 500; color: var(--tm-ink-2); font-size: 12px; }
+/* Colours come from the shared .is-up / .is-down in shell.css. */
+.tmw-chart-chev { color: var(--tm-ink-3); transition: transform 180ms var(--app-ease); }
+details.tmw-chart[open] .tmw-chart-chev { transform: rotate(180deg); }
+details.tmw-chart[open] > :not(summary) { padding: 0 12px 12px; }
+details.tmw-chart details > summary { min-height: 44px; display: flex; align-items: center; }
+@media (max-width: 600px) {
+  /* The folded figures take their own line rather than breaking mid-number. */
+  details.tmw-chart > summary { flex-wrap: wrap; row-gap: 2px; padding: 10px 14px; }
+  .tmw-chart-sum { order: 3; flex-basis: 100%; margin-left: 0; white-space: nowrap; }
+  .tmw-chart-chev { margin-left: auto; }
+  .tmw-voice figcaption a { display: inline-flex; align-items: center; min-height: 44px; }
+}

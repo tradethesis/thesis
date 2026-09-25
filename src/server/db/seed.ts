@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import { db } from "./client";
 import { asset } from "./schema";
-import { ALLOWLIST, USDC_MINT } from "../assets/allowlist";
+import { ALLOWLIST, CRYPTO_ASSETS, PRESTOCKS_ASSETS, USDC_MINT } from "../assets/allowlist";
 import { checkMint } from "../assets/verify";
 
 /**
@@ -28,7 +28,20 @@ async function main() {
     const row = {
       chain: "solana",
       mint: entry.mint,
-      kind: entry.mint === USDC_MINT ? "quote_currency" : "equity_token",
+      // Not everything on the allowlist is a tokenized equity any more. The kind drives
+      // the asset_equity_mint_prefix constraint, which requires an "Xs" mint for
+      // equity_token and correctly refuses a crypto mint labelled as one.
+      kind:
+        entry.mint === USDC_MINT
+          ? "quote_currency"
+          : CRYPTO_ASSETS.some((c) => c.mint === entry.mint)
+            ? "crypto"
+            : PRESTOCKS_ASSETS.some((pre) => pre.mint === entry.mint)
+              ? // Its own kind, not equity_token. A pre-IPO token is not a listed share:
+                // there is no public market price behind it, and the asset_equity_mint_prefix
+                // CHECK exists precisely so nothing that is not an xStock can claim to be one.
+                "pre_ipo_token"
+              : "equity_token",
       tokenProgram: onChain.owner,
       decimals: onChain.decimals,
       symbol: entry.symbol,

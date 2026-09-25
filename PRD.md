@@ -1,3 +1,9 @@
+# Current direction: Thesis Gifts
+
+**22 September 2026.** The public product is now a themed stock-token gift experience: choose a pack, personalize it for an X handle, and preview the recipient reveal. [Gifting requirements and implementation boundaries](docs/gifting.md) supersede the acquisition and homepage decisions below. Funding, server-verified X claims and delivery are implemented behind configuration gates (23 September) and have not been exercised end to end; see the architecture decision and status in docs/gifting.md. The previous investing requirements are retained as historical and underlying execution context.
+
+---
+
 # Thesis
 
 ## Product requirements document
@@ -78,7 +84,7 @@ The same wallet can hold funding USDC and the purchased stock tokens. Existing s
 
 xStocks documents Solana support and platform integration requirements. Exact tradability and user eligibility must be verified for the selected assets and deployment. [Issuer integration information](https://xstocks.com/partner)
 
-No custom basket token, pooled fund, or new Solana program is required for this MVP.
+No custom basket token, pooled fund, or new Solana program is required for this MVP. Still true: the thesis token added in September 2026 tokenizes the *thesis*, not the basket, and runs on Meteora's existing Dynamic Bonding Curve program rather than one of ours.
 
 ## 4. Product principles
 
@@ -130,9 +136,22 @@ P0 custom allocations remain private to the purchaser; sharing the public thesis
 
 ### Explicitly outside this build
 
-Automatic trading, margin, shorting, betting, custody of private keys, pooled assets, performance fees, basket tokens, anonymous permissionless publishing, native mobile apps, comments, chat, follower leaderboards, and backtests presented as live results.
+Automatic trading, margin, shorting, betting, custody of private keys, pooled assets, performance fees, basket tokens, native mobile apps, comments, chat, follower leaderboards, and backtests presented as live results.
+
+**Reversed 19 September 2026: anonymous permissionless publishing.** A thesis token pays its author a share of trading fees, and there is nobody to pay unless a wallet stands behind the thesis. Creation is therefore opening to signed-in wallets — but not anonymously and not permissionlessly: a user-created thesis lands in `under_review` and a person publishes it. The reason the original non-goal existed is unchanged, so the review queue is what replaces it. "Basket tokens" above stays a non-goal and is a different thing: the basket is still never wrapped.
 
 ## 6. Thesis content model
+
+> **Revised 21 September 2026 — the basket is a parent.** A thesis was its basket: the allocation
+> lived on `thesis_constituent` and no row existed that two arguments could share, so an identical
+> allocation from a second author was refused outright. A `basket` parent now owns an immutable
+> allocation (`basket_version` + `basket_constituent`) and carries N attached arguments
+> (`basket_thesis`). An exact allocation match **associates**; a near-miss under 500bps of turnover
+> is still refused, because a one-percent nudge produces the indistinguishable pair the original
+> rule existed to prevent. `basket.execution_version_id` is the single column a buy resolves to,
+> written explicitly and never inferred. Allocation identity is keyed on **mints**, not symbols:
+> `asset.symbol` has no unique index because a fixture may carry a real ticker, and that is the one
+> collision that must not reach a decision about what gets bought.
 
 Each publishable version must contain:
 
@@ -161,6 +180,14 @@ Published versions cannot be silently overwritten. Corrections and updates are a
 Two other editorial directions are **“Digital advertising takes a bigger share”** and **“Financial activity moves onchain.”** Final constituents depend on evidence quality, official mint verification, and live buy/sell route checks. Never substitute a loosely related stock merely to fill three slots; revise or drop the thesis.
 
 ## 7. UX and information architecture
+
+> **Revised 21 September 2026 — terminal, not feed.** The screens below described a marketing
+> homepage, an Explore list and a vertical feed. The journey is now: `/` is a single wallet-entry
+> screen over an animated illustration, and `/app` is a full-width 20/60/20 workspace — baskets
+> left, the selected basket's chart, holdings, buy and attached arguments centre, trader standings
+> right. Three navigable states on a phone rather than three columns. Screens D–G (review, progress,
+> my thesis, sale) are **unchanged**: the buy flow, its three sequential signatures and its
+> simulation labelling are exactly as specified. `/t/<slug>` and `/buy/<slug>` keep working.
 
 ### Overall experience
 
@@ -338,6 +365,18 @@ Pre-existing holdings and external acquisitions are not attributed to the thesis
 
 ### Public basket performance
 
+> **Corrected 21 September 2026.** `startCall` recorded the opening marks on
+> `thesis_call.start_snapshot` and never wrote them to `call_observation`, so the chart baselined on
+> the first *cron* reading — up to a day later — while the ranking scored from the true origin. The
+> two disagreed, and the chart's caption said "since the call started", which was false. Observation
+> zero is now written at strike and the existing sixty calls were backfilled from their own
+> snapshots. The chart also spaces x by **timestamp**: readings arrive about once a day and the
+> failure path writes nothing, so gaps are normal and drawing them evenly hid them.
+>
+> Ranking is over a **named period** and only for series that span it. A basket younger than the
+> window is unranked with a stated reason, never extrapolated; stale readings are shown without a
+> position rather than dropped.
+
 No invented historical chart on launch. Show **Tracking begins at publication** until comparable observations exist. A later model series must be labeled model performance, use fixed initial quantities for each version, and clearly state costs and benchmark methodology. Never splice a new version into an old version's return history.
 
 ## 12. Proposed architecture and data
@@ -354,6 +393,17 @@ No invented historical chart on launch. Show **Tracking begins at publication** 
 This is a proposed stack, not an assertion that dependencies have been installed or validated.
 
 ### Core records
+
+> **Added 21 September 2026:** `basket`, `basket_version`, `basket_constituent`, `basket_thesis`,
+> `basket_execution_span`, plus `investment_intent.basket_version_id` and `thesis_token.basket_id`.
+> Guards live in `src/server/db/constraints.sql` and are asserted by `pnpm db:verify` —
+> `drizzle-kit push` reads them as drift and drops them, and the ones whose loss is silent produce
+> a basket displaying returns it never earned.
+>
+> **Still unwritten, and therefore not readable:** `position`, `position_holding`, `valuation` and
+> `external_activity` have no writer anywhere in the repository. The trader leaderboard renders an
+> honest unavailable state and names those four as what it needs, rather than renaming conviction
+> standings or purchase volume into P&L.
 
 | Record | Essential fields |
 | --- | --- |

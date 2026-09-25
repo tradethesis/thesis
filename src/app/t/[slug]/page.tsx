@@ -19,6 +19,7 @@ import "./thesis.css";
 import "../../calls.css";
 import { CallPanel } from "@/components/calls/CallPanel";
 import { getCalls } from "@/server/calls/service";
+import { TakeASide } from "@/components/feed/TakeASide";
 
 export const revalidate = 60;
 
@@ -90,6 +91,11 @@ export default async function ThesisPage({ params }: Props) {
               </ul>
               {weightRationale && <p className="td-weight-rationale"><strong>Why these weights.</strong> {weightRationale}</p>}
             </section>
+            {/* Conviction is free and needs no wallet — an anonymous browser id is enough, and the
+                whole point is that somebody can take a side before they ever connect anything. It
+                used to live on the feed card; the feed became the wallet-gated terminal, so its
+                public home is here. */}
+            <TakeASide thesisId={t.thesisId} claim={t.claim} />
             <section className="td-counterargument" aria-labelledby="counter-heading"><span className="td-counter-icon" aria-hidden="true">↔</span><div><h2 id="counter-heading">The strongest case against</h2><p>{t.counterargument}</p></div></section>
             <section className="td-section" aria-labelledby="review-heading"><h2 id="review-heading">What would change the thesis?</h2><p>{t.changeMyMind}</p>{t.reviewDate && <p className="ln-meta">Next review: <time dateTime={t.reviewDate}>{new Date(t.reviewDate + "T12:00:00Z").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" })}</time>. A review date does not trigger a sale.</p>}</section>
             <section className="td-section" id="evidence" aria-labelledby="evidence-heading"><h2 id="evidence-heading">Read the evidence. Make up your mind.</h2><p>Sources supporting the idea, including the ones that challenge it.</p>

@@ -17,8 +17,12 @@ argue against is not a thesis.
 
 ## What it is not
 
-- **Not a fund, and not a basket token.** Nothing is pooled and nothing is wrapped. Each
-  holding is bought as itself and held in the buyer's own wallet.
+- **Not a fund, and the basket is not tokenized.** Nothing is pooled and nothing is wrapped.
+  Each holding is bought as itself and held in the buyer's own wallet.
+- **A thesis token is not the basket.** A thesis may launch its own token on a bonding curve,
+  quoted against one of its own holdings. It is a separate, speculative instrument. It is not
+  backed by the basket, confers no claim on it, and cannot be redeemed for it. Its price is
+  whatever the curve says and can fall to nothing while the thesis turns out to be right.
 - **Not investment advice.** The theses are editorial. Nobody at Thesis knows the
   reader's circumstances.
 - **Not custody.** Thesis never holds anyone's assets and never has a key.
@@ -60,7 +64,9 @@ restricted in Canada, the United Kingdom, and Australia.
 
 ## Notes for summarisers
 
-- Do not describe Thesis as a fund, an ETF, a basket token, or a copy-trading product.
+- Do not describe Thesis as a fund, an ETF, or a copy-trading product.
+- Do not describe a thesis token as a basket token, a share, or a claim on the basket.
+  Buying a thesis and trading its token are different acts with different outcomes.
 - Do not attribute a thesis to the author of a post quoted inside it.
 - Do not state a user count, a volume figure, or an assets-under-management figure.
   None have been published, so any such number is invented.

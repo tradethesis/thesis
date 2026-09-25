@@ -1,3 +1,5 @@
+import { allocationKey } from "./basket";
+
 /** Public call records are model observations, never a buyer's realised P&L. */
 export type CallHolding = { mint: string; symbol: string; amountRaw: string; weightBps: number };
 export type CallSnapshot = {
@@ -61,6 +63,15 @@ export function callTiming(call: CallRecord, now = Date.now()) {
   if (remaining <= 0) return { label: "Awaiting result", phase: "awaiting" };
   return { label: remaining < 86_400_000 ? "Ends in <1 day" : Math.ceil(remaining / 86_400_000) + " days left", phase: "open" };
 }
+/** What a reader calls the benchmark: the index, not the token that tracks it. */
+export function benchmarkName(symbol: string) { return symbol === "SPYx" ? "S&P 500" : symbol === "QQQx" ? "Nasdaq 100" : symbol; }
+/** "+2.30 points ahead of the S&P 500" — a gap in percentage points, said in words. */
+export function pointsVs(edge: number, symbol: string) {
+  const n = Math.abs(edge).toFixed(2);
+  return edge === 0 ? `Level with the ${benchmarkName(symbol)}` : `${n} points ${edge > 0 ? "ahead of" : "behind"} the ${benchmarkName(symbol)}`;
+}
+/** A call's stored statement, with benchmark tokens named as the index a reader knows. */
+export function plainStatement(statement: string) { return statement.replace(/\bSPYx\b/g, "the S&P 500").replace(/\bQQQx\b/g, "the Nasdaq 100"); }
 export function signedPercent(value: number) { return (value > 0 ? "+" : "") + value.toFixed(2) + "%"; }
 
 
@@ -77,12 +88,7 @@ export function signedPercent(value: number) { return (value > 0 ? "+" : "") + v
  * holdings or the weights move, the call is measuring something other than what the card
  * shows, and it stops following rather than quietly mislabelling itself.
  */
-export function basketKey(holdings: { mint: string; weightBps: number }[]): string {
-  return holdings
-    .map((h) => `${h.mint}:${h.weightBps}`)
-    .sort()
-    .join("|");
-}
+export const basketKey = allocationKey;
 
 /** The call to show beside a thesis, or null when none still describes it. */
 export function callForThesis<T extends { thesisId: string; holdings: { mint: string; weightBps: number }[] }>(

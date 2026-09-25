@@ -23,6 +23,28 @@ import { sourcePostSchema } from "../src/lib/source-post";
 import { db } from "../src/server/db/client";
 import { sourcePostMetrics } from "../src/server/db/schema";
 
+
+/**
+ * Fetch with backoff, because the mirror rate-limits in bursts.
+ *
+ * Measured: roughly a dozen quick requests succeed, then every request times out for a
+ * while — the connection opens and then hangs rather than returning 429, so there is no
+ * status code to react to. Spacing requests out and retrying is the difference between a
+ * refresh that works and one that reports the whole catalogue as unverifiable.
+ */
+async function fetchWithBackoff(url: string, init: RequestInit, attempts = 4): Promise<Response | null> {
+  for (let i = 0; i < attempts; i += 1) {
+    try {
+      const res = await fetch(url, { ...init, signal: AbortSignal.timeout(15_000) });
+      if (res.ok) return res;
+    } catch {
+      // A timeout is the shape a block takes here. Fall through and wait.
+    }
+    if (i < attempts - 1) await new Promise((r) => setTimeout(r, 2_000 * 2 ** i));
+  }
+  return null;
+}
+
 async function main() {
   const capturedAt = new Date().toISOString();
 
@@ -32,11 +54,13 @@ async function main() {
       const post = sourcePostSchema.parse(item.sourcePost);
       const [, handle, id] = post.url.match(/x\.com\/([A-Za-z0-9_]+)\/status\/(\d+)/)!;
 
-      const res = await fetch(`https://api.fxtwitter.com/${handle}/status/${id}`, {
+      const res = await fetchWithBackoff(`https://api.fxtwitter.com/${handle}/status/${id}`, {
         headers: { "user-agent": "thesis-metrics/1.0" },
       });
-      if (!res.ok) {
-        console.error(`  FAIL ${slug}: mirror returned ${res.status}`);
+      // Nothing is written on failure. Existing figures keep their old capturedAt and stay
+      // honest; overwriting them with zeros would be worse than leaving them stale.
+      if (!res) {
+        console.error(`  SKIP ${slug}: mirror unreachable after retries; existing figures kept`);
         process.exitCode = 1;
         continue;
       }

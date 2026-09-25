@@ -1,0 +1,26 @@
+# What never needs uploading.
+#
+# `vercel deploy` on CLI 50.x did not honour .gitignore here and tried to upload 1.3 GB, failing on
+# "File size limit exceeded (100 MB)" — the webpack cache packs inside .next-build are individually
+# larger than that. .gitignore lists .next-build on line 47; this file is what the CLI actually
+# reads. Vercel builds from source, so none of it is needed anyway.
+
+node_modules
+.next
+.next-build
+out
+build
+coverage
+
+# Local databases, keys and env files. Vercel injects its own.
+.env*
+!.env.example
+
+# Local scratch and artefacts.
+*.log
+.DS_Store
+/scripts/*.output
+
+# Design references, brand exports and review screenshots. Local artefacts; the app never reads
+# them, and they were two thirds of the upload.
+/output

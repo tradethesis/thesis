@@ -30,6 +30,15 @@ export const env = {
    * limited to wallets we have established are eligible. Everyone else gets the same
    * flow, explicitly labelled, with no signature ever requested.
    */
+  /**
+   * The model that expands a short draft into a publishable thesis.
+   *
+   * Required rather than optional: the creation form collects four fields and the catalogue
+   * needs a dozen, so without a key there is no honest way to publish what somebody typed.
+   * Failing loudly at the route beats publishing a thesis with placeholder reasoning in it.
+   */
+  openRouterKey: () => required("OPENROUTER_API_KEY"),
+
   liveExecutionWallets: (): Set<string> =>
     new Set(
       (process.env.LIVE_EXECUTION_WALLETS ?? "")

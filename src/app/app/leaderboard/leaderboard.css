@@ -1,0 +1,6 @@
+/* A one-line entry so this route owns a stylesheet no other route imports.
+   Next folds a CSS file shared by several routes into one chunk and then links it on
+   only some of them, which left this page with no palette and no type stack at all.
+   A distinct entry per route cannot be deduped away. */
+@import "../shell.css";
+.lb-version { display: inline-block; margin-left: 8px; padding: 1px 6px; border-radius: 4px; font-size: 11px; font-weight: 500; color: var(--ln-ink-3, #999); border: 1px solid var(--ln-line, #333); vertical-align: middle; }

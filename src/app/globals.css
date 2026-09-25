@@ -12,11 +12,11 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Dark is the default, not a preference. The app sets its own tokens; these two only
+   keep the document behind it from flashing white before the app's background paints. */
+:root {
+  --background: #0a0a0a;
+  --foreground: #ededed;
 }
 
 body {

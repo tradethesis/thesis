@@ -3,6 +3,8 @@ import { jsonSafe } from "@/lib/json";
 import { getSession } from "./session";
 import { IntentError } from "./execution/intents";
 import { AllocationError } from "@/lib/money/allocate";
+import { ContentError } from "./content/publish";
+import { ExpandError } from "./content/expand";
 
 /**
  * One place where every route turns work into a response.
@@ -32,6 +34,12 @@ export async function guard<T>(handler: () => Promise<T>) {
       return err(error.code, error.message, status, error.detail);
     }
     if (error instanceof AllocationError) return err(error.code, error.message, 400);
+    // A content rule the submitter broke, not a fault on our side. Its message is written
+    // to be read by the person who tripped it, so it is passed through verbatim.
+    if (error instanceof ContentError) return err("invalid_draft", error.message, 400);
+    // The drafting model was unreachable or unusable. Not the caller's fault and not a bug
+    // on our side either, so it says so plainly and invites a retry.
+    if (error instanceof ExpandError) return err("draft_failed", error.message, 502);
     console.error("[api]", error);
     return err("internal", "Something went wrong on our side.", 500);
   }

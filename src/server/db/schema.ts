@@ -1,5 +1,6 @@
 import {
   bigint,
+  customType,
   bigserial,
   boolean,
   date,
@@ -90,6 +91,13 @@ export const thesis = pgTable(
     authorName: text("author_name").notNull(),
     authorHandle: text("author_handle"),
     authorDisclosure: text("author_disclosure").notNull(),
+    /**
+     * The wallet that wrote this thesis here, and the only one that can launch or claim from
+     * its token. Null for the editorial catalogue, which is correct rather than missing: the
+     * desk is not a wallet, nobody is owed its fees, and a thesis with no wallet behind it
+     * simply never gets a token.
+     */
+    creatorWallet: text("creator_wallet"),
     category: text("category").notNull(),
     status: text("status").notNull().default("draft"), // draft|published|under_review|archived
     currentVersionId: uuid("current_version_id"),
@@ -153,6 +161,172 @@ export const thesisConstituent = pgTable(
     uniqueIndex("constituent_version_asset_key").on(t.versionId, t.assetId),
     uniqueIndex("constituent_version_position_key").on(t.versionId, t.position),
   ],
+);
+
+/* ------------------------------------------------------------------ baskets */
+
+/**
+ * The allocation, as a thing with a name.
+ *
+ * A thesis is an argument; a basket is what the argument says to own. They were one row until
+ * now, which is why two different arguments over the identical MSFTx/GOOGLx/AMZNx had no
+ * available answer except refusing the second one. Separating them lets several people argue
+ * for the same exposure for different reasons, which is what actually happens.
+ *
+ * `executionVersionId` is the most important column in this file. It is what a buy resolves
+ * to. It is written explicitly, once, by an operator action — never inferred from
+ * `max(versionNumber)` and never taken from whichever attached thesis happens to be on screen.
+ */
+export const basket = pgTable(
+  "basket",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    slug: text("slug").notNull(),
+    /** Two to four words. "AI Infrastructure". The narrative handle, not the claim. */
+    name: text("name").notNull(),
+    /** One line. What it holds and the exposure — never the argument for it. */
+    description: text("description").notNull(),
+    category: text("category").notNull(),
+    chain: text("chain").notNull().default("solana"),
+    /**
+     * Who chose the weights — distinct from whoever wrote an argument about them, because N
+     * arguments attach to one allocation and only one of them built it. PRODUCT.md keeps these
+     * three identities apart everywhere: the poster, the desk, and whose money is at risk.
+     */
+    allocationAuthorName: text("allocation_author_name").notNull(),
+    allocationAuthorHandle: text("allocation_author_handle"),
+    allocationAuthorWallet: text("allocation_author_wallet"),
+    /** FK declared in constraints.sql as DEFERRABLE — basket and basket_version reference each other. */
+    executionVersionId: uuid("execution_version_id"),
+    status: text("status").notNull().default("draft"), // draft|live|retired
+    createdAt,
+    updatedAt,
+  },
+  (t) => [uniqueIndex("basket_slug_key").on(t.slug), index("basket_status_idx").on(t.status, t.createdAt)],
+);
+
+/**
+ * One immutable allocation. A re-weight is a new row, never an edit.
+ *
+ * `allocationKey` is the canonical `mint:bps|…` from src/lib/basket.ts, sorted by code unit.
+ * It is written by the application and re-derived from `basket_constituent` by a deferred
+ * trigger — two independent implementations that must agree, which is the only good reason to
+ * store a derived value at all.
+ */
+export const basketVersion = pgTable(
+  "basket_version",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    basketId: uuid("basket_id")
+      .notNull()
+      .references(() => basket.id, { onDelete: "restrict" }),
+    versionNumber: smallint("version_number").notNull(),
+    chain: text("chain").notNull().default("solana"),
+    allocationKey: text("allocation_key").notNull(),
+    /** Why the weights moved. Null on v1. */
+    changeReason: text("change_reason"),
+    /** The allocation's own justification. Belongs here, not on any one argument. */
+    weightRationale: text("weight_rationale"),
+    /**
+     * The performance series for THIS allocation, chosen once. A trigger refuses a call whose
+     * frozen holdings are not this exact allocation — that is what stops a real, correct,
+     * immutable ninety-day series being displayed under a basket that never earned it.
+     */
+    callId: uuid("call_id").references(() => thesisCall.id),
+    /** 'only_candidate' | 'oldest_of_N' | 'operator'. The choice stays on the record. */
+    callSelectionReason: text("call_selection_reason"),
+    state: text("state").notNull().default("draft"), // draft|live|superseded
+    createdAt,
+  },
+  (t) => [
+    uniqueIndex("basket_version_number_key").on(t.basketId, t.versionNumber),
+    // Global, not per-basket: an allocation identity exists once, and an exact match is an
+    // association rather than a duplicate. This index is what makes that a fact.
+    uniqueIndex("basket_version_allocation_key").on(t.chain, t.allocationKey),
+    index("basket_version_basket_idx").on(t.basketId, t.versionNumber),
+  ],
+);
+
+/**
+ * The holdings a buy executes.
+ *
+ * `mint` is copied from `asset` and frozen. `asset.mint` has no immutability trigger, so a
+ * corrected asset row would silently invalidate every allocationKey derived through a join;
+ * the frozen copy is the identity, and a trigger checks it still agrees with the asset.
+ */
+export const basketConstituent = pgTable(
+  "basket_constituent",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    basketVersionId: uuid("basket_version_id")
+      .notNull()
+      .references(() => basketVersion.id, { onDelete: "cascade" }),
+    assetId: uuid("asset_id")
+      .notNull()
+      .references(() => asset.id),
+    mint: text("mint").notNull(),
+    position: smallint("position").notNull(),
+    weightBps: smallint("weight_bps").notNull(),
+  },
+  (t) => [
+    uniqueIndex("basket_constituent_asset_key").on(t.basketVersionId, t.assetId),
+    uniqueIndex("basket_constituent_position_key").on(t.basketVersionId, t.position),
+    index("basket_constituent_mint_idx").on(t.mint),
+  ],
+);
+
+/**
+ * An argument attached to an allocation.
+ *
+ * Unique on `thesisVersionId`: a thesis version states one allocation, so it argues for exactly
+ * one basket version. A deferred trigger requires its own `thesis_constituent` rows to hash to
+ * that version's allocationKey — the guard that stops the page and the buy describing different
+ * baskets.
+ */
+export const basketThesis = pgTable(
+  "basket_thesis",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    basketVersionId: uuid("basket_version_id")
+      .notNull()
+      .references(() => basketVersion.id, { onDelete: "restrict" }),
+    thesisVersionId: uuid("thesis_version_id")
+      .notNull()
+      .references(() => thesisVersion.id, { onDelete: "cascade" }),
+    /** 'origin' | 'argument'. The origin's prose decorates the holdings; there is exactly one. */
+    role: text("role").notNull().default("argument"),
+    attachedAt: timestamp("attached_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("basket_thesis_version_key").on(t.thesisVersionId),
+    index("basket_thesis_by_basket").on(t.basketVersionId, t.attachedAt),
+  ],
+);
+
+/**
+ * Which allocation was executable between when and when.
+ *
+ * Append-only, and written by a trigger on `basket.execution_version_id` rather than by
+ * application code, so the pointer and its history are the same write and cannot drift. This is
+ * the "clearly segmented history" that stops a re-weighted basket appearing to have earned the
+ * previous allocation's returns.
+ */
+export const basketExecutionSpan = pgTable(
+  "basket_execution_span",
+  {
+    id: bigserial("id", { mode: "bigint" }).primaryKey(),
+    basketId: uuid("basket_id")
+      .notNull()
+      .references(() => basket.id, { onDelete: "restrict" }),
+    basketVersionId: uuid("basket_version_id")
+      .notNull()
+      .references(() => basketVersion.id, { onDelete: "restrict" }),
+    startedAt: timestamp("started_at", { withTimezone: true }).notNull(),
+    /** Null means current. Exactly one open span per basket. */
+    endedAt: timestamp("ended_at", { withTimezone: true }),
+    changeReason: text("change_reason"),
+  },
+  (t) => [index("basket_span_basket_idx").on(t.basketId, t.startedAt)],
 );
 
 export const thesisUpdate = pgTable(
@@ -273,6 +447,8 @@ export const investmentIntent = pgTable(
     inputMint: text("input_mint").notNull(),
     weightsBps: jsonb("weights_bps").notNull(),
     isCustomAllocation: boolean("is_custom_allocation").notNull().default(false),
+    /** The exact allocation this buy executes. Mandatory on insert, enforced by a trigger. */
+    basketVersionId: uuid("basket_version_id"),
     status: text("status").notNull().default("draft"),
     executionMode: text("execution_mode").notNull(), // live|simulation
     createdAt,
@@ -454,6 +630,86 @@ export const event = pgTable("event", {
  * PRD §13 keeps wallet identities out of third-party analytics, and the same reasoning
  * applies to an email nobody agreed to be profiled by.
  */
+/* ------------------------------------------------------------- convictions */
+
+/**
+ * Somebody's side on a thesis: backing it, or doubting it.
+ *
+ * Free, and deliberately available without a wallet. Every other action in this app needs a
+ * SIWS session and Phantom specifically, which means a visitor without that extension can
+ * reach nothing at all. A conviction is the one thing anybody can do, so it carries the
+ * anonymous/wallet owner pair that saved_thesis already models rather than requiring a key.
+ *
+ * It is a public record of a view, not a wager: nothing is staked, nothing is paid out.
+ *
+ * takenAt is the scoring clock and the reason this table exists rather than a column
+ * somewhere. A conviction is scored from the first observation at or after it — never from
+ * the call's start — so switching sides rewrites this row and resets takenAt, and nobody
+ * accrues credit for a stretch they spent on the other side.
+ */
+export const conviction = pgTable(
+  "conviction",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    thesisId: uuid("thesis_id").notNull(),
+    /** The version on screen when the side was taken. */
+    versionId: uuid("version_id").notNull(),
+    /** Null when the thesis had no running call; such a conviction is never scorable. */
+    callId: uuid("call_id"),
+    side: text("side").notNull(),
+    /** 'wallet' | 'anon', matching saved_thesis. */
+    ownerKind: text("owner_kind").notNull(),
+    ownerKey: text("owner_key").notNull(),
+    /**
+     * The basket as it stood at entry, from basketIdentity(). If the thesis is later
+     * re-weighted this no longer matches, and the conviction closes against what was
+     * actually called instead of being rescored against a different basket.
+     */
+    basketKey: text("basket_key").notNull(),
+    takenAt: timestamp("taken_at", { withTimezone: true }).notNull(),
+    createdAt,
+  },
+  (t) => [
+    // One live side per person per thesis. Switching rewrites in place.
+    uniqueIndex("conviction_one_per_owner").on(t.ownerKind, t.ownerKey, t.thesisId),
+    index("conviction_by_thesis").on(t.thesisId),
+  ],
+);
+
+/* ----------------------------------------------------- call observations */
+
+/**
+ * Every quote observation a call has ever had, appended and never updated.
+ *
+ * thesis_call keeps two snapshots: the fixed start and the most recent. That is all the
+ * scoring needs, and it is why no chart of a call's performance could be drawn — each
+ * refresh overwrote the only other point that existed, so the entire history was a start
+ * and a now.
+ *
+ * This table exists so the line is real. It is strictly append-only: rows are the record of
+ * what was quoted when, and a row that could be edited later would make the chart a claim
+ * rather than a record. The call's own start_snapshot stays the authority for scoring, so
+ * nothing here can change a result.
+ */
+export const callObservation = pgTable(
+  "call_observation",
+  {
+    id: bigserial("id", { mode: "bigint" }).primaryKey(),
+    callId: uuid("call_id").notNull(),
+    /** When the quotes were taken, not when the row was written. */
+    observedAt: timestamp("observed_at", { withTimezone: true }).notNull(),
+    /** Base units, matching the snapshot they came from. */
+    basketUsdcRaw: numeric("basket_usdc_raw", { precision: 39, scale: 0 }).notNull(),
+    benchmarkUsdcRaw: numeric("benchmark_usdc_raw", { precision: 39, scale: 0 }).notNull(),
+    createdAt,
+  },
+  (t) => [
+    // One row per call per observation time. A retried refresh must not double-plot a point.
+    uniqueIndex("call_observation_unique").on(t.callId, t.observedAt),
+    index("call_observation_call_time").on(t.callId, t.observedAt),
+  ],
+);
+
 /* ------------------------------------------------- source post engagement */
 
 /**
@@ -495,3 +751,140 @@ export const waitlistSignup = pgTable(
   },
   (t) => [uniqueIndex("waitlist_email_key").on(t.email)],
 );
+
+/* --------------------------------------------------- what people search for */
+
+/**
+ * Every search the homepage runs, and what it returned.
+ *
+ * This exists to answer one question the catalogue cannot answer about itself: **what are people
+ * looking for that we have no basket for?** A search that finds nothing is the most valuable row
+ * in this table — it is a demand signal with the supply gap already named.
+ *
+ * What is stored is the text somebody typed and the outcome of matching it. What is deliberately
+ * *not* stored: no wallet, no session, no IP, no user agent. There is nothing here that ties a
+ * search to a person, because answering "what is being researched" needs the what and never the
+ * who. Rows are written after the response is already on its way, so a failure to record can
+ * never fail a search.
+ */
+export const matchQuery = pgTable(
+  "match_query",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    createdAt,
+    /** Exactly what was submitted — prose, or the URL if one was pasted. */
+    input: text("input").notNull(),
+    /** "text" when typed, "post" when a link was retrieved. */
+    sourceKind: text("source_kind").notNull(),
+    /** The post's canonical URL, when the input was a link we could read. */
+    sourceUrl: text("source_url"),
+    /** What was actually scored: the retrieved post's text, or the same as `input`. */
+    idea: text("idea").notNull(),
+    /** How the run ended: ok, unretrievable, unavailable, empty_catalogue. */
+    outcome: text("outcome").notNull(),
+    /** True when nothing reached Partial. These rows are the catalogue's to-do list. */
+    noMatch: boolean("no_match").notNull().default(false),
+    /** The best candidate, whether or not it was good enough to be called a match. */
+    topSlug: text("top_slug"),
+    topStrength: text("top_strength"),
+    topScore: numeric("top_score", { precision: 4, scale: 3 }),
+    /** Every shown candidate: slug, strength, score, direction. */
+    results: jsonb("results").notNull().default([]),
+    providerMs: integer("provider_ms"),
+    questions: integer("questions"),
+  },
+  (t) => [
+    index("match_query_by_time").on(t.createdAt.desc()),
+    // The gap list is read constantly and is a small slice of the table.
+    index("match_query_gaps").on(t.createdAt.desc()).where(sql`no_match`),
+  ],
+);
+
+/* ------------------------------------------------------------ funded gifts */
+
+/**
+ * A funded gift and its ledger.
+ *
+ * Created by src/server/db/migrations/2026-09-23-gifts.sql, which also carries the constraints and
+ * triggers that make the state machine hold in the database. They are declared here as well for
+ * one reason: drizzle.config.ts has no table filter, so `drizzle-kit push --force` treats any table
+ * it does not know about as drift. A financial table must never be one push away from being
+ * dropped. Keep the two definitions in step.
+ *
+ * Design: docs/gifting.md, "Architecture decision · 23 September 2026".
+ */
+export const gift = pgTable("gift", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  inviteHash: text("invite_hash").notNull().unique(),
+  inviteExpiresAt: timestamp("invite_expires_at", { withTimezone: true }).notNull(),
+  state: text("state").notNull().default("draft"),
+  packId: text("pack_id").notNull(),
+  basketVersionId: uuid("basket_version_id").notNull().references(() => basketVersion.id),
+  amountUsd: integer("amount_usd").notNull(),
+  amountRaw: numeric("amount_raw", { precision: 20, scale: 0 }).notNull(),
+  solAllowanceLamports: bigint("sol_allowance_lamports", { mode: "bigint" }).notNull(),
+  senderWallet: text("sender_wallet").notNull(),
+  senderName: text("sender_name").notNull(),
+  note: text("note").notNull().default(""),
+  recipientHandleRequested: text("recipient_handle_requested").notNull(),
+  recipientSubject: text("recipient_subject"),
+  recipientHandleAtResolution: text("recipient_handle_at_resolution"),
+  recipientDisplayName: text("recipient_display_name"),
+  recipientProviderUserId: text("recipient_provider_user_id"),
+  destinationWallet: text("destination_wallet"),
+  fundingSignature: text("funding_signature").unique(),
+  fundedSlot: bigint("funded_slot", { mode: "number" }),
+  claimedByProviderUserId: text("claimed_by_provider_user_id"),
+  claimIntentId: uuid("claim_intent_id").references(() => investmentIntent.id),
+  eligibility: text("eligibility").notNull().default("unchecked"),
+  failureReason: text("failure_reason"),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  fundedAt: timestamp("funded_at", { withTimezone: true }),
+  claimedAt: timestamp("claimed_at", { withTimezone: true }),
+  centerImageId: uuid("center_image_id").references(() => giftImage.id),
+});
+
+const bytea = customType<{ data: Buffer }>({ dataType: () => "bytea" });
+
+/** A sender's photo for the middle of a pack. See migrations/2026-09-24-gift-images.sql. */
+export const giftImage = pgTable("gift_image", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  sha256: text("sha256").notNull().unique(),
+  mime: text("mime").notNull(),
+  bytes: bytea("bytes").notNull(),
+  width: integer("width").notNull(),
+  height: integer("height").notNull(),
+  uploadedByWallet: text("uploaded_by_wallet").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  removedAt: timestamp("removed_at", { withTimezone: true }),
+});
+
+/** A pack somebody built over their own published thesis: only its name and colour live here. */
+export const giftPackDesign = pgTable("gift_pack_design", {
+  thesisSlug: text("thesis_slug").primaryKey(),
+  name: text("name").notNull(),
+  color: text("color").notNull(),
+  createdByWallet: text("created_by_wallet").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const giftEvent = pgTable("gift_event", {
+  id: bigserial("id", { mode: "number" }).primaryKey(),
+  giftId: uuid("gift_id").notNull().references(() => gift.id),
+  idempotencyKey: text("idempotency_key").notNull().unique(),
+  fromState: text("from_state"),
+  toState: text("to_state").notNull(),
+  detail: jsonb("detail").notNull().default({}),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+/*
+ * The thesis-token tables stood here: `thesis_token_config` and `thesis_token`, for a paired
+ * Meteora bonding-curve token per thesis with 50.4% of its trading fee split to the author.
+ * Removed on 22 September 2026 along with the whole feature. Both tables were empty in every
+ * environment, so no record and no attribution was lost.
+ *
+ * `thesis.creatorWallet` deliberately stays: it is the byline, and who a basket's allocation is
+ * attributed to. It was never only about fees.
+ */

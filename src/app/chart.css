@@ -1,0 +1,66 @@
+/*
+ * The basket performance chart.
+ *
+ * Extracted from terminal.css on 22 September 2026 so the public homepage at / can draw the same
+ * chart without pulling in the whole terminal — its grid, rails, tabs and leaderboards, none of
+ * which exist on that page. Both files @import this one; Next serves it once.
+ *
+ * The rules are unchanged except for their token references. terminal.css defines --tm-* on
+ * .tm-shell, which the homepage has no reason to carry, so every var() here now has a fallback
+ * inside it. A var() with no fallback invalidates the whole declaration when the token is absent
+ * — which is how these rules would have failed silently on / rather than loudly.
+ */
+
+/* ------------------------------------------------------------- the chart */
+
+.tmc { display: grid; gap: 8px; }
+.tmc--empty {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 5px;
+  padding: 22px;
+  border: 1px dashed var(--tm-rule, #20353c);
+  border-radius: 12px;
+}
+.tmc-empty-head { margin: 0; font-size: 14px; font-weight: 600; }
+.tmc-empty-body { margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--tm-ink-3, #78848c); max-width: 60ch; }
+
+.tmc-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.tmc-keys { display: flex; gap: 16px; flex-wrap: wrap; }
+.tmc-key { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--tm-ink-3, #78848c); }
+.tmc-key i { width: 14px; height: 2px; border-radius: 2px; }
+.tmc-key--basket i { background: var(--ln-accent); }
+.tmc-key--bench i { background: var(--tm-ink-3, #78848c); }
+.tmc-key strong { font-size: 12.5px; }
+
+.tmc-ranges { display: flex; gap: 2px; }
+.tmc-ranges button {
+  min-height: 26px;
+  padding-inline: 9px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: none;
+  color: var(--tm-ink-3, #78848c);
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+.tmc-ranges button[aria-pressed="true"] { background: var(--tm-panel-2, #111b21); border-color: var(--tm-rule, #20353c); color: var(--tm-ink, #e6e8ea); }
+.tmc-ranges button:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.tmc-plot { width: 100%; display: block; border: 1px solid var(--tm-rule-soft, #18272d); border-radius: 12px; background: var(--tm-panel, #0d151a); }
+.tmc-zero { stroke: var(--tm-rule, #20353c); stroke-width: 1; stroke-dasharray: 3 3; }
+.tmc-axis { fill: var(--tm-ink-3, #78848c); font-size: 10px; font-family: var(--ln-mono); }
+.tmc-area { fill: color-mix(in oklch, var(--ln-accent) 12%, transparent); stroke: none; }
+.tmc-line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.tmc-line--basket { stroke: var(--ln-accent); }
+.tmc-line--bench { stroke: var(--tm-ink-3, #78848c); stroke-dasharray: 4 4; }
+.tmc-dot { fill: var(--ln-accent); }
+
+.tmc-table summary { font-size: 11px; color: var(--tm-ink-3, #78848c); cursor: pointer; }
+.tmc-table table { width: 100%; margin-top: 8px; border-collapse: collapse; font-size: 11.5px; }
+.tmc-table :is(th, td) { padding: 5px 8px; text-align: right; border-bottom: 1px solid var(--tm-rule-soft, #18272d); }
+.tmc-table thead th { color: var(--tm-ink-3, #78848c); font-weight: 500; }
+.tmc-table tbody th { text-align: left; font-weight: 400; color: var(--tm-ink-3, #78848c); }
+

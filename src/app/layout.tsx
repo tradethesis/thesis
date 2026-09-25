@@ -3,7 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import {
   SITE_DESCRIPTION,
-  SITE_DESCRIPTION_LONG,
   SITE_NAME,
   SITE_TAGLINE,
   SITE_URL,
@@ -40,7 +39,7 @@ export const metadata: Metadata = {
     type: "website",
     siteName: SITE_NAME,
     title: `${SITE_NAME} — ${SITE_TAGLINE}`,
-    description: SITE_DESCRIPTION_LONG,
+    description: SITE_DESCRIPTION,
     url: "/",
     locale: "en",
     images: [{ url: "/og.jpg", width: 1200, height: 630, alt: `${SITE_NAME} — ${SITE_TAGLINE}` }],
@@ -48,7 +47,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: `${SITE_NAME} — ${SITE_TAGLINE}`,
-    description: SITE_DESCRIPTION_LONG,
+    description: SITE_DESCRIPTION,
     images: ["/og.jpg"],
   },
   icons: {

@@ -1,6 +1,6 @@
 import { and, asc, eq, inArray, isNotNull, sql as raw } from "drizzle-orm";
 import { db } from "../db/client";
-import { asset, fill, investmentIntent, swapLeg, thesis, thesisConstituent, thesisVersion } from "../db/schema";
+import { asset, basket, basketThesis, fill, gift, investmentIntent, swapLeg, thesis, thesisConstituent, thesisVersion } from "../db/schema";
 import { assetByMint, QUOTE_ASSET, USDC_MINT } from "../assets/allowlist";
 import { allocate, validateAllocation, type WeightedLeg } from "@/lib/money/allocate";
 import { MIN_BASKET_RAW, estimateBasketCost } from "@/lib/money/cost";
@@ -16,7 +16,7 @@ import {
   deriveIntentStatus,
   type LegStatus,
 } from "./stateMachine";
-import { executionModeForWallet } from "../env";
+import { executionModeForWallet, type ExecutionMode } from "../env";
 
 /**
  * The buy flow.
@@ -61,13 +61,20 @@ export type CreateIntentInput = {
   /** Symbol -> weight in basis points, as the user confirmed them. */
   weights: { symbol: string; weightBps: number }[];
   idempotencyKey: string;
+  /**
+   * Present only when /api/intents has verified a reserved gift for this wallet and this exact
+   * amount. It lowers the floor to the gift minimum and sets the mode gift deliveries run in.
+   * Nothing a client sends can construct it.
+   */
+  gift?: { minRaw: bigint; executionMode: ExecutionMode; basketVersionId?: string };
 };
 
 export async function createIntent(input: CreateIntentInput) {
-  if (input.budgetRaw < MIN_BASKET_RAW) {
+  const floor = input.gift?.minRaw ?? MIN_BASKET_RAW;
+  if (input.budgetRaw < floor) {
     fail(
       "below_minimum",
-      `The minimum basket is $${Number(MIN_BASKET_RAW) / 1e6}. Below that, fees are a large share of what you put in.`,
+      `The minimum basket is $${Number(floor) / 1e6}. Below that, fees are a large share of what you put in.`,
     );
   }
 
@@ -125,6 +132,24 @@ export async function createIntent(input: CreateIntentInput) {
   if (!version) fail("unknown_thesis", "That thesis is not published.");
   if (input.versionId && version.id !== input.versionId) fail("version_changed", "A new thesis version was published. Reload and review its holdings before buying.");
 
+  /*
+   * The allocation a buy executes is a basket version, and the database refuses an intent that
+   * doesn't name one (intent_names_allocation). The thesis version is attached to exactly the
+   * basket version it argues for; the live basket's current execution version is the one to buy.
+   * This lookup was missing, so every buy failed at insert once that rule landed.
+   */
+  const [executes] = await db
+    .select({ basketVersionId: basketThesis.basketVersionId })
+    .from(basketThesis)
+    .innerJoin(basket, eq(basket.executionVersionId, basketThesis.basketVersionId))
+    .where(and(eq(basketThesis.thesisVersionId, version.id), eq(basket.status, "live")))
+    .limit(1);
+  if (!executes) fail("no_basket", "This thesis has no live basket to buy right now.");
+  // A gift pins the allocation it was sent with; opening it must buy exactly that one.
+  if (input.gift?.basketVersionId && input.gift.basketVersionId !== executes.basketVersionId) {
+    fail("version_changed", "This pack's allocation changed after the gift was sent.");
+  }
+
   const constituents = await db
     .select({
       symbol: asset.symbol,
@@ -140,7 +165,7 @@ export async function createIntent(input: CreateIntentInput) {
     .where(eq(thesisConstituent.versionId, version.id))
     .orderBy(asc(thesisConstituent.position));
 
-  const executionMode = executionModeForWallet(input.wallet);
+  const executionMode = input.gift?.executionMode ?? executionModeForWallet(input.wallet);
 
   // TH-05 and TH-14 at the order boundary: resolve by mint through the allowlist, never by
   // symbol, and refuse anything disabled or not on the network we are executing against.
@@ -177,6 +202,7 @@ export async function createIntent(input: CreateIntentInput) {
         inputMint: USDC_MINT,
         weightsBps: legs.map((l) => ({ symbol: l.assetId, positionIndex: l.positionIndex, bps: l.bps })),
         isCustomAllocation: isCustom,
+        basketVersionId: executes.basketVersionId,
         status: "draft",
         executionMode,
       })
@@ -439,7 +465,9 @@ export async function reconcileIntent(intentId: string): Promise<number> {
       if (outcome.resolution === "inconclusive") {
         await tx
           .update(swapLeg)
-          .set({ reconcileAttempts: (leg as unknown as { reconcileAttempts: number }).reconcileAttempts + 1 })
+          // Incremented in SQL: loadLegs does not select this column, so reading it off `leg` gave
+          // undefined + 1 = NaN, and every inconclusive check crashed the request.
+          .set({ reconcileAttempts: raw`${swapLeg.reconcileAttempts} + 1` })
           .where(eq(swapLeg.id, leg.id));
         return false;
       }
@@ -509,9 +537,22 @@ export async function prepareLeg(intentId: string, legId: string, wallet: string
   const frozen = basketIsFrozen(statuses);
   if (frozen.frozen) fail("basket_frozen", frozen.reason!);
 
+  // Live only because a gift made it live (the wallet is not on LIVE_EXECUTION_WALLETS): then it
+  // may be signed only while it is the purchase a gift is delivering. A gift purchase whose attach
+  // failed was once left resumable, and bought a different pack with the gift's money.
+  if (intent.executionMode === "live" && executionModeForWallet(wallet) !== "live") {
+    const [bound] = await db.select({ id: gift.id }).from(gift).where(and(eq(gift.claimIntentId, intentId), eq(gift.state, "delivering"))).limit(1);
+    if (!bound) fail("gift_not_attached", "This purchase isn't attached to a gift, so it can't continue. Open the gift again from its invitation.");
+  }
+
   const leg = legs.find((l) => l.id === legId);
   if (!leg) fail("not_found", "No such leg.");
-  if (leg.status !== "quoted") fail("wrong_state", `This leg is ${leg.status}, not ready to sign.`);
+  // An approval that was shown but never signed (the wallet was closed, the page reloaded) is
+  // prepared again with a fresh order. Nothing from it can land: /execute commits `submitted`
+  // before broadcasting, and the new message hash below replaces the one a stale signature
+  // would have to match.
+  if (leg.status !== "quoted" && leg.status !== "awaiting_signature") fail("wrong_state", `This leg is ${leg.status}, not ready to sign.`);
+  const from = leg.status as "quoted" | "awaiting_signature";
 
   const order = await createOrder({
     inputMint: leg.inputMint,
@@ -556,8 +597,9 @@ export async function prepareLeg(intentId: string, legId: string, wallet: string
   const slot = await chain.getSlot();
 
   await db.transaction(async (tx) => {
+    if (from === "awaiting_signature") assertLegTransition("awaiting_signature", "quoted", "order_accepted");
     assertLegTransition("quoted", "awaiting_signature", "order_accepted");
-    await tx
+    const updated = await tx
       .update(swapLeg)
       .set({
         status: "awaiting_signature",
@@ -576,7 +618,9 @@ export async function prepareLeg(intentId: string, legId: string, wallet: string
         quoteFetchedAt: new Date(),
         updatedAt: new Date(),
       })
-      .where(and(eq(swapLeg.id, legId), eq(swapLeg.status, "quoted")));
+      .where(and(eq(swapLeg.id, legId), eq(swapLeg.status, from)))
+      .returning({ id: swapLeg.id });
+    if (!updated.length) fail("wrong_state", "This leg changed while it was being prepared. Try again.");
 
     await tx
       .update(investmentIntent)

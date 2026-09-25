@@ -123,7 +123,60 @@ export async function liteQuote(params: {
     amount: params.amountRaw.toString(),
     slippageBps: String(params.slippageBps ?? 50),
   });
-  return call<LiteQuote>(`${LITE_BASE}/swap/v1/quote?${search.toString()}`, { method: "GET" });
+  // Backoff on the free tier's rate limit rather than surfacing it as a missing route.
+  // The two are indistinguishable to every caller above this line, and they mean opposite
+  // things: one is "wait", the other is "this asset cannot be traded". Striking calls on
+  // fifty baskets hit this and gave up, leaving most of the catalogue with no call at all.
+  // Deliberately not switched to the keyed base — that budget is reserved for orders
+  // somebody is about to sign, and a valuation poll must never be able to starve it.
+  return withBackoff(() => paced(() => call<LiteQuote>(`${LITE_BASE}/swap/v1/quote?${search.toString()}`, { method: "GET" })));
+}
+
+/**
+ * At most one free-tier quote in flight per interval, process-wide.
+ *
+ * Pacing belongs here rather than in each caller. Every caller that got this wrong got it
+ * wrong the same way — a Promise.all over a list — and each one had to rediscover that the
+ * free tier answers a burst with 429s. A single queue means a new caller cannot reintroduce
+ * the bug, and the callers that already pace themselves simply never wait.
+ *
+ * Only the keyless base is gated. The keyed one has its own budget and is reserved for
+ * orders somebody is about to sign, which must never queue behind a valuation poll.
+ */
+const LITE_MIN_GAP_MS = 500;
+let liteChain: Promise<void> = Promise.resolve();
+
+function paced<T>(run: () => Promise<T>): Promise<T> {
+  const turn = liteChain.then(run);
+  // The chain advances on the gap, not on the request, so one slow call does not make the
+  // next one wait twice. Failures are swallowed here and surface through `turn`.
+  liteChain = turn.then(
+    () => new Promise((resolve) => setTimeout(resolve, LITE_MIN_GAP_MS)),
+    () => new Promise((resolve) => setTimeout(resolve, LITE_MIN_GAP_MS)),
+  );
+  return turn;
+}
+
+/**
+ * Retries only what the server said was temporary, and gives up quickly rather than
+ * hammering — or stalling.
+ *
+ * The delays are deliberately short. A call observation throws out any quote set that took
+ * more than thirty seconds, because a stale set is worse than a missing one, so a generous
+ * backoff here does not rescue a rate-limited observation: it converts it from "429" into
+ * "not fresh enough", which is the same failure wearing a better error message. Absorbing a
+ * brief limit is this function's job; staying under it is the caller's, by pacing.
+ */
+async function withBackoff<T>(attempt: () => Promise<T>, tries = 3): Promise<T> {
+  for (let i = 0; ; i++) {
+    try {
+      return await attempt();
+    } catch (error) {
+      const transient = error instanceof JupiterError && error.transient;
+      if (!transient || i >= tries - 1) throw error;
+      await new Promise((resolve) => setTimeout(resolve, 400 * 2 ** i));
+    }
+  }
 }
 
 export type JupiterOrder = {
@@ -214,4 +267,48 @@ export async function executeOrder(params: {
     timeoutMs: params.timeoutMs ?? 20_000,
     body: JSON.stringify({ signedTransaction: params.signedTransaction, requestId: params.requestId }),
   });
+}
+
+export type LitePrice = {
+  usdPrice: number;
+  /** The slot the price was read at, kept on the snapshot as its provenance. */
+  blockId?: number;
+  priceChange24h?: number;
+  liquidity?: number;
+  decimals?: number;
+  /** Present for tokenised equities only. Crypto has no issuer and no share count. */
+  stockData?: { price?: number; mcap?: number };
+  scaledUiConfig?: { multiplier?: number };
+};
+
+/**
+ * Spot prices for many mints in one request.
+ *
+ * This is a price feed, not a swap quote, and the distinction is the whole point. Valuing a
+ * basket by quoting a sale of it costs one request per holding — fifty-nine open calls is
+ * roughly two hundred and forty quotes per refresh, which is well past what the free tier
+ * gives one address, and the rate limit surfaces downstream as "price unavailable".
+ * This endpoint answers for every mint at once, keyless, and returns the issuer's own
+ * reference price and the scaled-UI multiplier alongside the market price.
+ *
+ * It does not replace a quote where a quote is the right tool: an order still needs to know
+ * what a route will actually fill at, including impact. Use this to value and to display.
+ */
+export async function litePrices(mints: string[]): Promise<Map<string, LitePrice>> {
+  const unique = [...new Set(mints)].filter(Boolean);
+  if (!unique.length) return new Map();
+
+  const out = new Map<string, LitePrice>();
+  // The endpoint takes a list, but not an unbounded one; batching keeps a growing
+  // catalogue from silently truncating its own prices.
+  for (let i = 0; i < unique.length; i += 50) {
+    const batch = unique.slice(i, i + 50);
+    const body = await withBackoff(() =>
+      paced(() => call<Record<string, LitePrice>>(`${LITE_BASE}/price/v3?ids=${batch.join(",")}`, { method: "GET" })),
+    );
+    for (const [mint, price] of Object.entries(body ?? {})) {
+      if (price && Number.isFinite(price.usdPrice)) out.set(mint, price);
+    }
+  }
+  return out;
 }

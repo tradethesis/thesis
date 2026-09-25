@@ -6,6 +6,8 @@ export const buyInputSchema = z.object({
   idempotencyKey: z.string().uuid(),
   versionId: z.string().uuid().optional(),
   budgetUsdc: z.number().finite().positive().max(1_000_000).refine(n => Number.isSafeInteger(Math.round(n * 1e6)), "Invalid amount"),
+  /** Opening a gift. Only a token; the route looks up everything it implies. */
+  giftToken: z.string().regex(/^[A-Za-z0-9_-]{16,64}$/).optional(),
   weights: z.array(z.object({ symbol: z.string().min(1).max(20), weightBps: z.number().int().min(MIN_WEIGHT_BPS).max(MAX_WEIGHT_BPS) })).max(3).optional(),
 });
 

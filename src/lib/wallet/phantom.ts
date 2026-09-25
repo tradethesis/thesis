@@ -5,7 +5,14 @@
  * provider surface we do not want, and @solana/wallet-adapter is twenty-odd packages to
  * support one wallet. The interface below is already on the page.
  *
- * signTransaction, never signAndSendTransaction: Jupiter broadcasts, we must not.
+ * signTransaction, never signAndSendTransaction — **for Jupiter orders**. The rule is about
+ * there being exactly one broadcaster per transaction, and for a swap that broadcaster is
+ * Jupiter: a second sender is a duplicate trade, which is the incident this sentence was
+ * written after. It is not a rule against sending in general.
+ *
+ * A thesis token launch has no Jupiter in it and nobody else to broadcast, so there
+ * signAndSendTransaction is the correct tool and the wallet is the only party that ever
+ * holds a key. It is declared below for that path and must not be reached for on a swap.
  */
 
 export type SolanaSignInData = {
@@ -32,6 +39,8 @@ export type PhantomProvider = {
   }>;
   signMessage(message: Uint8Array, encoding?: string): Promise<{ signature: Uint8Array }>;
   signTransaction<T>(transaction: T): Promise<T>;
+  /** Launches and fee claims only. Never a Jupiter order — see the note at the top. */
+  signAndSendTransaction?<T>(transaction: T): Promise<{ signature: string }>;
   on(event: "connect" | "disconnect" | "accountChanged", handler: (arg: unknown) => void): void;
   off?(event: string, handler: (arg: unknown) => void): void;
 };
