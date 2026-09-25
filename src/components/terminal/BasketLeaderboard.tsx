@@ -36,7 +36,7 @@ export function BasketLeaderboard({
       </div>
 
       <ol className="tml-rows">
-        {baskets.map((b) => (
+        {baskets.map((b, pos) => (
           <li key={b.slug}>
             <button
               type="button"
@@ -44,7 +44,7 @@ export function BasketLeaderboard({
               aria-current={b.slug === selected ? "true" : undefined}
               onClick={() => onSelect(b.slug)}
             >
-              <span className="tml-rank ln-num">{b.rank === null ? "–" : b.rank}</span>
+              <span className="tml-rank ln-num">{b.rank ?? pos + 1}</span>
 
               <span className="tml-body">
                 <span className="tml-name">{b.name}</span>
@@ -58,9 +58,17 @@ export function BasketLeaderboard({
               </span>
 
               <span className="tml-figure">
-                {b.returnPct === null ? (
+                {b.returnPct === null && b.yearPct !== null ? (
+                  <>
+                    <strong className={`ln-num ${b.yearPct > 0 ? "is-up" : b.yearPct < 0 ? "is-down" : ""}`}>
+                      {b.yearPct > 0 ? "+" : ""}
+                      {b.yearPct.toFixed(1)}%
+                    </strong>
+                    <span className="tml-year">{b.yearLabel ?? "12 mo"}</span>
+                  </>
+                ) : b.returnPct === null ? (
                   <span className="tml-unranked" title={b.unrankedReason ?? undefined}>
-                    too new
+                    New
                   </span>
                 ) : (
                   <strong className={`ln-num ${b.returnPct > 0 ? "is-up" : b.returnPct < 0 ? "is-down" : ""}`}>
@@ -77,8 +85,9 @@ export function BasketLeaderboard({
 
       {/* Stated once for the column, never once per row. */}
       <p className="tml-note">
-        Example baskets, not anybody&rsquo;s holdings. Ranked by return since each call started;
-        baskets without enough price history yet aren&rsquo;t ranked.
+        Example baskets, not anybody&rsquo;s holdings. Ranked by return since each call started.
+        Until a call has enough readings, &ldquo;12 mo&rdquo; shows what its current holdings did over
+        the past 12 months, bought and held, before fees: a what-if, not the call&rsquo;s result.
       </p>
     </div>
   );

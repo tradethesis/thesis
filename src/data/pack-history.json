@@ -1,1269 +1,1002 @@
 {
  "window": "12m",
- "from": "2025-09-24",
- "asOf": "2026-09-23",
+ "from": "2025-09-25",
+ "asOf": "2026-09-24",
  "benchmark": "S&P 500 (SPY)",
  "source": "Yahoo Finance daily adjusted closes",
  "packs": {
   "contracted-capex-pays-the-supplier-first": {
-   "returnPct": 14.732427426996942,
-   "benchmarkPct": 17.394295852536978,
+   "returnPct": 14.675306957268507,
+   "benchmarkPct": 17.841627200891775,
    "points": [
     {
      "basketPct": 0,
      "benchmarkPct": 0
     },
     {
-     "basketPct": 2.94,
-     "benchmarkPct": 1.11
+     "basketPct": 3.62,
+     "benchmarkPct": 1.7
     },
     {
-     "basketPct": 4.29,
-     "benchmarkPct": 1.82
+     "basketPct": 5.58,
+     "benchmarkPct": 1.99
     },
     {
-     "basketPct": 0.21,
-     "benchmarkPct": 0.62
+     "basketPct": 0.69,
+     "benchmarkPct": 0.39
     },
     {
-     "basketPct": 1.05,
-     "benchmarkPct": 1.01
+     "basketPct": 2.21,
+     "benchmarkPct": 2.08
     },
     {
-     "basketPct": 10.02,
-     "benchmarkPct": 3.98
+     "basketPct": 7.43,
+     "benchmarkPct": 3.31
     },
     {
-     "basketPct": 8.03,
-     "benchmarkPct": 2.49
+     "basketPct": 5.17,
+     "benchmarkPct": 1.86
     },
     {
-     "basketPct": 7.13,
-     "benchmarkPct": 3.37
+     "basketPct": 4.51,
+     "benchmarkPct": 2.13
     },
     {
-     "basketPct": 1.14,
-     "benchmarkPct": 0.23
+     "basketPct": -1.11,
+     "benchmarkPct": -0.84
     },
     {
-     "basketPct": 0.57,
-     "benchmarkPct": 2.81
+     "basketPct": 1.08,
+     "benchmarkPct": 3.85
     },
     {
-     "basketPct": 0.99,
-     "benchmarkPct": 3.52
+     "basketPct": 1.27,
+     "benchmarkPct": 4.2
     },
     {
-     "basketPct": 0.75,
-     "benchmarkPct": 4.25
+     "basketPct": -1.13,
+     "benchmarkPct": 3.6
     },
     {
-     "basketPct": -1.23,
-     "benchmarkPct": 2.32
+     "basketPct": 0.82,
+     "benchmarkPct": 3.73
     },
     {
-     "basketPct": 3.48,
-     "benchmarkPct": 4.73
+     "basketPct": 3.16,
+     "benchmarkPct": 4.84
     },
     {
-     "basketPct": 2.13,
-     "benchmarkPct": 4.33
+     "basketPct": 3.65,
+     "benchmarkPct": 5.44
     },
     {
-     "basketPct": 3.49,
+     "basketPct": 3.09,
+     "benchmarkPct": 5.74
+    },
+    {
+     "basketPct": -0.59,
+     "benchmarkPct": 4.46
+    },
+    {
+     "basketPct": 5.08,
+     "benchmarkPct": 5.99
+    },
+    {
+     "basketPct": -4.19,
+     "benchmarkPct": 4.58
+    },
+    {
+     "basketPct": -5.18,
      "benchmarkPct": 5.46
     },
     {
-     "basketPct": -1.5,
-     "benchmarkPct": 2.8
+     "basketPct": -5.85,
+     "benchmarkPct": 4.32
     },
     {
-     "basketPct": 4.26,
-     "benchmarkPct": 5.51
+     "basketPct": -5.92,
+     "benchmarkPct": 5.06
     },
     {
-     "basketPct": -2.5,
-     "benchmarkPct": 4.61
+     "basketPct": -4.22,
+     "benchmarkPct": 3.84
     },
     {
-     "basketPct": -4.84,
-     "benchmarkPct": 5
+     "basketPct": -6.08,
+     "benchmarkPct": 1.52
     },
     {
-     "basketPct": -6.07,
-     "benchmarkPct": 4.12
+     "basketPct": -7.98,
+     "benchmarkPct": 0.56
     },
     {
-     "basketPct": -3.44,
-     "benchmarkPct": 5.16
+     "basketPct": -11.16,
+     "benchmarkPct": -1.41
     },
     {
-     "basketPct": -5.16,
-     "benchmarkPct": 3.94
+     "basketPct": -9.03,
+     "benchmarkPct": 0.23
     },
     {
-     "basketPct": -5.07,
-     "benchmarkPct": 2.61
+     "basketPct": -2.72,
+     "benchmarkPct": 3.84
     },
     {
-     "basketPct": -7.49,
-     "benchmarkPct": 0.35
+     "basketPct": 4.98,
+     "benchmarkPct": 8.53
     },
     {
-     "basketPct": -8.86,
-     "benchmarkPct": -0.08
+     "basketPct": 8.42,
+     "benchmarkPct": 9.11
     },
     {
-     "basketPct": -9.77,
-     "benchmarkPct": -0.32
+     "basketPct": 6.19,
+     "benchmarkPct": 10.14
     },
     {
-     "basketPct": -4.57,
-     "benchmarkPct": 3.43
+     "basketPct": 10.61,
+     "benchmarkPct": 12.73
     },
     {
-     "basketPct": 3.67,
-     "benchmarkPct": 6.74
+     "basketPct": 12.12,
+     "benchmarkPct": 12.97
     },
     {
-     "basketPct": 4.43,
-     "benchmarkPct": 7.77
+     "basketPct": 10.03,
+     "benchmarkPct": 13.96
     },
     {
-     "basketPct": 5.3,
-     "benchmarkPct": 9.33
+     "basketPct": 13.86,
+     "benchmarkPct": 15.93
     },
     {
-     "basketPct": 9.6,
-     "benchmarkPct": 11.29
+     "basketPct": 5.27,
+     "benchmarkPct": 12.97
     },
     {
-     "basketPct": 13.87,
-     "benchmarkPct": 13.81
+     "basketPct": 5.52,
+     "benchmarkPct": 15.36
     },
     {
-     "basketPct": 11,
-     "benchmarkPct": 12.99
+     "basketPct": -0.45,
+     "benchmarkPct": 12.4
     },
     {
-     "basketPct": 11.24,
-     "benchmarkPct": 15.08
+     "basketPct": 0.09,
+     "benchmarkPct": 14.42
     },
     {
-     "basketPct": 4.59,
-     "benchmarkPct": 12.2
+     "basketPct": 2.34,
+     "benchmarkPct": 14.21
     },
     {
-     "basketPct": 2.06,
-     "benchmarkPct": 12.84
+     "basketPct": 6.52,
+     "benchmarkPct": 15.65
     },
     {
-     "basketPct": 0.67,
-     "benchmarkPct": 13.53
+     "basketPct": 4.71,
+     "benchmarkPct": 14.52
     },
     {
-     "basketPct": -1.35,
-     "benchmarkPct": 13.01
+     "basketPct": -2.75,
+     "benchmarkPct": 11.77
     },
     {
-     "basketPct": 1.09,
-     "benchmarkPct": 14.04
+     "basketPct": 15.93,
+     "benchmarkPct": 17.95
     },
     {
-     "basketPct": 4.43,
-     "benchmarkPct": 14.67
+     "basketPct": 16.59,
+     "benchmarkPct": 18.36
     },
     {
-     "basketPct": 4.18,
-     "benchmarkPct": 14.12
+     "basketPct": 14.43,
+     "benchmarkPct": 17.84
     },
     {
-     "basketPct": -0.68,
-     "benchmarkPct": 12.99
+     "basketPct": 12.66,
+     "benchmarkPct": 17.38
     },
     {
-     "basketPct": 14.92,
-     "benchmarkPct": 17.64
+     "basketPct": 15.28,
+     "benchmarkPct": 17.24
     },
     {
-     "basketPct": 16.13,
-     "benchmarkPct": 17.52
+     "basketPct": 13.29,
+     "benchmarkPct": 16.12
     },
     {
-     "basketPct": 13.58,
-     "benchmarkPct": 17.05
+     "basketPct": 13.73,
+     "benchmarkPct": 16.85
     },
     {
-     "basketPct": 12.94,
-     "benchmarkPct": 16.81
-    },
-    {
-     "basketPct": 13.64,
-     "benchmarkPct": 16.18
-    },
-    {
-     "basketPct": 14.16,
-     "benchmarkPct": 16.28
-    },
-    {
-     "basketPct": 11.04,
-     "benchmarkPct": 15
-    },
-    {
-     "basketPct": 14.73,
-     "benchmarkPct": 17.39
+     "basketPct": 14.68,
+     "benchmarkPct": 17.84
     }
    ]
   },
   "digital-advertising-takes-a-bigger-share": {
-   "returnPct": 16.343356014847,
-   "benchmarkPct": 17.394295852536978,
+   "returnPct": 19.5858532928596,
+   "benchmarkPct": 17.841627200891775,
    "points": [
     {
      "basketPct": 0,
      "benchmarkPct": 0
     },
     {
-     "basketPct": -2.12,
-     "benchmarkPct": 1.11
+     "basketPct": -0.33,
+     "benchmarkPct": 1.7
     },
     {
-     "basketPct": -1.45,
-     "benchmarkPct": 1.82
+     "basketPct": 0.18,
+     "benchmarkPct": 1.99
     },
     {
-     "basketPct": -2.03,
-     "benchmarkPct": 0.62
+     "basketPct": -1.4,
+     "benchmarkPct": 0.39
     },
     {
-     "basketPct": -0.89,
-     "benchmarkPct": 1.01
+     "basketPct": 0.8,
+     "benchmarkPct": 2.08
     },
     {
-     "basketPct": 4.9,
-     "benchmarkPct": 3.98
+     "basketPct": 2.02,
+     "benchmarkPct": 3.31
     },
     {
-     "basketPct": 4.2,
-     "benchmarkPct": 2.49
+     "basketPct": 3.43,
+     "benchmarkPct": 1.86
     },
     {
-     "basketPct": 2.46,
-     "benchmarkPct": 3.37
+     "basketPct": 1.35,
+     "benchmarkPct": 2.13
     },
     {
-     "basketPct": -0.74,
-     "benchmarkPct": 0.23
+     "basketPct": -1.15,
+     "benchmarkPct": -0.84
     },
     {
-     "basketPct": 5.85,
-     "benchmarkPct": 2.81
+     "basketPct": 8.12,
+     "benchmarkPct": 3.85
     },
     {
-     "basketPct": 6.73,
-     "benchmarkPct": 3.52
+     "basketPct": 8.84,
+     "benchmarkPct": 4.2
     },
     {
-     "basketPct": 5.84,
-     "benchmarkPct": 4.25
+     "basketPct": 5.42,
+     "benchmarkPct": 3.6
     },
     {
-     "basketPct": 4.47,
-     "benchmarkPct": 2.32
+     "basketPct": 5.96,
+     "benchmarkPct": 3.73
     },
     {
-     "basketPct": 6.8,
-     "benchmarkPct": 4.73
+     "basketPct": 7.56,
+     "benchmarkPct": 4.84
     },
     {
-     "basketPct": 7.11,
-     "benchmarkPct": 4.33
+     "basketPct": 9.09,
+     "benchmarkPct": 5.44
     },
     {
-     "basketPct": 10.49,
+     "basketPct": 11.03,
+     "benchmarkPct": 5.74
+    },
+    {
+     "basketPct": 7.48,
+     "benchmarkPct": 4.46
+    },
+    {
+     "basketPct": 12.76,
+     "benchmarkPct": 5.99
+    },
+    {
+     "basketPct": 10.85,
+     "benchmarkPct": 4.58
+    },
+    {
+     "basketPct": 3.4,
      "benchmarkPct": 5.46
     },
     {
-     "basketPct": 5.17,
-     "benchmarkPct": 2.8
+     "basketPct": 1.34,
+     "benchmarkPct": 4.32
     },
     {
-     "basketPct": 11.94,
-     "benchmarkPct": 5.51
+     "basketPct": 2.97,
+     "benchmarkPct": 5.06
     },
     {
-     "basketPct": 12.56,
-     "benchmarkPct": 4.61
+     "basketPct": 3.9,
+     "benchmarkPct": 3.84
     },
     {
-     "basketPct": 3.99,
-     "benchmarkPct": 5
+     "basketPct": 1.89,
+     "benchmarkPct": 1.52
     },
     {
-     "basketPct": 0.37,
-     "benchmarkPct": 4.12
+     "basketPct": 0.9,
+     "benchmarkPct": 0.56
     },
     {
-     "basketPct": 3.02,
-     "benchmarkPct": 5.16
+     "basketPct": -5.53,
+     "benchmarkPct": -1.41
     },
     {
-     "basketPct": 3.21,
-     "benchmarkPct": 3.94
+     "basketPct": -1.94,
+     "benchmarkPct": 0.23
     },
     {
-     "basketPct": 2.83,
-     "benchmarkPct": 2.61
+     "basketPct": 7.8,
+     "benchmarkPct": 3.84
     },
     {
-     "basketPct": 0.59,
-     "benchmarkPct": 0.35
+     "basketPct": 15.62,
+     "benchmarkPct": 8.53
     },
     {
-     "basketPct": -2.34,
-     "benchmarkPct": -0.08
+     "basketPct": 17.43,
+     "benchmarkPct": 9.11
     },
     {
-     "basketPct": -2.3,
-     "benchmarkPct": -0.32
+     "basketPct": 20.87,
+     "benchmarkPct": 10.14
     },
     {
-     "basketPct": 6.2,
-     "benchmarkPct": 3.43
+     "basketPct": 23.67,
+     "benchmarkPct": 12.73
     },
     {
-     "basketPct": 13.12,
-     "benchmarkPct": 6.74
+     "basketPct": 22.03,
+     "benchmarkPct": 12.97
     },
     {
-     "basketPct": 13.56,
-     "benchmarkPct": 7.77
+     "basketPct": 20.27,
+     "benchmarkPct": 13.96
     },
     {
-     "basketPct": 19.32,
-     "benchmarkPct": 9.33
+     "basketPct": 18.16,
+     "benchmarkPct": 15.93
     },
     {
-     "basketPct": 22.27,
-     "benchmarkPct": 11.29
+     "basketPct": 13.29,
+     "benchmarkPct": 12.97
     },
     {
-     "basketPct": 22.17,
-     "benchmarkPct": 13.81
+     "basketPct": 14.63,
+     "benchmarkPct": 15.36
     },
     {
-     "basketPct": 20.03,
-     "benchmarkPct": 12.99
+     "basketPct": 8.23,
+     "benchmarkPct": 12.4
     },
     {
-     "basketPct": 20.44,
-     "benchmarkPct": 15.08
+     "basketPct": 10.47,
+     "benchmarkPct": 14.42
     },
     {
-     "basketPct": 13.41,
-     "benchmarkPct": 12.2
+     "basketPct": 13.66,
+     "benchmarkPct": 14.21
     },
     {
-     "basketPct": 9.97,
-     "benchmarkPct": 12.84
+     "basketPct": 20.08,
+     "benchmarkPct": 15.65
     },
     {
-     "basketPct": 7.61,
-     "benchmarkPct": 13.53
+     "basketPct": 12.16,
+     "benchmarkPct": 14.52
     },
     {
-     "basketPct": 9.21,
-     "benchmarkPct": 13.01
+     "basketPct": 6.83,
+     "benchmarkPct": 11.77
     },
     {
-     "basketPct": 14.23,
-     "benchmarkPct": 14.04
+     "basketPct": 17.49,
+     "benchmarkPct": 17.95
     },
     {
-     "basketPct": 15.4,
-     "benchmarkPct": 14.67
+     "basketPct": 13.62,
+     "benchmarkPct": 18.36
     },
     {
-     "basketPct": 12.95,
-     "benchmarkPct": 14.12
+     "basketPct": 12.12,
+     "benchmarkPct": 17.84
     },
     {
-     "basketPct": 6.41,
-     "benchmarkPct": 12.99
+     "basketPct": 12.23,
+     "benchmarkPct": 17.38
     },
     {
-     "basketPct": 19.2,
-     "benchmarkPct": 17.64
+     "basketPct": 11.49,
+     "benchmarkPct": 17.24
     },
     {
-     "basketPct": 14.25,
-     "benchmarkPct": 17.52
+     "basketPct": 12.7,
+     "benchmarkPct": 16.12
     },
     {
-     "basketPct": 9.97,
-     "benchmarkPct": 17.05
+     "basketPct": 16.31,
+     "benchmarkPct": 16.85
     },
     {
-     "basketPct": 11.74,
-     "benchmarkPct": 16.81
-    },
-    {
-     "basketPct": 9.55,
-     "benchmarkPct": 16.18
-    },
-    {
-     "basketPct": 11.86,
-     "benchmarkPct": 16.28
-    },
-    {
-     "basketPct": 13.44,
-     "benchmarkPct": 15
-    },
-    {
-     "basketPct": 16.34,
-     "benchmarkPct": 17.39
+     "basketPct": 19.59,
+     "benchmarkPct": 17.84
     }
    ]
   },
   "appetite-medicine-becomes-everyday-care": {
-   "returnPct": 12.177547182475834,
-   "benchmarkPct": 17.394295852536978,
+   "returnPct": 19.396331889410767,
+   "benchmarkPct": 17.841627200891775,
    "points": [
     {
      "basketPct": 0,
      "benchmarkPct": 0
     },
     {
-     "basketPct": 6,
-     "benchmarkPct": 1.11
+     "basketPct": 9.77,
+     "benchmarkPct": 1.7
     },
     {
-     "basketPct": 7.74,
-     "benchmarkPct": 1.82
+     "basketPct": 12.2,
+     "benchmarkPct": 1.99
     },
     {
-     "basketPct": 3.99,
-     "benchmarkPct": 0.62
+     "basketPct": 7.38,
+     "benchmarkPct": 0.39
     },
     {
-     "basketPct": 0.19,
-     "benchmarkPct": 1.01
+     "basketPct": 4.94,
+     "benchmarkPct": 2.08
     },
     {
-     "basketPct": -1.44,
-     "benchmarkPct": 3.98
+     "basketPct": 3.74,
+     "benchmarkPct": 3.31
     },
     {
-     "basketPct": 3.65,
-     "benchmarkPct": 2.49
+     "basketPct": 7.09,
+     "benchmarkPct": 1.86
     },
     {
-     "basketPct": 11.38,
-     "benchmarkPct": 3.37
+     "basketPct": 15.43,
+     "benchmarkPct": 2.13
     },
     {
-     "basketPct": 12.56,
-     "benchmarkPct": 0.23
+     "basketPct": 15.58,
+     "benchmarkPct": -0.84
     },
     {
-     "basketPct": 16,
-     "benchmarkPct": 2.81
+     "basketPct": 19.39,
+     "benchmarkPct": 3.85
     },
     {
-     "basketPct": 9.33,
-     "benchmarkPct": 3.52
+     "basketPct": 13.5,
+     "benchmarkPct": 4.2
     },
     {
-     "basketPct": 10.94,
-     "benchmarkPct": 4.25
+     "basketPct": 16.77,
+     "benchmarkPct": 3.6
     },
     {
-     "basketPct": 11.86,
-     "benchmarkPct": 2.32
+     "basketPct": 17.99,
+     "benchmarkPct": 3.73
     },
     {
-     "basketPct": 17.35,
-     "benchmarkPct": 4.73
+     "basketPct": 21.51,
+     "benchmarkPct": 4.84
     },
     {
-     "basketPct": 17.21,
-     "benchmarkPct": 4.33
+     "basketPct": 24.76,
+     "benchmarkPct": 5.44
     },
     {
-     "basketPct": 23.92,
+     "basketPct": 28.69,
+     "benchmarkPct": 5.74
+    },
+    {
+     "basketPct": 28.5,
+     "benchmarkPct": 4.46
+    },
+    {
+     "basketPct": 25.57,
+     "benchmarkPct": 5.99
+    },
+    {
+     "basketPct": 19.68,
+     "benchmarkPct": 4.58
+    },
+    {
+     "basketPct": 14.63,
      "benchmarkPct": 5.46
     },
     {
-     "basketPct": 21.94,
-     "benchmarkPct": 2.8
+     "basketPct": 15.05,
+     "benchmarkPct": 4.32
     },
     {
-     "basketPct": 23.7,
-     "benchmarkPct": 5.51
+     "basketPct": 5.3,
+     "benchmarkPct": 5.06
     },
     {
-     "basketPct": 10.55,
-     "benchmarkPct": 4.61
+     "basketPct": 3.87,
+     "benchmarkPct": 3.84
     },
     {
-     "basketPct": 11,
-     "benchmarkPct": 5
+     "basketPct": 2.52,
+     "benchmarkPct": 1.52
     },
     {
-     "basketPct": 10.91,
-     "benchmarkPct": 4.12
+     "basketPct": -2.52,
+     "benchmarkPct": 0.56
     },
     {
-     "basketPct": 2.04,
-     "benchmarkPct": 5.16
+     "basketPct": -4.56,
+     "benchmarkPct": -1.41
     },
     {
-     "basketPct": 0.62,
-     "benchmarkPct": 3.94
+     "basketPct": -0.13,
+     "benchmarkPct": 0.23
     },
     {
      "basketPct": 0.65,
-     "benchmarkPct": 2.61
+     "benchmarkPct": 3.84
     },
     {
-     "basketPct": -6.05,
-     "benchmarkPct": 0.35
+     "basketPct": 2.55,
+     "benchmarkPct": 8.53
     },
     {
-     "basketPct": -7.12,
-     "benchmarkPct": -0.08
+     "basketPct": 0.12,
+     "benchmarkPct": 9.11
     },
     {
-     "basketPct": -3.27,
-     "benchmarkPct": -0.32
+     "basketPct": 8.2,
+     "benchmarkPct": 10.14
     },
     {
-     "basketPct": -2.38,
-     "benchmarkPct": 3.43
+     "basketPct": 9.18,
+     "benchmarkPct": 12.73
     },
     {
-     "basketPct": -2.76,
-     "benchmarkPct": 6.74
+     "basketPct": 12.04,
+     "benchmarkPct": 12.97
     },
     {
-     "basketPct": -3.97,
-     "benchmarkPct": 7.77
+     "basketPct": 16.47,
+     "benchmarkPct": 13.96
     },
     {
-     "basketPct": 0.45,
-     "benchmarkPct": 9.33
+     "basketPct": 16.85,
+     "benchmarkPct": 15.93
     },
     {
-     "basketPct": 6.33,
-     "benchmarkPct": 11.29
+     "basketPct": 18.74,
+     "benchmarkPct": 12.97
     },
     {
-     "basketPct": 8.48,
-     "benchmarkPct": 13.81
+     "basketPct": 20.03,
+     "benchmarkPct": 15.36
     },
     {
-     "basketPct": 9.72,
-     "benchmarkPct": 12.99
+     "basketPct": 21.7,
+     "benchmarkPct": 12.4
     },
     {
-     "basketPct": 15.06,
-     "benchmarkPct": 15.08
+     "basketPct": 28.67,
+     "benchmarkPct": 14.42
     },
     {
-     "basketPct": 14.54,
-     "benchmarkPct": 12.2
+     "basketPct": 30.71,
+     "benchmarkPct": 14.21
     },
     {
-     "basketPct": 15.46,
-     "benchmarkPct": 12.84
+     "basketPct": 28.09,
+     "benchmarkPct": 15.65
     },
     {
-     "basketPct": 15.13,
-     "benchmarkPct": 13.53
+     "basketPct": 26.35,
+     "benchmarkPct": 14.52
     },
     {
-     "basketPct": 25.96,
-     "benchmarkPct": 13.01
+     "basketPct": 32.79,
+     "benchmarkPct": 11.77
     },
     {
-     "basketPct": 27.48,
-     "benchmarkPct": 14.04
+     "basketPct": 23.44,
+     "benchmarkPct": 17.95
     },
     {
-     "basketPct": 21.36,
-     "benchmarkPct": 14.67
+     "basketPct": 28.71,
+     "benchmarkPct": 18.36
     },
     {
-     "basketPct": 23.18,
-     "benchmarkPct": 14.12
+     "basketPct": 33.69,
+     "benchmarkPct": 17.84
     },
     {
-     "basketPct": 27.64,
-     "benchmarkPct": 12.99
+     "basketPct": 27.95,
+     "benchmarkPct": 17.38
     },
     {
-     "basketPct": 14.64,
-     "benchmarkPct": 17.64
+     "basketPct": 25.5,
+     "benchmarkPct": 17.24
     },
     {
-     "basketPct": 23.91,
-     "benchmarkPct": 17.52
+     "basketPct": 20.3,
+     "benchmarkPct": 16.12
     },
     {
-     "basketPct": 23.99,
-     "benchmarkPct": 17.05
+     "basketPct": 21.6,
+     "benchmarkPct": 16.85
     },
     {
-     "basketPct": 27.16,
-     "benchmarkPct": 16.81
-    },
-    {
-     "basketPct": 19,
-     "benchmarkPct": 16.18
-    },
-    {
-     "basketPct": 16.07,
-     "benchmarkPct": 16.28
-    },
-    {
-     "basketPct": 14.45,
-     "benchmarkPct": 15
-    },
-    {
-     "basketPct": 12.18,
-     "benchmarkPct": 17.39
+     "basketPct": 19.4,
+     "benchmarkPct": 17.84
     }
    ]
   },
   "breadth-beats-picking-the-buildout": {
-   "returnPct": 20.569122194843104,
-   "benchmarkPct": 17.394295852536978,
+   "returnPct": 20.800501468629285,
+   "benchmarkPct": 17.841627200891775,
    "points": [
     {
      "basketPct": 0,
      "benchmarkPct": 0
     },
     {
-     "basketPct": 1.67,
-     "benchmarkPct": 1.11
+     "basketPct": 2.12,
+     "benchmarkPct": 1.7
     },
     {
-     "basketPct": 3.52,
-     "benchmarkPct": 1.82
-    },
-    {
-     "basketPct": 3.27,
-     "benchmarkPct": 0.62
-    },
-    {
-     "basketPct": 3.07,
-     "benchmarkPct": 1.01
-    },
-    {
-     "basketPct": 5.67,
-     "benchmarkPct": 3.98
-    },
-    {
-     "basketPct": 4.38,
-     "benchmarkPct": 2.49
-    },
-    {
-     "basketPct": 5.59,
-     "benchmarkPct": 3.37
-    },
-    {
-     "basketPct": 2.23,
-     "benchmarkPct": 0.23
-    },
-    {
-     "basketPct": 4.69,
-     "benchmarkPct": 2.81
-    },
-    {
-     "basketPct": 5.86,
-     "benchmarkPct": 3.52
-    },
-    {
-     "basketPct": 6.65,
-     "benchmarkPct": 4.25
-    },
-    {
-     "basketPct": 5.01,
-     "benchmarkPct": 2.32
-    },
-    {
-     "basketPct": 8.09,
-     "benchmarkPct": 4.73
-    },
-    {
-     "basketPct": 7.02,
-     "benchmarkPct": 4.33
-    },
-    {
-     "basketPct": 8.91,
-     "benchmarkPct": 5.46
-    },
-    {
-     "basketPct": 7.38,
-     "benchmarkPct": 2.8
-    },
-    {
-     "basketPct": 12.4,
-     "benchmarkPct": 5.51
-    },
-    {
-     "basketPct": 9.63,
-     "benchmarkPct": 4.61
-    },
-    {
-     "basketPct": 9.79,
-     "benchmarkPct": 5
-    },
-    {
-     "basketPct": 8.81,
-     "benchmarkPct": 4.12
-    },
-    {
-     "basketPct": 10.92,
-     "benchmarkPct": 5.16
-    },
-    {
-     "basketPct": 9.96,
-     "benchmarkPct": 3.94
-    },
-    {
-     "basketPct": 9.56,
-     "benchmarkPct": 2.61
-    },
-    {
-     "basketPct": 5.98,
-     "benchmarkPct": 0.35
+     "basketPct": 3.24,
+     "benchmarkPct": 1.99
     },
     {
      "basketPct": 3.66,
-     "benchmarkPct": -0.08
+     "benchmarkPct": 0.39
     },
     {
-     "basketPct": 4.54,
-     "benchmarkPct": -0.32
+     "basketPct": 4.04,
+     "benchmarkPct": 2.08
     },
     {
-     "basketPct": 7.85,
-     "benchmarkPct": 3.43
+     "basketPct": 5.2,
+     "benchmarkPct": 3.31
     },
     {
-     "basketPct": 11.52,
-     "benchmarkPct": 6.74
+     "basketPct": 3.32,
+     "benchmarkPct": 1.86
     },
     {
-     "basketPct": 12.22,
-     "benchmarkPct": 7.77
-    },
-    {
-     "basketPct": 13.63,
-     "benchmarkPct": 9.33
-    },
-    {
-     "basketPct": 16.97,
-     "benchmarkPct": 11.29
-    },
-    {
-     "basketPct": 19.56,
-     "benchmarkPct": 13.81
-    },
-    {
-     "basketPct": 18.27,
-     "benchmarkPct": 12.99
-    },
-    {
-     "basketPct": 20.91,
-     "benchmarkPct": 15.08
-    },
-    {
-     "basketPct": 16.03,
-     "benchmarkPct": 12.2
-    },
-    {
-     "basketPct": 17.03,
-     "benchmarkPct": 12.84
-    },
-    {
-     "basketPct": 18.59,
-     "benchmarkPct": 13.53
-    },
-    {
-     "basketPct": 16.33,
-     "benchmarkPct": 13.01
-    },
-    {
-     "basketPct": 15.93,
-     "benchmarkPct": 14.04
-    },
-    {
-     "basketPct": 16.67,
-     "benchmarkPct": 14.67
-    },
-    {
-     "basketPct": 15.76,
-     "benchmarkPct": 14.12
-    },
-    {
-     "basketPct": 12.28,
-     "benchmarkPct": 12.99
-    },
-    {
-     "basketPct": 18.03,
-     "benchmarkPct": 17.64
-    },
-    {
-     "basketPct": 19.1,
-     "benchmarkPct": 17.52
-    },
-    {
-     "basketPct": 18.74,
-     "benchmarkPct": 17.05
-    },
-    {
-     "basketPct": 19.81,
-     "benchmarkPct": 16.81
-    },
-    {
-     "basketPct": 17.54,
-     "benchmarkPct": 16.18
-    },
-    {
-     "basketPct": 18.68,
-     "benchmarkPct": 16.28
-    },
-    {
-     "basketPct": 16.65,
-     "benchmarkPct": 15
-    },
-    {
-     "basketPct": 20.57,
-     "benchmarkPct": 17.39
-    }
-   ]
-  },
-  "ai-spending-keeps-growing": {
-   "returnPct": 10.982914776760921,
-   "benchmarkPct": 17.39428489733854,
-   "points": [
-    {
-     "basketPct": 0,
-     "benchmarkPct": 0
-    },
-    {
-     "basketPct": 3.53,
-     "benchmarkPct": 1.11
-    },
-    {
-     "basketPct": 4.11,
-     "benchmarkPct": 1.82
+     "basketPct": 4.1,
+     "benchmarkPct": 2.13
     },
     {
      "basketPct": 0.83,
-     "benchmarkPct": 0.62
+     "benchmarkPct": -0.84
     },
     {
-     "basketPct": 0.9,
-     "benchmarkPct": 1.01
+     "basketPct": 5.82,
+     "benchmarkPct": 3.85
     },
     {
-     "basketPct": 11.09,
-     "benchmarkPct": 3.98
+     "basketPct": 6.37,
+     "benchmarkPct": 4.2
     },
     {
-     "basketPct": 4.53,
-     "benchmarkPct": 2.49
+     "basketPct": 5.71,
+     "benchmarkPct": 3.6
     },
     {
-     "basketPct": 4.05,
-     "benchmarkPct": 3.37
+     "basketPct": 6.25,
+     "benchmarkPct": 3.73
     },
     {
-     "basketPct": -1.89,
-     "benchmarkPct": 0.23
+     "basketPct": 6.95,
+     "benchmarkPct": 4.84
     },
     {
-     "basketPct": -3.13,
-     "benchmarkPct": 2.81
+     "basketPct": 8.19,
+     "benchmarkPct": 5.44
     },
     {
-     "basketPct": -1.19,
-     "benchmarkPct": 3.52
+     "basketPct": 9.01,
+     "benchmarkPct": 5.74
     },
     {
-     "basketPct": -0.12,
-     "benchmarkPct": 4.25
+     "basketPct": 9.06,
+     "benchmarkPct": 4.46
     },
     {
-     "basketPct": -1.69,
-     "benchmarkPct": 2.32
+     "basketPct": 13.9,
+     "benchmarkPct": 5.99
     },
     {
-     "basketPct": 2.27,
-     "benchmarkPct": 4.73
+     "basketPct": 8.81,
+     "benchmarkPct": 4.58
     },
     {
-     "basketPct": -1.42,
-     "benchmarkPct": 4.33
-    },
-    {
-     "basketPct": -0.96,
+     "basketPct": 10.48,
      "benchmarkPct": 5.46
     },
     {
-     "basketPct": -5.61,
-     "benchmarkPct": 2.8
+     "basketPct": 8.86,
+     "benchmarkPct": 4.32
     },
     {
-     "basketPct": -1.89,
-     "benchmarkPct": 5.51
+     "basketPct": 10.61,
+     "benchmarkPct": 5.06
     },
     {
-     "basketPct": -10.05,
-     "benchmarkPct": 4.61
+     "basketPct": 9.56,
+     "benchmarkPct": 3.84
     },
     {
-     "basketPct": -10.82,
-     "benchmarkPct": 5
+     "basketPct": 7.92,
+     "benchmarkPct": 1.52
     },
     {
-     "basketPct": -12.58,
-     "benchmarkPct": 4.12
+     "basketPct": 4.93,
+     "benchmarkPct": 0.56
     },
     {
-     "basketPct": -11.1,
-     "benchmarkPct": 5.16
+     "basketPct": 1.28,
+     "benchmarkPct": -1.41
     },
     {
-     "basketPct": -10.57,
-     "benchmarkPct": 3.94
+     "basketPct": 4.39,
+     "benchmarkPct": 0.23
     },
     {
-     "basketPct": -10.22,
-     "benchmarkPct": 2.61
+     "basketPct": 8.12,
+     "benchmarkPct": 3.84
     },
     {
-     "basketPct": -12.2,
-     "benchmarkPct": 0.35
+     "basketPct": 13.23,
+     "benchmarkPct": 8.53
     },
     {
-     "basketPct": -13.87,
-     "benchmarkPct": -0.08
+     "basketPct": 13.94,
+     "benchmarkPct": 9.11
     },
     {
-     "basketPct": -15.76,
-     "benchmarkPct": -0.32
+     "basketPct": 14.53,
+     "benchmarkPct": 10.14
     },
     {
-     "basketPct": -16.08,
-     "benchmarkPct": 3.43
+     "basketPct": 19.05,
+     "benchmarkPct": 12.73
     },
     {
-     "basketPct": -7.8,
-     "benchmarkPct": 6.74
+     "basketPct": 17.97,
+     "benchmarkPct": 12.97
     },
     {
-     "basketPct": -8.07,
-     "benchmarkPct": 7.77
+     "basketPct": 18.79,
+     "benchmarkPct": 13.96
     },
     {
-     "basketPct": -9.05,
-     "benchmarkPct": 9.33
+     "basketPct": 21.37,
+     "benchmarkPct": 15.93
     },
     {
-     "basketPct": -5.96,
-     "benchmarkPct": 11.29
+     "basketPct": 17.42,
+     "benchmarkPct": 12.97
     },
     {
-     "basketPct": -2.52,
-     "benchmarkPct": 13.81
+     "basketPct": 20.45,
+     "benchmarkPct": 15.36
     },
     {
-     "basketPct": -4.38,
-     "benchmarkPct": 12.99
+     "basketPct": 15.95,
+     "benchmarkPct": 12.4
     },
     {
-     "basketPct": -0.92,
-     "benchmarkPct": 15.08
+     "basketPct": 17.96,
+     "benchmarkPct": 14.42
     },
     {
-     "basketPct": -7.64,
-     "benchmarkPct": 12.2
+     "basketPct": 16.14,
+     "benchmarkPct": 14.21
     },
     {
-     "basketPct": -10.72,
-     "benchmarkPct": 12.84
+     "basketPct": 16.98,
+     "benchmarkPct": 15.65
     },
     {
-     "basketPct": -13.06,
-     "benchmarkPct": 13.53
+     "basketPct": 15.99,
+     "benchmarkPct": 14.52
     },
     {
-     "basketPct": -16.2,
-     "benchmarkPct": 13.01
+     "basketPct": 11.01,
+     "benchmarkPct": 11.77
     },
     {
-     "basketPct": -11.61,
-     "benchmarkPct": 14.04
+     "basketPct": 18.64,
+     "benchmarkPct": 17.95
     },
     {
-     "basketPct": -9.07,
-     "benchmarkPct": 14.67
+     "basketPct": 20.19,
+     "benchmarkPct": 18.36
     },
     {
-     "basketPct": -9.1,
-     "benchmarkPct": 14.12
+     "basketPct": 19.9,
+     "benchmarkPct": 17.84
     },
     {
-     "basketPct": -12.75,
-     "benchmarkPct": 12.99
+     "basketPct": 19.8,
+     "benchmarkPct": 17.38
     },
     {
-     "basketPct": 3.5,
-     "benchmarkPct": 17.64
+     "basketPct": 18.5,
+     "benchmarkPct": 17.24
     },
     {
-     "basketPct": 7.18,
-     "benchmarkPct": 17.52
+     "basketPct": 17.75,
+     "benchmarkPct": 16.12
     },
     {
-     "basketPct": 5.4,
-     "benchmarkPct": 17.05
+     "basketPct": 18.78,
+     "benchmarkPct": 16.85
     },
     {
-     "basketPct": 5.11,
-     "benchmarkPct": 16.81
-    },
-    {
-     "basketPct": 7.72,
-     "benchmarkPct": 16.18
-    },
-    {
-     "basketPct": 6.76,
-     "benchmarkPct": 16.28
-    },
-    {
-     "basketPct": 5.44,
-     "benchmarkPct": 15
-    },
-    {
-     "basketPct": 10.98,
-     "benchmarkPct": 17.39
+     "basketPct": 20.8,
+     "benchmarkPct": 17.84
     }
    ]
   },
-  "financial-activity-moves-onchain": {
-   "returnPct": -25.428023598861582,
-   "benchmarkPct": 17.39428489733854,
+  "the-ai-money-is-private-now": {
+   "returnPct": 94.25189317810249,
+   "benchmarkPct": 11.69135471166971,
    "points": [
     {
-     "basketPct": 0,
-     "benchmarkPct": 0
+     "basketPct": 0.0,
+     "benchmarkPct": 0.0
     },
     {
-     "basketPct": 5.37,
-     "benchmarkPct": 1.11
+     "basketPct": 0.34,
+     "benchmarkPct": -0.43
     },
     {
-     "basketPct": 18.14,
-     "benchmarkPct": 1.82
+     "basketPct": 0.69,
+     "benchmarkPct": -0.04
     },
     {
-     "basketPct": 4.21,
-     "benchmarkPct": 0.62
+     "basketPct": -1.49,
+     "benchmarkPct": -0.23
     },
     {
-     "basketPct": -1.63,
-     "benchmarkPct": 1.01
+     "basketPct": 1.06,
+     "benchmarkPct": -1.52
     },
     {
-     "basketPct": 7.63,
-     "benchmarkPct": 3.98
+     "basketPct": 7.88,
+     "benchmarkPct": -1.42
     },
     {
-     "basketPct": -0.83,
-     "benchmarkPct": 2.49
+     "basketPct": 5.25,
+     "benchmarkPct": -0.85
     },
     {
-     "basketPct": -11.07,
-     "benchmarkPct": 3.37
+     "basketPct": 5.05,
+     "benchmarkPct": -2.02
     },
     {
-     "basketPct": -24.16,
-     "benchmarkPct": 0.23
+     "basketPct": 4.55,
+     "benchmarkPct": -3.35
     },
     {
-     "basketPct": -20.17,
-     "benchmarkPct": 2.81
+     "basketPct": 3.63,
+     "benchmarkPct": -5.07
     },
     {
-     "basketPct": -13.56,
-     "benchmarkPct": 3.52
+     "basketPct": 2.85,
+     "benchmarkPct": -8.46
     },
     {
-     "basketPct": -17.17,
-     "benchmarkPct": 4.25
+     "basketPct": 27.86,
+     "benchmarkPct": -4.51
     },
     {
-     "basketPct": -24.08,
-     "benchmarkPct": 2.32
+     "basketPct": 47.58,
+     "benchmarkPct": 0.59
     },
     {
-     "basketPct": -24.07,
-     "benchmarkPct": 4.73
+     "basketPct": 55.54,
+     "benchmarkPct": 1.99
     },
     {
-     "basketPct": -19.82,
-     "benchmarkPct": 4.33
+     "basketPct": 63.25,
+     "benchmarkPct": 3.09
     },
     {
-     "basketPct": -23.09,
-     "benchmarkPct": 5.46
+     "basketPct": 77.17,
+     "benchmarkPct": 4.84
     },
     {
-     "basketPct": -30.09,
-     "benchmarkPct": 2.8
+     "basketPct": 55.93,
+     "benchmarkPct": 6.93
     },
     {
-     "basketPct": -32.94,
-     "benchmarkPct": 5.51
+     "basketPct": 56.27,
+     "benchmarkPct": 6.28
     },
     {
-     "basketPct": -44.26,
-     "benchmarkPct": 4.61
+     "basketPct": 50.68,
+     "benchmarkPct": 8.71
     },
     {
-     "basketPct": -45.92,
-     "benchmarkPct": 5
+     "basketPct": 54.68,
+     "benchmarkPct": 9.25
     },
     {
-     "basketPct": -47.41,
-     "benchmarkPct": 4.12
+     "basketPct": 38.26,
+     "benchmarkPct": 5.08
     },
     {
-     "basketPct": -39.84,
-     "benchmarkPct": 5.16
+     "basketPct": 21.22,
+     "benchmarkPct": 7.33
     },
     {
-     "basketPct": -30.58,
-     "benchmarkPct": 3.94
+     "basketPct": 17.65,
+     "benchmarkPct": 6.64
     },
     {
-     "basketPct": -30.97,
-     "benchmarkPct": 2.61
+     "basketPct": 19.24,
+     "benchmarkPct": 8.16
     },
     {
-     "basketPct": -26.84,
-     "benchmarkPct": 0.35
+     "basketPct": 25.44,
+     "benchmarkPct": 9.64
     },
     {
-     "basketPct": -36.64,
-     "benchmarkPct": -0.08
+     "basketPct": 27.87,
+     "benchmarkPct": 7.95
     },
     {
-     "basketPct": -41.22,
-     "benchmarkPct": -0.32
+     "basketPct": 27.72,
+     "benchmarkPct": 7.31
     },
     {
-     "basketPct": -43,
-     "benchmarkPct": 3.43
+     "basketPct": 26.73,
+     "benchmarkPct": 8.49
     },
     {
-     "basketPct": -30.11,
-     "benchmarkPct": 6.74
+     "basketPct": 41.04,
+     "benchmarkPct": 12.3
     },
     {
-     "basketPct": -32.83,
-     "benchmarkPct": 7.77
+     "basketPct": 45.63,
+     "benchmarkPct": 12.74
     },
     {
-     "basketPct": -38.69,
-     "benchmarkPct": 9.33
+     "basketPct": 47.86,
+     "benchmarkPct": 11.2
     },
     {
-     "basketPct": -32.14,
-     "benchmarkPct": 11.29
+     "basketPct": 54.49,
+     "benchmarkPct": 11.73
     },
     {
-     "basketPct": -26.31,
-     "benchmarkPct": 13.81
+     "basketPct": 63.23,
+     "benchmarkPct": 11.85
     },
     {
-     "basketPct": -31.78,
-     "benchmarkPct": 12.99
+     "basketPct": 76.3,
+     "benchmarkPct": 10.5
     },
     {
-     "basketPct": -28.43,
-     "benchmarkPct": 15.08
+     "basketPct": 81.14,
+     "benchmarkPct": 12.61
     },
     {
-     "basketPct": -43.24,
-     "benchmarkPct": 12.2
-    },
-    {
-     "basketPct": -40.34,
-     "benchmarkPct": 12.84
-    },
-    {
-     "basketPct": -36.27,
-     "benchmarkPct": 13.53
-    },
-    {
-     "basketPct": -39.74,
-     "benchmarkPct": 13.01
-    },
-    {
-     "basketPct": -38.11,
-     "benchmarkPct": 14.04
-    },
-    {
-     "basketPct": -38.67,
-     "benchmarkPct": 14.67
-    },
-    {
-     "basketPct": -36.77,
-     "benchmarkPct": 14.12
-    },
-    {
-     "basketPct": -42.52,
-     "benchmarkPct": 12.99
-    },
-    {
-     "basketPct": -44.72,
-     "benchmarkPct": 17.64
-    },
-    {
-     "basketPct": -42.98,
-     "benchmarkPct": 17.52
-    },
-    {
-     "basketPct": -43.81,
-     "benchmarkPct": 17.05
-    },
-    {
-     "basketPct": -29.23,
-     "benchmarkPct": 16.81
-    },
-    {
-     "basketPct": -33.13,
-     "benchmarkPct": 16.18
-    },
-    {
-     "basketPct": -29.8,
-     "benchmarkPct": 16.28
-    },
-    {
-     "basketPct": -36.5,
-     "benchmarkPct": 15
-    },
-    {
-     "basketPct": -25.43,
-     "benchmarkPct": 17.39
+     "basketPct": 94.25,
+     "benchmarkPct": 11.69
     }
-   ]
+   ],
+   "from": "2026-01-15",
+   "asOf": "2026-09-24",
+   "label": "Since the tokens launched \u00b7 Jan 15"
   }
  }
 }

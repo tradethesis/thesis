@@ -8,6 +8,7 @@ import { listBaskets } from "@/server/baskets/queries";
 import { refreshCallsIfStale } from "@/server/calls/service";
 import { after } from "next/server";
 import { activityForTheses } from "@/server/conviction";
+import basketHistory from "@/data/basket-history.json";
 import { inArray } from "drizzle-orm";
 import { db } from "@/server/db/client";
 import { thesisVersion } from "@/server/db/schema";
@@ -25,7 +26,8 @@ export const revalidate = 60;
 export const maxDuration = 60;
 
 /** The period the left column ranks on. Named, because "return" without one means nothing. */
-const PERIOD = { label: "Since the call started", days: null as number | null };
+const PERIOD = { label: "Live record, or past 12 months", days: null as number | null };
+const YEAR = basketHistory.baskets as Record<string, { returnPct: number; benchmarkPct: number; from?: string; label?: string }>;
 
 export default async function TerminalPage({
   searchParams,
@@ -69,13 +71,18 @@ export default async function TerminalPage({
         rank: r.rank,
         unrankedReason: r.unrankedReason,
         argumentCount: b.arguments.length,
+        yearPct: YEAR[b.slug]?.returnPct ?? null,
+        yearLabel: YEAR[b.slug]?.label ?? null,
       };
     })
-    // Ranked first, in order; unrankable last, alphabetically. Present, not hidden.
+    // Live-ranked first, in order; then by the labelled 12-month what-if; then the rest, by name.
     .sort((a, b) => {
       if (a.rank !== null && b.rank !== null) return a.rank - b.rank;
       if (a.rank !== null) return -1;
       if (b.rank !== null) return 1;
+      if (a.yearPct !== null && b.yearPct !== null) return b.yearPct - a.yearPct;
+      if (a.yearPct !== null) return -1;
+      if (b.yearPct !== null) return 1;
       return a.name.localeCompare(b.name);
     });
 
@@ -121,6 +128,7 @@ export default async function TerminalPage({
       // Live purchases only. A count built from simulated runs would be the one number here
       // somebody could act on and be wrong about.
       activity: act ? { buyers: act.buyers, volumeUsdc: act.volumeUsdc } : null,
+      year: YEAR[b.slug] ? { ...YEAR[b.slug], from: YEAR[b.slug].from ?? basketHistory.from, asOf: basketHistory.asOf } : null,
     };
   });
 

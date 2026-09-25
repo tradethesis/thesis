@@ -32,10 +32,18 @@ pnpm db:verify
 # `db:seed` re-verifies every mint on chain and refuses to write if one fails.
 DATABASE_URL_UNPOOLED="$DATABASE_URL" pnpm db:seed
 DATABASE_URL_UNPOOLED="$DATABASE_URL" pnpm content:publish
+# Start each thesis's 90-day record and link it to its basket. The daily job only takes new
+# readings for calls that exist; without this step every basket reads "tracking starts soon".
+DATABASE_URL_UNPOOLED="$DATABASE_URL" pnpm tsx scripts/calls.ts start
 rm .env.prod.local
 ```
 
 ## 2. Production env vars (Vercel dashboard → Settings → Environment Variables → Production)
+
+Status 25 Sep: already added to Production: `NEXT_PUBLIC_PRIVY_APP_ID`, `TYPESAFE_API_KEY`,
+`OPENROUTER_API_KEY`, `GIFTS_LIVE`, `GIFTS_PROVISION_WALLETS`, `GIFT_ELIGIBILITY_PROVIDER=attestation`.
+Still to do by hand: add the two secrets (they're sensitive and can't be copied; rotate them now
+and set the new values for Production and Preview), and edit `EXECUTION_MODE` and `SITE_MODE`.
 
 | Name | Value |
 |---|---|
@@ -48,12 +56,20 @@ rm .env.prod.local
 | `GIFTS_PROVISION_WALLETS` | same as Preview |
 | `GIFT_ELIGIBILITY_PROVIDER` | `attestation` (country check; beta uses `open`) |
 | `SITE_MODE` | `full` (anything but `waitlist` opens the site) |
+| `EXECUTION_MODE` | `live`. It is `simulation` today; with it, a gift's real USDC would buy nothing real |
 
 ## 3. Deploy
 
 ```sh
 vercel deploy --prod
+# The production deploy also claims beta.tradethesis.xyz. Point beta back at the latest preview
+# build straight away, or beta serves production's database and live money settings.
+vercel alias set <latest-preview-url> beta.tradethesis.xyz
 ```
+
+First production deploy: 25 Sep 2026 (thesis-noov22dwc). Brian Armstrong's argument isn't in the
+catalogue publish; it goes in with `pnpm tsx scripts/seed-coinbase-ipo-argument.ts --apply` against
+the production database.
 
 Then smoke: `/`, `/app`, `/app/leaderboard`, `/discover` (search one idea), `/gift`, one gift
 preview. Crons run on production only; the first call refresh lands within a day, or trigger

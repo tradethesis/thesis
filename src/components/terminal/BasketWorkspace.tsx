@@ -42,7 +42,7 @@ export function BasketWorkspace({ basket }: { basket: TerminalBasket }) {
         </div>
 
         <div className="tmw-figure">
-          {last ? (
+          {last && (perf?.points.length ?? 0) >= 2 ? (
             <>
               <strong className={`ln-num ${last.basketPct > 0 ? "is-up" : last.basketPct < 0 ? "is-down" : ""}`}>
                 {last.basketPct > 0 ? "+" : ""}
@@ -53,8 +53,16 @@ export function BasketWorkspace({ basket }: { basket: TerminalBasket }) {
                 {perf!.status === "open" ? "live" : perf!.status}
               </span>
             </>
+          ) : basket.year ? (
+            <>
+              <strong className={`ln-num ${basket.year.returnPct > 0 ? "is-up" : basket.year.returnPct < 0 ? "is-down" : ""}`}>
+                {basket.year.returnPct > 0 ? "+" : ""}
+                {basket.year.returnPct.toFixed(1)}%
+              </strong>
+              <span>{basket.year.label ? `${basket.year.label} · token prices` : "past 12 months"} · what-if · S&amp;P 500 {basket.year.benchmarkPct > 0 ? "+" : ""}{basket.year.benchmarkPct.toFixed(1)}%</span>
+            </>
           ) : (
-            <span className="tmw-untracked">Tracking begins at publication</span>
+            <span className="tmw-untracked">Live record starts with its first prices</span>
           )}
         </div>
       </header>

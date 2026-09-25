@@ -67,8 +67,9 @@ function performanceOf(b: BasketView): GiftPack["performance"] {
 
 /** The 12-month what-if for a thesis, if the snapshot has one. */
 function historyOf(thesisSlug: string): GiftPack["history"] {
-  const h = (packHistory.packs as Record<string, { returnPct: number; benchmarkPct: number; points: { basketPct: number; benchmarkPct: number }[] }>)[thesisSlug];
-  return h ? { ...h, from: packHistory.from, asOf: packHistory.asOf } : null;
+  const h = (packHistory.packs as Record<string, { returnPct: number; benchmarkPct: number; points: { basketPct: number; benchmarkPct: number }[]; from?: string; asOf?: string; label?: string }>)[thesisSlug];
+  // A pack with its own window (pre-IPO: since the tokens launched) carries it; the rest share the file's.
+  return h ? { ...h, from: h.from ?? packHistory.from, asOf: h.asOf ?? packHistory.asOf } : null;
 }
 
 function holdingsOf(b: BasketView): GiftPack["holdings"] {

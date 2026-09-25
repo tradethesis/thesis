@@ -93,7 +93,12 @@ export async function startCall(slug: string) {
   const t = await getPublishedThesis(slug);
   if (!t) throw new Error("Published thesis not found.");
   const [existing] = await db.select().from(thesisCall).where(eq(thesisCall.versionId, t.versionId));
-  if (existing) return existing.id;
+  if (existing) {
+    // Struck earlier, perhaps before this basket existed: close the loop now, or the basket reads
+    // "tracking starts soon" beside a call that is already running.
+    await linkCall(t.versionId, existing.id, existing.holdings as { mint: string; weightBps: number }[], "only_candidate");
+    return existing.id;
+  }
   const split = allocate(MODEL_BUDGET, t.holdings.map((h, i) => ({ assetId: h.symbol, positionIndex: i, bps: h.weightBps })));
 
   // Every tradable asset, not only the equities. A crypto holding used to throw here, which
@@ -171,20 +176,7 @@ export async function startCall(slug: string) {
    * under a basket it did not measure. `call_id IS NULL` keeps this from overwriting a series that
    * was already chosen; the trigger forbids that anyway.
    */
-  if (created) {
-    await db.execute(sql`
-      UPDATE basket_version bv
-         SET call_id = ${created.id}, call_selection_reason = 'struck_for_this_allocation'
-        FROM basket_thesis bt
-       WHERE bt.basket_version_id = bv.id
-         AND bt.thesis_version_id = ${t.versionId}
-         AND bv.call_id IS NULL
-         AND bv.allocation_key = coalesce(
-               (SELECT string_agg((h->>'mint') || ':' || (h->>'weightBps'), '|'
-                                  ORDER BY (h->>'mint') COLLATE "C")
-                  FROM jsonb_array_elements(${JSON.stringify(holdings)}::jsonb) h), '')
-    `);
-  }
+  if (created) await linkCall(t.versionId, created.id, holdings, "struck_for_this_allocation");
 
   return created?.id ?? "already_started";
 }
@@ -198,6 +190,26 @@ export async function startCall(slug: string) {
  * came to have twelve observations across two days while appearing to run daily. Slower and
  * complete beats fast and mostly failed for a job nobody is waiting on.
  */
+/**
+ * Point a basket at its series. Matched on the allocation, never on identity: the key comes from
+ * the call's own frozen holdings, `basket_version_call_matches_trg` re-derives it and refuses a
+ * mismatch, and `call_id IS NULL` never overwrites a series already chosen.
+ */
+async function linkCall(versionId: string, callId: string, holdings: { mint: string; weightBps: number }[], reason: string) {
+  await db.execute(sql`
+    UPDATE basket_version bv
+       SET call_id = ${callId}, call_selection_reason = ${reason}
+      FROM basket_thesis bt
+     WHERE bt.basket_version_id = bv.id
+       AND bt.thesis_version_id = ${versionId}
+       AND bv.call_id IS NULL
+       AND bv.allocation_key = coalesce(
+             (SELECT string_agg((h->>'mint') || ':' || (h->>'weightBps'), '|'
+                                ORDER BY (h->>'mint') COLLATE "C")
+                FROM jsonb_array_elements(${JSON.stringify(holdings)}::jsonb) h), '')
+  `);
+}
+
 export async function refreshCalls() {
   const calls = await db.select().from(thesisCall).where(eq(thesisCall.status, "open"));
 

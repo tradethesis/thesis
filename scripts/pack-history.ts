@@ -39,6 +39,11 @@ const underlying = (symbol: string) => EQUITY_ASSETS.find((a) => a.symbol === sy
   };
   const out: Record<string, { returnPct: number; benchmarkPct: number; points: { basketPct: number; benchmarkPct: number }[] }> = {};
   for (const p of packs) {
+    // Pre-IPO holdings have no public price history: such a pack shows its live record only.
+    if (p.holdings.some((h) => !EQUITY_ASSETS.some((a) => a.symbol === h.symbol))) {
+      console.log(`${p.name.padEnd(24)} skipped: holds a token with no public price history`);
+      continue;
+    }
     const series = await Promise.all(p.holdings.map((h) => closes(underlying(h.symbol))));
     const value = (day: number) => p.holdings.reduce((sum, h, i) => sum + (h.weightBps / 10000) * (at(series[i], day) / at(series[i], days[0])), 0);
     // Weekly points keep the file small; the last trading day is always included.

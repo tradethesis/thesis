@@ -1,0 +1,67 @@
+{
+ "window": "12m",
+ "from": "2025-09-25",
+ "asOf": "2026-09-24",
+ "benchmark": "S&P 500 (SPY)",
+ "source": "Yahoo Finance daily closes",
+ "baskets": {
+  "metabolic-medicine": {
+   "returnPct": 19.4,
+   "benchmarkPct": 17.84
+  },
+  "gold-keeps-its-place": {
+   "returnPct": 15.31,
+   "benchmarkPct": 17.84
+  },
+  "1-token-test-pack": {
+   "returnPct": 26.69,
+   "benchmarkPct": 17.84
+  },
+  "2-token-test-pack": {
+   "returnPct": 29.52,
+   "benchmarkPct": 17.84
+  },
+  "solana-toll-booths": {
+   "returnPct": -34.02,
+   "benchmarkPct": 17.84
+  },
+  "bitcoin-wrappers": {
+   "returnPct": -30.89,
+   "benchmarkPct": 17.84
+  },
+  "depreciation-absorbers": {
+   "returnPct": 16.3,
+   "benchmarkPct": 17.84
+  },
+  "buildout-breadth": {
+   "returnPct": 20.8,
+   "benchmarkPct": 17.84
+  },
+  "contracted-capex": {
+   "returnPct": 14.68,
+   "benchmarkPct": 17.84
+  },
+  "enterprise-ai-trust": {
+   "returnPct": 17.47,
+   "benchmarkPct": 17.84
+  },
+  "ai-spending-chain": {
+   "returnPct": 10.83,
+   "benchmarkPct": 17.84
+  },
+  "digital-advertising": {
+   "returnPct": 19.59,
+   "benchmarkPct": 17.84
+  },
+  "onchain-finance-rails": {
+   "returnPct": -22.08,
+   "benchmarkPct": 17.84
+  },
+  "private-ai-labs": {
+   "returnPct": 94.25,
+   "benchmarkPct": 11.69,
+   "from": "2026-01-15",
+   "label": "since Jan 15"
+  }
+ }
+}

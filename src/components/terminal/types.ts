@@ -11,6 +11,10 @@ export type BasketRow = {
   rank: number | null;
   unrankedReason: string | null;
   argumentCount: number;
+  /** The 12-month what-if (scripts/basket-history.ts), shown while the live record is too short. */
+  yearPct: number | null;
+  /** Set when that what-if isn't 12 months (pre-IPO: since the tokens launched). */
+  yearLabel: string | null;
 };
 
 export type TerminalBasket = {
@@ -65,4 +69,6 @@ export type TerminalBasket = {
     source?: import("@/lib/source-post").SourcePost | null;
   }[];
   activity: { buyers: number; volumeUsdc: number } | null;
+  /** The 12-month what-if, with its window, for when the live record is too short to show. */
+  year: { returnPct: number; benchmarkPct: number; from: string; asOf: string; label?: string } | null;
 };

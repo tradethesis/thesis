@@ -358,3 +358,6 @@ details.tmw-chart details > summary { min-height: 44px; display: flex; align-ite
   .tmw-chart-chev { margin-left: auto; }
   .tmw-voice figcaption a { display: inline-flex; align-items: center; min-height: 44px; }
 }
+
+/* "12 mo": the what-if shown until a call has enough live readings. Quiet, but always there. */
+.tml-year { font-size: 10px; letter-spacing: .04em; color: var(--tm-ink-3); text-transform: uppercase; }

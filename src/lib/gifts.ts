@@ -38,7 +38,7 @@ export type GiftPack = {
    * Observed prices, not a model. Null when the thesis has no call yet.
    */
   /** The 12-month what-if (scripts/pack-history.ts): current holdings at current weights, buy-and-hold. */
-  history?: { returnPct: number; benchmarkPct: number; from: string; asOf: string; points: { basketPct: number; benchmarkPct: number }[] } | null;
+  history?: { returnPct: number; benchmarkPct: number; from: string; asOf: string; points: { basketPct: number; benchmarkPct: number }[]; /** Set when the window isn't the standard 12 months (pre-IPO packs: since the tokens launched). */ label?: string } | null;
   /** Interest in the pack's companies: Wikipedia page views, last 7 days vs the 7 before (server/gifts/attention.ts). */
   attention?: { weekViews: number; changePct: number; asOf: string } | null;
   /** Holds private-company tokens (PreStocks): no public share price, and the issuer's terms apply. */
