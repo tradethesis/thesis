@@ -10,7 +10,25 @@ and why each one is there, change the weights if you disagree, and buy the baske
 reasoning stays attached to the position afterwards, along with the evidence and the
 strongest argument against it.
 
-The product requirements are in [`PRD.md`](./PRD.md).
+**Live:** [tradethesis.xyz](https://tradethesis.xyz) · **Pitch deck:** [`Thesis-Pitch-Deck.pdf`](./Thesis-Pitch-Deck.pdf)
+
+## What's in it
+
+- **Gift a pack of stocks.** Pick a pack, add a note, send it to a friend's X handle, from $1.
+  They open the link and rip a 3D pack open (no sign-in to look), then claim it with X; a wallet
+  is created for them and the stocks are bought into it. No custody: funds and keys are never ours.
+- **Pre-IPO, through PreStocks.** "Before they go public" holds OpenAI and Anthropic via
+  PreStocks' tokens, with NVIDIA as the public reference price, and says on every screen what
+  pre-IPO means: no public share price, a transfer fee, and the issuer's freeze and buy-back rights.
+- **Every basket has a voice.** Baskets start from a real, credited post, with the argument, the
+  case against, and what would change the call. Each is a public 90-day record against the
+  S&P 500, measured from the day it starts; no backtest is shown as a result.
+- **A terminal.** Baskets ranked by their live record, your holdings read from your wallet on
+  chain, and a portfolio showing what each thesis you bought is worth today.
+- **Honest numbers.** 12-month and since-launch what-ifs are labelled as what-ifs; interest comes
+  from Wikipedia page views, never invented counts.
+
+The product requirements are in [`PRD.md`](./PRD.md); design notes are in [`docs/`](./docs).
 
 ## What you actually own
 
@@ -24,11 +42,10 @@ real and are disclosed on every holding.
 
 ## Status
 
-Hackathon build, 14–18 September 2026. Execution runs against Solana mainnet through Jupiter.
-Live execution is limited to an explicit wallet allowlist; every other visitor sees the same
-flow in a clearly labelled simulation that never requests a signature. xStocks are restricted in
-the United States, Canada, the United Kingdom and Australia, and the obligation to enforce that
-sits with the integrating platform — which is why access is gated rather than open.
+Built for the Solana Stocklana hackathon, September 2026, and live on mainnet. Purchases and gifts
+execute through Jupiter from the buyer's or recipient's own wallet. xStocks and PreStocks are not
+offered to US persons or in restricted countries; claiming a gift asks where the recipient lives
+and checks it against the issuers' restricted lists.
 
 ## Setup
 
@@ -40,6 +57,7 @@ createdb thesis
 cp .env.example .env.local      # then fill it in
 pnpm db:push                    # create tables
 ./scripts/apply-constraints.sh  # partial unique indexes, generated columns, triggers
+for f in src/server/db/migrations/*.sql; do psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f "$f"; done  # gifts
 pnpm db:seed                    # verify every mint against chain, then seed
 pnpm dev
 ```

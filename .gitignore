@@ -48,3 +48,14 @@ next-env.d.ts
 .agents/
 skills-lock.json
 .claude/skills/
+
+# internal: agent prompts, ops runbooks, submission drafts, pitch tooling (kept locally)
+/docs/claude-*.md
+/docs/prod-deploy.md
+/docs/environments.md
+/docs/submission.md
+/docs/dbc-findings.md
+/pitch/
+__pycache__/
+*.pyc
+.env*.local
