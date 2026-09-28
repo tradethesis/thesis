@@ -28,7 +28,13 @@ strongest argument against it.
 - **Honest numbers.** 12-month and since-launch what-ifs are labelled as what-ifs; interest comes
   from Wikipedia page views, never invented counts.
 
-The product requirements are in [`PRD.md`](./PRD.md); design notes are in [`docs/`](./docs).
+How it works, in more depth:
+
+- [What Jupiter actually does](./docs/execution-findings.md): measured routing, fees and fills for tokenized stocks.
+- [Matching an idea to a basket](./docs/matching.md): how a pasted post or idea finds the baskets that express it.
+- [Curated theses and timed calls](./docs/curation-and-calls.md): how a thesis is published and scored against the S&P 500.
+- [Signing in without an extension, and pre-IPO assets](./docs/sign-in-and-pre-ipo.md): embedded wallets and the PreStocks disclosures.
+- [Six futures](./docs/curated-thesis-research.md): the research behind the curated packs, including what can't be bought yet.
 
 ## What you actually own
 

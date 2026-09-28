@@ -125,5 +125,5 @@ updating a week ago. Neither is worth doing.
 **What the research found instead is the fix we needed.** `lite-api.jup.ag/price/v3?ids=…`
 is keyless, batches many mints into one request, and returns `usdPrice`, the issuer's
 reference `stockData.price`, and `scaledUiConfig.multiplier`. One request replaces the
-~240 quotes a full refresh currently costs. Not yet wired in — see the note in
-`conviction.md` about the immutable call record, which is why this is not a drop-in swap.
+~240 quotes a full refresh currently costs. Not yet wired in: a call's recorded observations are
+immutable, so switching price sources mid-record needs its own migration.

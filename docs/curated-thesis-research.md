@@ -108,9 +108,3 @@ The headlines below are original editorial framing. The publishers linked below 
 4. **Keep three verdicts separate:** change in the world, company capture, valuation. Mark valuation unassessed unless an actual dated valuation comparison was performed. Never print “early,” “undervalued” or a success probability from semantic relevance.
 5. **Content can change; positions cannot silently change.** Evidence and editorial interpretation evolve. A user's funded gift, order or holding remains pinned to its reviewed allocation. New evidence never causes an automatic rebalance.
 6. **Start editorially.** Seed verified sources and review updates manually. An LLM can suggest which thesis a post relates to and whether it supports/challenges it; it cannot supply facts, endorse a holding, choose live weights or publish itself.
-
-## Local inspection caveats
-
-The code has advanced beyond the prior gifting handoff: there are gift API routes, identity/funding/lifecycle services, custom packs and richer reveal components. `PRODUCT.md` reports a beta funding implementation but no funded end-to-end validation. This review did not test it. It also records an outstanding X lookup credential and a beta location-check bypass. Do not turn this editorial refresh into a claim that live gifting or public-market access is validated.
-
-The code currently uses a $1 minimum for gifts; older handoff text mentioning $10 is stale. This proposal does not change fees or minimums. The onchain-finance pack is explicitly hidden in `catalogue.ts`; inspect the latest decision before featuring it. Existing allocation and gift URLs must continue to resolve.
